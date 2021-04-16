@@ -2,7 +2,7 @@ import React from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom';
 import { logoutUser } from '../api/authRequests';
-import { isUserAuthenticated } from '../api/utils';
+import { isUserAuthenticated } from '../utils/storage';
 
 /*
  * Return a login or logout button based on whether the user is logged in
