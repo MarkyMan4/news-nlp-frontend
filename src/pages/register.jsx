@@ -68,7 +68,7 @@ function Register() {
                     <p className="mt-2 text-danger">{errorText}</p>
                     <input className="btn btn-primary mt-3" onClick={handleSubmit} type="submit" value="Register" />
                 </div>
-                <Link to="/"><p className="mt-4">Already have an account? Sign in</p></Link>
+                <Link to="/login"><p className="mt-4">Already have an account? Sign in</p></Link>
             </div>
             <div className="col-md-4"></div>
         </div>
