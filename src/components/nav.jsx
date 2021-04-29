@@ -42,8 +42,8 @@ function Nav() {
                         <Link style={navStyle} to="/">
                             <li className="mr-3">Home</li>
                         </Link>
-                        <Link style={navStyle} to="/about">
-                            <li>About</li>
+                        <Link style={navStyle} to="/savedarticles">
+                            <li>Saved Articles</li>
                         </Link>
                     </ul>
                     <span className="navbar-text">
