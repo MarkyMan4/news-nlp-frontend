@@ -34,7 +34,7 @@ function Login() {
     return (
         <div className="row">
             <div className="col-md-4"></div>
-            <div className="mt-5 border shadow text-center col-md-4">
+            <div className="mt-5 border shadow text-center col-md-4 text-center animate__animated animate__fadeIn">
                 <h1 className="mt-2">Login</h1>
                 <hr />
                 <div className="mt-2">

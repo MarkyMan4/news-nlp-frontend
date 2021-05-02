@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
+import 'animate.css/animate.css';
 import Login from './pages/login';
 import Home from './pages/home';
 import SavedArticles from './pages/savedArticles';
