@@ -5,6 +5,7 @@ import Login from './pages/login';
 import Home from './pages/home';
 import SavedArticles from './pages/savedArticles';
 import Register from './pages/register';
+import ArticleDetail from './pages/articleDetail';
 import Nav from './components/nav';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/savedarticles" component={SavedArticles} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
+        <Route path="/article/:id" component={ArticleDetail}/>
       </Switch>
     </Router>
   );
