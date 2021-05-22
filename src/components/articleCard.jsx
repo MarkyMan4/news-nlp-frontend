@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 function ArticleCard(props) {
     return (
-        <div className="article-card shadow">
+        <div className="article-card shadow animate__animated animate__fadeInUp">
             <Link to={"/article/" + props.article.id}><h4>{props.article.headline}</h4></Link>
             <hr />
             <div><b>Date Published:</b> {props.article.date_published}</div>

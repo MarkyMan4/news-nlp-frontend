@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getArticles } from '../api/newsRequests';
+import { getArticlePage } from '../api/newsRequests';
 import ArticleCard from '../components/articleCard';
 // import { getUser } from '../api/authRequests';
 
@@ -7,7 +7,7 @@ function Home() {
     const [articles, setArticles] = useState([]);
 
     useEffect(() => {
-        getArticles(1).then(res => setArticles(res));
+        getArticlePage(1).then(res => setArticles(res));
     }, []);
 
     return (

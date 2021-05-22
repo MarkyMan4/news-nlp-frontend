@@ -2,9 +2,17 @@ import axios from 'axios';
 
 const baseUrl = 'http://127.0.0.1:8000/api';
 
-export const getArticles = async (pageNo) => {
+// need to include options for query parameters 
+export const getArticlePage = async (pageNo) => {
     return axios.get(
         `${baseUrl}/article?page=${pageNo}`
+    ).then(res => res.data)
+     .catch(err => console.log(err));
+}
+
+export const getArticleById = async (id) => {
+    return axios.get(
+        `${baseUrl}/article/${id}`
     ).then(res => res.data)
      .catch(err => console.log(err));
 }
