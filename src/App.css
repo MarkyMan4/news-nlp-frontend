@@ -18,8 +18,7 @@ nav {
 }
 
 .article-card:hover {
-  padding-top: 40px;
-  padding-bottom: 40px;
+  background-color: #f0f0f0;
 }
 
 .article-card {
@@ -31,5 +30,5 @@ nav {
   margin: 0 auto;
   margin-top: 20px;
   padding: 20px;
-  transition: padding 0.5s;
+  transition: background-color 0.5s;
 }
