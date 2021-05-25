@@ -7,12 +7,19 @@ import ArticleCard from '../components/articleCard';
 function Articles() {
     const [articles, setArticles] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
+    const [errorOccurred, setErrorOccurred] = useState(false);
     const { pageNum } = useParams();
 
     useEffect(() => {
         getArticlePage(pageNum).then(res => {
-            setArticles(res.articles);
-            setTotalPages(res.total_pages);
+            if(res.error) {
+                setErrorOccurred(true);
+            }
+            else {
+                setErrorOccurred(false);
+                setArticles(res.articles);
+                setTotalPages(res.total_pages);
+            }
         });
     }, [pageNum]); // run the code in this useEffect whenever the value of pageNum changes
 
@@ -50,24 +57,37 @@ function Articles() {
         return '/articles/' + totalPages;
     }
 
-    return (
-        <div>
-            <h1 className="text-center animate__animated animate__flipInX">Recent Articles</h1>
-            <div className="d-flex justify-content-center">
-                {/* should make the page nav controls a component so it can be reused */}
+    const getArticlesOrNotFound = () => {
+        let html;
+
+        if(errorOccurred) {
+            html = <h1>this page does not exist</h1>
+        }
+        else {
+            html = (
                 <div>
-                    <Link to={getFirstPageUrl} className="btn btn-outline-dark page-nav-btn">&lt;&lt;</Link>
-                    <Link to={getPrevPageUrl} className="btn btn-outline-dark mr-5 page-nav-btn">&lt;</Link>
-                    Page {pageNum} of {totalPages} 
-                    <Link to={getNextPageUrl} className="btn btn-outline-dark ml-5 page-nav-btn">&gt;</Link>
-                    <Link to={getLastPageUrl} className="btn btn-outline-dark page-nav-btn">&gt;&gt;</Link>
+                    <h1 className="text-center animate__animated animate__flipInX">Recent Articles</h1>
+                    <div className="d-flex justify-content-center">
+                        {/* should make the page nav controls a component so it can be reused */}
+                        <div>
+                            <Link to={getFirstPageUrl} className="btn btn-outline-dark page-nav-btn">&lt;&lt;</Link>
+                            <Link to={getPrevPageUrl} className="btn btn-outline-dark mr-5 page-nav-btn">&lt;</Link>
+                            Page {pageNum} of {totalPages} 
+                            <Link to={getNextPageUrl} className="btn btn-outline-dark ml-5 page-nav-btn">&gt;</Link>
+                            <Link to={getLastPageUrl} className="btn btn-outline-dark page-nav-btn">&gt;&gt;</Link>
+                        </div>
+                    </div>
+                    {articles.map((art, indx) => {
+                        return <ArticleCard key={indx} article={art} />;
+                    })}
                 </div>
-            </div>
-            {articles.map((art, indx) => {
-                return <ArticleCard key={indx} article={art} />;
-            })}
-        </div>
-    );
+            );
+        }
+
+        return html;
+    }
+
+    return getArticlesOrNotFound();
 }
 
 export default Articles;

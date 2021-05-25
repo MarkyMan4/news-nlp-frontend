@@ -7,7 +7,9 @@ export const getArticlePage = async (pageNo) => {
     return axios.get(
         `${baseUrl}/article?page=${pageNo}`
     ).then(res => res.data)
-     .catch(err => console.log(err));
+     .catch(err => {
+         return {'error': 'invalid page'};
+     });
 }
 
 export const getArticleById = async (id) => {
