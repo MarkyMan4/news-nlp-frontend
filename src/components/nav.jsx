@@ -42,6 +42,9 @@ function Nav() {
                         <Link style={navStyle} to="/">
                             <li className="mr-3">Home</li>
                         </Link>
+                        <Link style={navStyle} to="/articles/1">
+                            <li className="mr-3">Articles</li>
+                        </Link>
                         <Link style={navStyle} to="/savedarticles">
                             <li>Saved Articles</li>
                         </Link>
