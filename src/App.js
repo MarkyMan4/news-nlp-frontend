@@ -7,7 +7,7 @@ import SavedArticles from './pages/savedArticles';
 import Register from './pages/register';
 import Articles from './pages/articles';
 import ArticleDetail from './pages/articleDetail';
-import NotFound from './pages/notFound';
+import NotFound from './components/notFound';
 import Nav from './components/nav';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 

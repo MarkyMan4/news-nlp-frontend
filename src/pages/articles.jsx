@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getArticlePage } from '../api/newsRequests';
 import ArticleCard from '../components/articleCard';
+import NotFound from '../components/notFound';
 // import { getUser } from '../api/authRequests';
 
 function Articles() {
     const [articles, setArticles] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
-    const [errorOccurred, setErrorOccurred] = useState(false);
+    const [errorOccurred, setErrorOccurred] = useState(false); // used when the page number doesn't exist
     const { pageNum } = useParams();
 
     useEffect(() => {
@@ -61,7 +62,7 @@ function Articles() {
         let html;
 
         if(errorOccurred) {
-            html = <h1>this page does not exist</h1>
+            html = <NotFound></NotFound>;
         }
         else {
             html = (
