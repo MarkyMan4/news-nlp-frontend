@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import { authenticateUser } from '../api/authRequests';
+import { isUserAuthenticated } from '../utils/storage';
 
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [invalidLoginText, setInvalidLoginText] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        isUserAuthenticated()
+            .then(res => setIsLoggedIn(res))
+            .catch(err => console.log(err));
+    }, [localStorage.getItem('token')]);
 
 
     const handleUsernameInput = (event) => {
@@ -31,32 +39,44 @@ function Login() {
         });
     }
 
-    return (
-        <div className="row">
-            <div className="col-md-4"></div>
-            <div className="mt-5 border shadow text-center col-md-4 text-center animate__animated animate__fadeIn">
-                <h1 className="mt-2">Login</h1>
-                <hr />
-                <div className="mt-2">
-                    <form>
-                        <label>
-                            <b>Username</b> <br />
-                            <input type="text" value={username} onChange={handleUsernameInput} />
-                        </label>
-                        <br />
-                        <label className="mt-3">
-                            <b>Password</b> <br />
-                            <input type="password" value={password} onChange={handlePasswordInput} />
-                        </label>
-                    </form>
-                    <p className="mt-2 text-danger">{invalidLoginText}</p>
-                    <input className="btn btn-primary mt-3" onClick={handleSubmit} type="submit" value="Login" />
+    const getLoginScreenOrRedirect = () => {
+        console.log(isLoggedIn);
+        if(isLoggedIn) {
+            return (
+                <Redirect to="/" />
+            );
+        }
+        else {
+            return (
+                <div className="row">
+                    <div className="col-md-4"></div>
+                    <div className="mt-5 border shadow text-center col-md-4 text-center animate__animated animate__fadeIn">
+                        <h1 className="mt-2">Login</h1>
+                        <hr />
+                        <div className="mt-2">
+                            <form>
+                                <label>
+                                    <b>Username</b> <br />
+                                    <input type="text" value={username} onChange={handleUsernameInput} />
+                                </label>
+                                <br />
+                                <label className="mt-3">
+                                    <b>Password</b> <br />
+                                    <input type="password" value={password} onChange={handlePasswordInput} />
+                                </label>
+                            </form>
+                            <p className="mt-2 text-danger">{invalidLoginText}</p>
+                            <input className="btn btn-primary mt-3" onClick={handleSubmit} type="submit" value="Login" />
+                        </div>
+                        <Link to="/register"><p className="mt-4">Don't have an account? Sign up</p></Link>
+                    </div>
+                    <div className="col-md-4"></div>
                 </div>
-                <Link to="/register"><p className="mt-4">Don't have an account? Sign up</p></Link>
-            </div>
-            <div className="col-md-4"></div>
-        </div>
-    );
+            );
+        }
+    }
+
+    return getLoginScreenOrRedirect();
 }
 
 export default Login;
