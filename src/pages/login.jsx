@@ -29,6 +29,9 @@ function Login() {
      * Update this so it doesn't have to refresh the window after loggin in.
      */
     const handleSubmit = (event) => {
+        // prevent page from refreshing right away on form submit
+        event.preventDefault();
+        
         authenticateUser(username, password).then(res => {
             if(res) {
                 window.location.reload(false);
@@ -63,9 +66,9 @@ function Login() {
                                     <b>Password</b> <br />
                                     <input type="password" value={password} onChange={handlePasswordInput} />
                                 </label>
+                                <p className="mt-2 text-danger">{invalidLoginText}</p>
+                                <input className="btn btn-primary mt-3" onClick={handleSubmit} type="submit" value="Login" />
                             </form>
-                            <p className="mt-2 text-danger">{invalidLoginText}</p>
-                            <input className="btn btn-primary mt-3" onClick={handleSubmit} type="submit" value="Login" />
                         </div>
                         <Link to="/register"><p className="mt-4">Don't have an account? Sign up</p></Link>
                     </div>
