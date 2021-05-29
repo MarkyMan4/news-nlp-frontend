@@ -13,7 +13,7 @@ export const getUser = async () => {
     ).then(res => {
         return res.data.username;
     }).catch(err => {
-        return 'Error retrieving user info';
+        return {'error': 'invalid token'};
     });
 }
 

@@ -1,21 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom';
 import { logoutUser } from '../api/authRequests';
 import { isUserAuthenticated } from '../utils/storage';
 
-/*
- * Return a login or logout button based on whether the user is logged in
- */
-const getButton = () => {
-    let button = <Link className="btn btn-outline-success" to="/login">Login</Link>;
-
-    if(isUserAuthenticated()) {
-        button = <button className="btn btn-outline-danger" onClick={logout}>Logout</button>;
-    }
-
-    return button;
-}
 
 const logout = () => {
     logoutUser().then(res => {
@@ -24,6 +12,27 @@ const logout = () => {
 }
 
 function Nav() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        isUserAuthenticated()
+            .then(res => setIsLoggedIn(res))
+            .catch(err => console.log(err));
+    }, [localStorage.getItem('token')]);
+
+    /*
+     * Return a login or logout button based on whether the user is logged in
+     */
+    const getButton = () => {
+        let button = <Link className="btn btn-outline-success" to="/login">Login</Link>;
+
+        if(isLoggedIn) {
+            button = <button className="btn btn-outline-danger" onClick={logout}>Logout</button>;
+        }
+
+        return button;
+    }
+
     const navStyle = {
         color: 'white'
     };
