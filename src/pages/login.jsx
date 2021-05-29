@@ -40,7 +40,6 @@ function Login() {
     }
 
     const getLoginScreenOrRedirect = () => {
-        console.log(isLoggedIn);
         if(isLoggedIn) {
             return (
                 <Redirect to="/" />
