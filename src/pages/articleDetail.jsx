@@ -3,6 +3,7 @@ import NotFound from '../components/notFound';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getArticleById } from '../api/newsRequests';
+import BasicCard from '../components/basicCard';
 
 function ArticleDetail() {
     const [article, setArticle] = useState({});
@@ -29,14 +30,19 @@ function ArticleDetail() {
         }
         else {
             html = (
-                <div>
+                <div className="m-5">
                     <h1>{article.headline}</h1>
                     <hr />
                     <div><b>Date Published:</b> {article.date_published}</div>
                     <div><b>Publisher:</b> {article.publisher}</div>
+                    <hr />
 
-                    {/* need this to be a condition since the first time this renders, these fields may not be available */}
-                    {article.nlp ? <div><b>Sentiment:</b> {article.nlp.sentiment} -- <b>Subjectivity:</b> {article.nlp.subjectivity}</div> : <p></p>}
+                    <div className="row">
+                        {/* need this to be a condition since the first time this renders, these fields may not be available */}
+                        <BasicCard title="Sentiment" content={article.nlp ? article.nlp.sentiment : ''}></BasicCard>
+                        <BasicCard title="Subjectivity" content={article.nlp ? article.nlp.subjectivity : ''}></BasicCard>
+                        <BasicCard title="Topic" content={article.nlp ? article.nlp.topic_name : ''}></BasicCard>
+                    </div>
                     <hr />
                     <div>{article.content}</div>
                     
