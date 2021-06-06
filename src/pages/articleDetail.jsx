@@ -37,11 +37,12 @@ function ArticleDetail() {
                 <div className="m-5">
                     <h1>{article.headline}</h1>
                     <hr />
-                    <div style={infoStyle}><b>Date Published:</b>{article.date_published}</div>
+                    <div style={infoStyle}><b>Date Published: </b>{article.date_published}</div>
                     <div style={infoStyle}><b>Publisher: </b>{article.publisher}</div>
                     <div style={infoStyle}><a href={article.url} target="_blank">Link to article</a></div>
                     <hr />
 
+                    <div style={infoStyle}><b>Keywords: </b>{article.nlp ? article.nlp.keywords : ''}</div>
                     <div className="row">
                         {/* need this to be a condition since the first time this renders, these fields may not be available */}
                         <BasicCard title="Sentiment" content={article.nlp ? article.nlp.sentiment : ''}></BasicCard>
