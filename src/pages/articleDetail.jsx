@@ -37,7 +37,7 @@ function ArticleDetail() {
                 <div className="m-5">
                     <h1>{article.headline}</h1>
                     <hr />
-                    <div style={infoStyle}><b>Date Published: </b>{article.date_published}</div>
+                    <div style={infoStyle}><b>Date Published:</b>{article.date_published}</div>
                     <div style={infoStyle}><b>Publisher: </b>{article.publisher}</div>
                     <div style={infoStyle}><a href={article.url} target="_blank">Link to article</a></div>
                     <hr />
