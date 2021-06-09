@@ -2,24 +2,31 @@ import React from 'react';
 import NotFound from '../components/notFound';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getArticleById } from '../api/newsRequests';
+import { getArticleById, getSimilarArticles } from '../api/newsRequests';
 import BasicCard from '../components/basicCard';
+import ArticleCard from '../components/articleCard';
 
 function ArticleDetail() {
     const [article, setArticle] = useState({});
     const [errorHasOccurred, setErrorHasOccurred] = useState(false); // used when the article ID doesn't exist
+    const [similarArticles, setSimilarArticles] = useState([]);
     const { id } = useParams();
 
     useEffect(() => {
-        getArticleById(id).then(res => {
-            if(res.error) {
-                setErrorHasOccurred(true);
-            }
-            else {
-                setErrorHasOccurred(false);
-                setArticle(res);
-            }
-        });
+        getArticleById(id)
+            .then(res => {
+                if(res.error) {
+                    setErrorHasOccurred(true);
+                }
+                else {
+                    setErrorHasOccurred(false);
+                    setArticle(res);
+                }
+            });
+
+        getSimilarArticles(id, 5) // only want to show 5 results on detail page
+            .then(res => setSimilarArticles(res))
+            .catch(err => console.log(err));
     }, [id]);
 
     const infoStyle = {
@@ -51,7 +58,15 @@ function ArticleDetail() {
                     </div>
                     <hr />
                     <div>{article.content}</div>
-                    
+                    <hr />
+                    <h3 className="text-center">Similar Articles</h3>
+                    {similarArticles ?
+                        similarArticles.map((art, indx) => {
+                            return <ArticleCard key={indx} article={art} />;
+                        })
+                        :
+                        <h4>No similar articles</h4>
+                    }
                 </div>
             );
         }

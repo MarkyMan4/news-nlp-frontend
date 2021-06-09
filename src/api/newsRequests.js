@@ -37,3 +37,19 @@ export const getArticleById = async (id) => {
         })
         .catch(err => console.log(err));
 }
+
+export const getSimilarArticles = async (id, numResults) => {
+    return axios.get(`${baseUrl}/article/${id}/get_similar?numResults=${numResults}`)
+        .then(res => {
+            let data = res.data;
+            console.log(data);
+
+            // apply keyword formatting to each article
+            for(let i = 0; i < data.length; i++) {
+                data[i].nlp.keywords = formatKeywords(data[i].nlp.keywords);
+            }
+
+            return data;
+        })
+        .catch(err => console.log(err));
+}
