@@ -67,20 +67,41 @@ function Articles() {
         else {
             html = (
                 <div>
-                    <h1 className="text-center animate__animated animate__flipInX">Recent Articles</h1>
-                    <div className="d-flex justify-content-center">
-                        {/* should make the page nav controls a component so it can be reused */}
-                        <div>
-                            <Link to={getFirstPageUrl} className="btn btn-outline-dark page-nav-btn">&lt;&lt;</Link>
-                            <Link to={getPrevPageUrl} className="btn btn-outline-dark mr-5 page-nav-btn">&lt;</Link>
-                            Page {pageNum} of {totalPages} 
-                            <Link to={getNextPageUrl} className="btn btn-outline-dark ml-5 page-nav-btn">&gt;</Link>
-                            <Link to={getLastPageUrl} className="btn btn-outline-dark page-nav-btn">&gt;&gt;</Link>
+                    <div className="text-center">
+                        <h1 className="text-center animate__animated animate__flipInX">Recent Articles</h1>
+                        <div className="d-flex justify-content-center">
+                            {/* should make the page nav controls a component so it can be reused */}
+                            <div>
+                                <Link to={getFirstPageUrl} className="btn btn-outline-dark page-nav-btn">&lt;&lt;</Link>
+                                <Link to={getPrevPageUrl} className="btn btn-outline-dark mr-5 page-nav-btn">&lt;</Link>
+                                Page {pageNum} of {totalPages} 
+                                <Link to={getNextPageUrl} className="btn btn-outline-dark ml-5 page-nav-btn">&gt;</Link>
+                                <Link to={getLastPageUrl} className="btn btn-outline-dark page-nav-btn">&gt;&gt;</Link>
+                            </div>
                         </div>
                     </div>
-                    {articles.map((art, indx) => {
-                        return <ArticleCard key={indx} article={art} />;
-                    })}
+                    <div className="row w-100">
+                        <div className="text-center mt-4 col-md-3">
+                            <div className="filter-controls shadow">
+                                <h4>Select filters</h4>
+                                <hr />
+                                Topic:
+                                <select className="ml-3">
+                                    <option value="topic1">topic1</option>
+                                    <option value="topic2">topic2</option>
+                                    <option value="topic3">topic3</option>
+                                    <option value="topic4">topic4</option>
+                                </select>
+                                <br />
+                                <button className="btn btn-success m-4">Apply</button>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            {articles.map((art, indx) => {
+                                return <ArticleCard key={indx} article={art} />;
+                            })}
+                        </div>
+                    </div>
                 </div>
             );
         }

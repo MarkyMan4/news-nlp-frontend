@@ -64,8 +64,7 @@ function ArticleDetail() {
                         similarArticles.map((art, indx) => {
                             return <ArticleCard key={indx} article={art} />;
                         })
-                        :
-                        <h4>No similar articles</h4>
+                        : <h4>No similar articles</h4>
                     }
                 </div>
             );

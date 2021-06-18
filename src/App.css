@@ -22,7 +22,7 @@ nav {
 }
 
 .article-card {
-  width: 50%;
+  width: 100%;
   border-style: solid;
   border-width: 1px;
   border-radius: 10px;
@@ -48,4 +48,22 @@ nav {
 
 .card-content {
   font-size: 20px;
+}
+
+select {
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.filter-controls {
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  border-radius: 10px;
+  width: 75%;
+  display: block;
+  margin: 0 auto;
 }
