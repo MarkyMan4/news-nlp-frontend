@@ -10,11 +10,9 @@ export const getUser = async () => {
                 'Authorization': 'Token ' + localStorage.getItem('token')
             }
         }
-    ).then(res => {
-        return res.data.username;
-    }).catch(err => {
-        return {'error': 'invalid token'};
-    });
+    )
+    .then(res => res.data.username)
+    .catch(err => {return {'error': 'invalid token'}});
 }
 
 /*
@@ -27,13 +25,13 @@ export const authenticateUser = async (username, password) => {
             username: username,
             password: password
         }
-    ).then(res => {
+    )
+    .then(res => {
         localStorage.setItem('token', res.data.token);
 
         return true;
-    }).catch(err => {
-        return false;
-    });
+    })
+    .catch(err => false);
 }
 
 /*
@@ -54,11 +52,13 @@ export const registerUser = async (username, email, password) => {
             password: password
         },
         headers
-    ).then(res => {
+    )
+    .then(res => {
         localStorage.setItem('token', res.data.token);
 
         return 'success';
-    }).catch(err => {
+    })
+    .catch(err => {
         // default error message
         let registrationError = 'Error registering new user';
         
@@ -93,10 +93,12 @@ export const logoutUser = async () => {
                 'Authorization': 'Token ' + localStorage.getItem('token')
             }
         }
-    ).then(res => {
+    )
+    .then(res => {
         localStorage.removeItem('token');
         return true;
-    }).catch(err => {
+    })
+    .catch(err => {
         console.log(err);
         return false;
     });
