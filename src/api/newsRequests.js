@@ -53,3 +53,9 @@ export const getSimilarArticles = async (id, numResults) => {
         })
         .catch(err => console.log(err));
 }
+
+export const getTopicList = async () => {
+    return axios.get(`${baseUrl}/topics`)
+        .then(res => res.data)
+        .catch(err => console.log(err));
+}

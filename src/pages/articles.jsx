@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getArticlePage } from '../api/newsRequests';
+import { getArticlePage, getTopicList } from '../api/newsRequests';
 import ArticleCard from '../components/articleCard';
 import NotFound from '../components/notFound';
 // import { getUser } from '../api/authRequests';
@@ -9,19 +9,25 @@ function Articles() {
     const [articles, setArticles] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
     const [errorOccurred, setErrorOccurred] = useState(false); // used when the page number doesn't exist
+    const [topics, setTopics] = useState([]);
     const { pageNum } = useParams();
 
     useEffect(() => {
-        getArticlePage(pageNum).then(res => {
-            if(res.error) {
-                setErrorOccurred(true);
-            }
-            else {
-                setErrorOccurred(false);
-                setArticles(res.articles);
-                setTotalPages(res.total_pages);
-            }
-        });
+        getArticlePage(pageNum)
+            .then(res => {
+                if(res.error) {
+                    setErrorOccurred(true);
+                }
+                else {
+                    setErrorOccurred(false);
+                    setArticles(res.articles);
+                    setTotalPages(res.total_pages);
+                }
+            });
+
+        getTopicList()
+            .then(res => setTopics(res))
+            .catch(err => console.log(err));
     }, [pageNum]); // run the code in this useEffect whenever the value of pageNum changes
 
     const getFirstPageUrl = () => {
@@ -87,10 +93,8 @@ function Articles() {
                                 <hr />
                                 Topic:
                                 <select className="ml-3">
-                                    <option value="topic1">topic1</option>
-                                    <option value="topic2">topic2</option>
-                                    <option value="topic3">topic3</option>
-                                    <option value="topic4">topic4</option>
+                                    <option value="select">--select--</option>
+                                    {topics.map(topic => <option key={topic.topic_id} value={topic.topic_name}>{topic.topic_name}</option>)}
                                 </select>
                                 <br />
                                 <button className="btn btn-success m-4">Apply</button>
