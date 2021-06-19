@@ -10,6 +10,7 @@ function Articles() {
     const [totalPages, setTotalPages] = useState(0);
     const [errorOccurred, setErrorOccurred] = useState(false); // used when the page number doesn't exist
     const [topics, setTopics] = useState([]);
+    const [selectedTopicFilter, setSelectedTopicFilter] = useState('');
     const { pageNum } = useParams();
 
     useEffect(() => {
@@ -64,6 +65,14 @@ function Articles() {
         return '/articles/' + totalPages;
     }
 
+    const handleTopicSelect = (event) => {
+        setSelectedTopicFilter(event.target.value);
+    }
+
+    const applyFilters = () => {
+
+    }
+
     const getArticlesOrNotFound = () => {
         let html;
 
@@ -92,7 +101,7 @@ function Articles() {
                                 <h4>Select filters</h4>
                                 <hr />
                                 Topic:
-                                <select className="ml-3">
+                                <select className="ml-3" value={selectedTopicFilter} onChange={handleTopicSelect}>
                                     <option value="select">--select--</option>
                                     {topics.map(topic => <option key={topic.topic_id} value={topic.topic_name}>{topic.topic_name}</option>)}
                                 </select>
