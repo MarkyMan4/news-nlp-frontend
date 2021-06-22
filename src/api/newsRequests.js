@@ -10,8 +10,8 @@ const formatKeywords = (keywords) => {
 }
 
 // need to include options for query parameters 
-export const getArticlePage = async (pageNo) => {
-    return axios.get(`${baseUrl}/article?page=${pageNo}`)
+export const getArticlePage = async (pageNo, filters) => {
+    return axios.get(`${baseUrl}/article?page=${pageNo}`, {params: filters})
         .then(res => {
             let data = res.data;
 

@@ -10,11 +10,22 @@ function Articles() {
     const [totalPages, setTotalPages] = useState(0);
     const [errorOccurred, setErrorOccurred] = useState(false); // used when the page number doesn't exist
     const [topics, setTopics] = useState([]);
-    const [selectedTopicFilter, setSelectedTopicFilter] = useState('');
     const { pageNum } = useParams();
 
+    // filter variables
+    const [selectedTopicFilter, setSelectedTopicFilter] = useState('');
+
+    const filtersAsObject = () => {
+        let filters = {};
+
+        if(selectedTopicFilter !== '')
+            filters['topic_name'] = selectedTopicFilter;
+
+        return filters;
+    }
+
     useEffect(() => {
-        getArticlePage(pageNum)
+        getArticlePage(pageNum, filtersAsObject())
             .then(res => {
                 if(res.error) {
                     setErrorOccurred(true);
@@ -70,7 +81,11 @@ function Articles() {
     }
 
     const applyFilters = () => {
-
+        getArticlePage(pageNum, filtersAsObject())
+            .then(res => {
+                setArticles(res.articles);
+                setTotalPages(res.total_pages);
+            });
     }
 
     const getArticlesOrNotFound = () => {
@@ -102,11 +117,11 @@ function Articles() {
                                 <hr />
                                 Topic:
                                 <select className="ml-3" value={selectedTopicFilter} onChange={handleTopicSelect}>
-                                    <option value="select">--select--</option>
+                                    <option value="">All</option> {/* value is blank so it won't be included in query params */}
                                     {topics.map(topic => <option key={topic.topic_id} value={topic.topic_name}>{topic.topic_name}</option>)}
                                 </select>
                                 <br />
-                                <button className="btn btn-success m-4">Apply</button>
+                                <button className="btn btn-success m-4" onClick={applyFilters}>Apply</button>
                             </div>
                         </div>
                         <div className="col-md-6">
