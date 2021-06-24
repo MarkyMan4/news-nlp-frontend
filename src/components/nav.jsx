@@ -54,9 +54,12 @@ function Nav() {
                         <Link style={navStyle} to="/articles/1">
                             <li className="mr-3">Articles</li>
                         </Link>
-                        <Link style={navStyle} to="/savedarticles">
-                            <li>Saved Articles</li>
-                        </Link>
+                        {isLoggedIn ? 
+                            <Link style={navStyle} to="/savedarticles">
+                                <li>Saved Articles</li>
+                            </Link> : <li></li>
+                        }
+                        
                     </ul>
                     <span className="navbar-text">
                         {getButton()}
