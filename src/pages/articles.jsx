@@ -81,7 +81,7 @@ function Articles() {
     }
 
     const applyFilters = () => {
-        getArticlePage(pageNum, filtersAsObject())
+        getArticlePage(1, filtersAsObject())
             .then(res => {
                 setArticles(res.articles);
                 setTotalPages(res.total_pages);
@@ -121,7 +121,7 @@ function Articles() {
                                     {topics.map(topic => <option key={topic.topic_id} value={topic.topic_name}>{topic.topic_name}</option>)}
                                 </select>
                                 <br />
-                                <button className="btn btn-success m-4" onClick={applyFilters}>Apply</button>
+                                <Link to="/articles/1" className="btn btn-success m-4" onClick={applyFilters}>Apply</Link>
                             </div>
                         </div>
                         <div className="col-md-6">
