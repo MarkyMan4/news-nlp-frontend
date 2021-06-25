@@ -115,11 +115,33 @@ function Articles() {
                             <div className="filter-controls shadow">
                                 <h4>Select filters</h4>
                                 <hr />
-                                Topic:
-                                <select className="ml-3" value={selectedTopicFilter} onChange={handleTopicSelect}>
-                                    <option value="">All</option> {/* value is blank so it won't be included in query params */}
-                                    {topics.map(topic => <option key={topic.topic_id} value={topic.topic_name}>{topic.topic_name}</option>)}
-                                </select>
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <span className="align-middle float-right">Topic:</span><br />
+                                    </div>
+                                    <div className="col-md-8">
+                                        <select className="ml-3" value={selectedTopicFilter} onChange={handleTopicSelect}>
+                                            <option value="">All</option> {/* value is blank so it won't be included in query params */}
+                                            {topics.map(topic => <option key={topic.topic_id} value={topic.topic_name}>{topic.topic_name}</option>)}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="row mt-2">
+                                    <div className="col-md-4">
+                                        <span className="align-middle float-right">Start date:</span>
+                                    </div>
+                                    <div className="col-md-8">
+                                        <input type="date" />
+                                    </div>
+                                </div>
+                                <div className="row mt-2">
+                                    <div className="col-md-4">
+                                        <span className="align-middle float-right">End date:</span>
+                                    </div>
+                                    <div className="col-md-8">
+                                        <input type="date" />
+                                    </div>
+                                </div>
                                 <br />
                                 <Link to="/articles/1" className="btn btn-success m-4" onClick={applyFilters}>Apply</Link>
                             </div>
