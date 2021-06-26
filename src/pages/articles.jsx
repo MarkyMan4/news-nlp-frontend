@@ -14,12 +14,20 @@ function Articles() {
 
     // filter variables
     const [selectedTopicFilter, setSelectedTopicFilter] = useState('');
+    const [startDateFilter, setStartDateFilter] = useState(''); // date represented as string
+    const [endDateFilter, setEndDateFilter] = useState(''); // date represented as string
 
     const filtersAsObject = () => {
         let filters = {};
 
         if(selectedTopicFilter !== '')
             filters['topic_name'] = selectedTopicFilter;
+
+        if(startDateFilter !== '')
+            filters['startDate'] = startDateFilter;
+
+        if(endDateFilter !== '')
+            filters['endDate'] = endDateFilter;
 
         return filters;
     }
@@ -80,6 +88,14 @@ function Articles() {
         setSelectedTopicFilter(event.target.value);
     }
 
+    const handleStartDateSelect = (event) => {
+        setStartDateFilter(event.target.value);
+    }
+
+    const handleEndDateSelect = (event) => {
+        setEndDateFilter(event.target.value);
+    }
+
     const applyFilters = () => {
         getArticlePage(1, filtersAsObject())
             .then(res => {
@@ -131,7 +147,7 @@ function Articles() {
                                         <span className="align-middle float-right">Start date:</span>
                                     </div>
                                     <div className="col-md-8">
-                                        <input type="date" />
+                                        <input type="date" value={startDateFilter} onChange={handleStartDateSelect} />
                                     </div>
                                 </div>
                                 <div className="row mt-2">
@@ -139,7 +155,7 @@ function Articles() {
                                         <span className="align-middle float-right">End date:</span>
                                     </div>
                                     <div className="col-md-8">
-                                        <input type="date" />
+                                        <input type="date" value={endDateFilter} onChange={handleEndDateSelect} />
                                     </div>
                                 </div>
                                 <br />
