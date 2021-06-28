@@ -26,6 +26,7 @@ nav {
   border-style: solid;
   border-width: 1px;
   border-radius: 10px;
+  border-color: rgb(214, 214, 214);
   display: block;
   margin: 0 auto;
   margin-top: 20px;
@@ -60,7 +61,7 @@ select {
 
 .filter-controls {
   border-style: solid;
-  border-color: black;
+  border-color: rgb(214, 214, 214);
   border-width: 1px;
   border-radius: 10px;
   width: 75%;

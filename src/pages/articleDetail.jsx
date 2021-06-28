@@ -46,7 +46,7 @@ function ArticleDetail() {
                     <hr />
                     <div style={infoStyle}><b>Date Published: </b>{article.date_published}</div>
                     <div style={infoStyle}><b>Publisher: </b>{article.publisher}</div>
-                    <div style={infoStyle}><a href={article.url} target="_blank">Link to article</a></div>
+                    <div style={infoStyle}><a href={article.url} target="_blank" rel="noreferrer">Link to article</a></div>
                     <hr />
 
                     <div style={infoStyle}><b>Keywords: </b>{article.nlp ? article.nlp.keywords : ''}</div>

@@ -21,7 +21,7 @@ function Articles() {
         let filters = {};
 
         if(selectedTopicFilter !== '')
-            filters['topic_name'] = selectedTopicFilter;
+            filters['topicName'] = selectedTopicFilter;
 
         if(startDateFilter !== '')
             filters['startDate'] = startDateFilter;
