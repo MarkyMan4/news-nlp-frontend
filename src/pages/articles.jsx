@@ -32,6 +32,13 @@ function Articles() {
         return filters;
     }
 
+    // fetch the topic list right away, only do this once
+    useEffect(() => {
+        getTopicList()
+            .then(res => setTopics(res))
+            .catch(err => console.log(err));
+    }, []);
+
     useEffect(() => {
         getArticlePage(pageNum, filtersAsObject())
             .then(res => {
@@ -44,10 +51,6 @@ function Articles() {
                     setTotalPages(res.total_pages);
                 }
             });
-
-        getTopicList()
-            .then(res => setTopics(res))
-            .catch(err => console.log(err));
     }, [pageNum]); // run the code in this useEffect whenever the value of pageNum changes
 
     const getFirstPageUrl = () => {
