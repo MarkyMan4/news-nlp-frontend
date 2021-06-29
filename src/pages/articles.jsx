@@ -3,7 +3,6 @@ import { useParams, Link } from 'react-router-dom';
 import { getArticlePage, getTopicList } from '../api/newsRequests';
 import ArticleCard from '../components/articleCard';
 import NotFound from '../components/notFound';
-// import { getUser } from '../api/authRequests';
 
 function Articles() {
     const [articles, setArticles] = useState([]);
@@ -99,12 +98,26 @@ function Articles() {
         setEndDateFilter(event.target.value);
     }
 
-    const applyFilters = () => {
-        getArticlePage(1, filtersAsObject())
+    const goToFirstPageAndApplyFilters = (filters) => {
+        getArticlePage(1, filters)
             .then(res => {
                 setArticles(res.articles);
                 setTotalPages(res.total_pages);
             });
+    }
+
+    const applyFilters = () => {
+        goToFirstPageAndApplyFilters(filtersAsObject());
+    }
+
+    const clearFilters = () => {
+        setSelectedTopicFilter('');
+        setStartDateFilter('');
+        setEndDateFilter('');
+
+        // passing in empty objects since setting state is asyncronous,
+        // so the old values won't be cleared out by the time this method is called
+        goToFirstPageAndApplyFilters({});
     }
 
     const getArticlesOrNotFound = () => {
@@ -162,7 +175,9 @@ function Articles() {
                                     </div>
                                 </div>
                                 <br />
-                                <Link to="/articles/1" className="btn btn-success m-4" onClick={applyFilters}>Apply</Link>
+                                <Link to="/articles/1" className="btn btn-danger mt-3" onClick={clearFilters}>Clear Filters</Link>
+                                <br />
+                                <Link to="/articles/1" className="btn btn-success mt-2 mb-4" onClick={applyFilters}>Apply</Link>
                             </div>
                         </div>
                         <div className="col-md-6">

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { isUserAuthenticated } from '../utils/storage';
+import NotFound from '../components/notFound';
 // import { Redirect } from 'react-router-dom';
 
 function SavedArticles() {
@@ -8,16 +9,13 @@ function SavedArticles() {
     useEffect(() => {
         isUserAuthenticated()
             .then(res => {
-                console.log(`in useeffect: ${isLoggedIn}`)
                 setIsLoggedIn(res)
             })
             .catch(err => console.log(err));
-    }, []);
+    }, [isLoggedIn]);
 
     const getPageContent = () => {
         let content;
-
-        console.log(`in method: ${isLoggedIn}`);
 
         if(isLoggedIn) {
             content = (
@@ -27,7 +25,7 @@ function SavedArticles() {
             );
         }
         else {
-            content = <h1>you must be logged in to save articles</h1>;
+            content = <NotFound></NotFound>;
         }
 
         return content;
