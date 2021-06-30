@@ -11,7 +11,7 @@ function Articles() {
     const [topics, setTopics] = useState([]);
     const { pageNum } = useParams();
 
-    // filter variables
+    // filter variables - these are used for keeping track of the value of UI components
     const [selectedTopicFilter, setSelectedTopicFilter] = useState('');
     const [startDateFilter, setStartDateFilter] = useState(''); // date represented as string
     const [endDateFilter, setEndDateFilter] = useState(''); // date represented as string
@@ -120,6 +120,19 @@ function Articles() {
         goToFirstPageAndApplyFilters({});
     }
 
+    // returns the Clear filters button if filters are currently in use, otherwise
+    // return an empty div
+    const getClearFiltersButtonOrEmpty = () => {
+        const filters = filtersAsObject();
+        let content = <div></div>;
+
+        if(Object.keys(filters).length > 0) {
+            content = <Link to="/articles/1" className="btn btn-danger mt-3" onClick={clearFilters}>Clear Filters</Link>;
+        }
+
+        return content;
+    }
+
     const getArticlesOrNotFound = () => {
         let html;
 
@@ -175,7 +188,7 @@ function Articles() {
                                     </div>
                                 </div>
                                 <br />
-                                <Link to="/articles/1" className="btn btn-danger mt-3" onClick={clearFilters}>Clear Filters</Link>
+                                {getClearFiltersButtonOrEmpty()}
                                 <br />
                                 <Link to="/articles/1" className="btn btn-success mt-2 mb-4" onClick={applyFilters}>Apply</Link>
                             </div>
