@@ -59,3 +59,15 @@ export const getTopicList = async () => {
         .then(res => res.data)
         .catch(err => console.log(err));
 }
+
+export const getArticleCounts = (topic=null) => {
+    let url = `${baseUrl}/article/get_article_count`;
+
+    // topic is an optional parameter
+    if(topic)
+        url += `?topic=${topic}`;
+
+    return axios.get(url)
+        .then(res => res.data.count) // object only contains count attribute
+        .catch(err => console.log(err));
+}
