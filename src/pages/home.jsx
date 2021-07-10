@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getArticleCounts, getTopicList } from '../api/newsRequests';
+import BasicCard from '../components/basicCard';
 
 function Home() {
     const [totalArticles, setTotalArticles] = useState(0);
@@ -38,8 +39,20 @@ function Home() {
 
     return (
         <div className="text-center">
-            <h1>Total articles: {totalArticles}</h1>
-            {topicArticleCounts.map((topic, indx) => <h1 key={indx}>Articles about {topic.topic}: {topic.count}</h1>)}
+            <BasicCard title="Total articles" content={totalArticles} />
+            <h1>Article counts by topic</h1>
+            <hr />
+            <div className="row">
+                {topicArticleCounts.map((topic, indx) => {
+                    return (
+                        <BasicCard 
+                            key={indx} 
+                            title={topic.topic}
+                            content={topic.count}
+                        />
+                    )
+                })}
+            </div>
         </div>
     )
 }
