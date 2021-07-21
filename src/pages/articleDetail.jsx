@@ -2,16 +2,27 @@ import React from 'react';
 import NotFound from '../components/notFound';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getArticleById, getSimilarArticles } from '../api/newsRequests';
+import { getArticleById, getSimilarArticles, saveArticle } from '../api/newsRequests';
 import BasicCard from '../components/basicCard';
 import ArticleCard from '../components/articleCard';
+import { isUserAuthenticated } from '../utils/storage';
 
 function ArticleDetail() {
     const [article, setArticle] = useState({});
     const [errorHasOccurred, setErrorHasOccurred] = useState(false); // used when the article ID doesn't exist
     const [similarArticles, setSimilarArticles] = useState([]);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [articleIsSaved, setArticleIsSaved] = useState(false);
     const { id } = useParams();
+    
+    // useEffect for handling whether the user is logged in
+    useEffect(() => {
+        isUserAuthenticated()
+            .then(res => setIsLoggedIn(res))
+            .catch(err => console.log(err));
+    }, [localStorage.getItem('token')]);
 
+    // runs whenever value of id changes, gets info about that article and the similar articles
     useEffect(() => {
         getArticleById(id)
             .then(res => {
@@ -29,6 +40,10 @@ function ArticleDetail() {
             .catch(err => console.log(err));
     }, [id]);
 
+    const bookmark = () => {
+        saveArticle(id);
+    }
+
     const infoStyle = {
         fontSize: "20px"
     }
@@ -44,9 +59,16 @@ function ArticleDetail() {
                 <div className="m-5">
                     <h1>{article.headline}</h1>
                     <hr />
-                    <div style={infoStyle}><b>Date Published: </b>{article.date_published}</div>
-                    <div style={infoStyle}><b>Publisher: </b>{article.publisher}</div>
-                    <div style={infoStyle}><a href={article.url} target="_blank" rel="noreferrer">Link to article</a></div>
+                    <div className="row">
+                        <div className="col-md-8">
+                            <div style={infoStyle}><b>Date Published: </b>{article.date_published}</div>
+                            <div style={infoStyle}><b>Publisher: </b>{article.publisher}</div>
+                            <div style={infoStyle}><a href={article.url} target="_blank" rel="noreferrer">Link to article</a></div>
+                        </div>
+                        <div className="col-md-4 text-right">
+                            {isLoggedIn ? <button onClick={bookmark} className="btn btn-success">Bookmark</button> : <div></div>}
+                        </div>
+                    </div>
                     <hr />
 
                     <div style={infoStyle}><b>Keywords: </b>{article.nlp ? article.nlp.keywords : ''}</div>

@@ -42,7 +42,6 @@ export const getSimilarArticles = async (id, numResults) => {
     return axios.get(`${baseUrl}/article/${id}/get_similar?numResults=${numResults}`)
         .then(res => {
             let data = res.data;
-            console.log(data);
 
             // apply keyword formatting to each article
             for(let i = 0; i < data.length; i++) {
@@ -60,7 +59,7 @@ export const getTopicList = async () => {
         .catch(err => console.log(err));
 }
 
-export const getArticleCounts = (topic=null) => {
+export const getArticleCounts = async (topic=null) => {
     let url = `${baseUrl}/article/get_article_count`;
 
     // topic is an optional parameter
@@ -70,4 +69,24 @@ export const getArticleCounts = (topic=null) => {
     return axios.get(url)
         .then(res => res.data.count) // object only contains count attribute
         .catch(err => console.log(err));
+}
+
+export const saveArticle = async (articleId) => {
+    const body = {
+        article: articleId
+    };
+
+    const headers = {
+        headers: {
+            'Authorization': 'Token ' + localStorage.getItem('token')
+        }
+    }
+
+    return axios.post(`${baseUrl}/savearticle`, body, headers)
+        .then(() => {
+            return {'result': 'success'}
+        })
+        .catch(() => {
+            return {'result': 'failed to save article'}
+        });
 }
