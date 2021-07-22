@@ -71,6 +71,7 @@ export const getArticleCounts = async (topic=null) => {
         .catch(err => console.log(err));
 }
 
+// bookmark an article for the current user
 export const saveArticle = async (articleId) => {
     const body = {
         article: articleId
@@ -80,7 +81,7 @@ export const saveArticle = async (articleId) => {
         headers: {
             'Authorization': 'Token ' + localStorage.getItem('token')
         }
-    }
+    };
 
     return axios.post(`${baseUrl}/savearticle`, body, headers)
         .then(() => {
@@ -89,4 +90,18 @@ export const saveArticle = async (articleId) => {
         .catch(() => {
             return {'result': 'failed to save article'}
         });
+}
+
+// list all bookmarked articles for the current user
+export const listSavedArticles = async () => {
+    const headers = {
+        headers: {
+            'Authorization': 'Token ' + localStorage.getItem('token')
+        }
+    };
+
+    return axios.get(`${baseUrl}/savearticle`, {}, headers)
+        .then(res => res)
+        .catch(err => console.log(err));
+
 }
