@@ -105,3 +105,16 @@ export const listSavedArticles = async () => {
         .catch(err => console.log(err));
 
 }
+
+// check if an article is saved for the current user
+export const isArticleSaved = async (articleId) => {
+    const headers = {
+        headers: {
+            'Authorization': 'Token ' + localStorage.getItem('token')
+        }
+    };
+
+    return axios.get(`${baseUrl}/savearticle/${articleId}/is_saved`, headers)
+        .then(res => res.data.result)
+        .catch(err => console.log(err));
+}

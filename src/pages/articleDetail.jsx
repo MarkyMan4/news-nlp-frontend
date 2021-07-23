@@ -2,10 +2,11 @@ import React from 'react';
 import NotFound from '../components/notFound';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getArticleById, getSimilarArticles, saveArticle } from '../api/newsRequests';
+import { getArticleById, getSimilarArticles, saveArticle, isArticleSaved } from '../api/newsRequests';
 import BasicCard from '../components/basicCard';
 import ArticleCard from '../components/articleCard';
 import { isUserAuthenticated } from '../utils/storage';
+
 
 function ArticleDetail() {
     const [article, setArticle] = useState({});
@@ -38,10 +39,33 @@ function ArticleDetail() {
         getSimilarArticles(id, 5) // only want to show 5 results on detail page
             .then(res => setSimilarArticles(res))
             .catch(err => console.log(err));
+
+        isArticleSaved(id)
+            .then(res => setArticleIsSaved(res))
+            .catch(err => console.log(err));
     }, [id]);
 
     const bookmark = () => {
-        saveArticle(id);
+        saveArticle(id)
+            .then(() => setArticleIsSaved(true))
+            .catch(err => console.log(err));
+    }
+
+    // Creates the bookmark button. Whether it renders depends on whether the user is logged in.
+    // It is only enabled if the user has not already bookmarked the article
+    const getBookmarkButton = () => {
+        let btn = <div></div>;
+
+        if(isLoggedIn) {
+            if(articleIsSaved) {
+                btn = <button onClick={bookmark} className="btn btn-success" disabled>Bookmark</button>
+            }
+            else {
+                btn = <button onClick={bookmark} className="btn btn-success">Bookmark</button>
+            }
+        }
+
+        return btn;
     }
 
     const infoStyle = {
@@ -66,7 +90,7 @@ function ArticleDetail() {
                             <div style={infoStyle}><a href={article.url} target="_blank" rel="noreferrer">Link to article</a></div>
                         </div>
                         <div className="col-md-4 text-right">
-                            {isLoggedIn ? <button onClick={bookmark} className="btn btn-success">Bookmark</button> : <div></div>}
+                            {getBookmarkButton()}
                         </div>
                     </div>
                     <hr />
