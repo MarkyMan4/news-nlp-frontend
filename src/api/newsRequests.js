@@ -100,8 +100,8 @@ export const listSavedArticles = async () => {
         }
     };
 
-    return axios.get(`${baseUrl}/savearticle`, {}, headers)
-        .then(res => res)
+    return axios.get(`${baseUrl}/savearticle`, headers)
+        .then(res => res.data)
         .catch(err => console.log(err));
 
 }
