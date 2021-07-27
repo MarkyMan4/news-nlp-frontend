@@ -31,7 +31,7 @@ function SavedArticles() {
                     {articles.map((article, indx) => {
                         return (
                             <div>
-                                <h1>article ID: {article.id}</h1>
+                                <h1>article ID: {article.article}</h1>
                             </div>
                         )
                     })}

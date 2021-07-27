@@ -2,7 +2,7 @@ import React from 'react';
 import NotFound from '../components/notFound';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getArticleById, getSimilarArticles, saveArticle, isArticleSaved } from '../api/newsRequests';
+import { getArticleById, getSimilarArticles, saveArticle, isArticleSaved, removeSavedArticle } from '../api/newsRequests';
 import BasicCard from '../components/basicCard';
 import ArticleCard from '../components/articleCard';
 import { isUserAuthenticated } from '../utils/storage';
@@ -45,9 +45,17 @@ function ArticleDetail() {
             .catch(err => console.log(err));
     }, [id]);
 
+    // save an article (bookmark)
     const bookmark = () => {
         saveArticle(id)
             .then(() => setArticleIsSaved(true))
+            .catch(err => console.log(err));
+    }
+
+    // delete a saved article (remove bookmark)
+    const removeBookmark = () => {
+        removeSavedArticle(id)
+            .then(() => setArticleIsSaved(false))
             .catch(err => console.log(err));
     }
 
@@ -58,7 +66,7 @@ function ArticleDetail() {
 
         if(isLoggedIn) {
             if(articleIsSaved) {
-                btn = <button onClick={bookmark} className="btn btn-success" disabled>Bookmark</button>
+                btn = <button onClick={removeBookmark} className="btn btn-danger">Remove bookmark</button>
             }
             else {
                 btn = <button onClick={bookmark} className="btn btn-success">Bookmark</button>

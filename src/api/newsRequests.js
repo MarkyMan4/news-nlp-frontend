@@ -118,3 +118,20 @@ export const isArticleSaved = async (articleId) => {
         .then(res => res.data.result)
         .catch(err => console.log(err));
 }
+
+// deletes a saved article for the current user.
+// returns true if the article was successfully deleted, otherwise returns false
+export const removeSavedArticle = async (articleId) => {
+    const headers = {
+        headers: {
+            'Authorization': 'Token ' + localStorage.getItem('token')
+        }
+    };
+
+    return axios.delete(`${baseUrl}/savearticle/${articleId}`, headers)
+        .then(() => true)
+        .catch(err => {
+            console.log(err);
+            return false;
+        });
+}
