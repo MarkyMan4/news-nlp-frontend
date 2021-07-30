@@ -28,14 +28,20 @@ function SavedArticles() {
             content = (
                 <div>
                     <h1 className="text-center animate__animated animate__flipInX">Your Saved Articles</h1>
+                    <hr />
                     <div className="row">
                         <div className="col-md-3"></div>
                         <div className="col-md-6">
-                            {articles.map((article, indx) => {
-                                return (
-                                    <ArticleCard key={indx} article={article} />
-                                )
-                            })}
+                            {articles.length > 0 ?
+                                /* display saved articles if the user has any savd */
+                                articles.map((article, indx) => {
+                                    return (
+                                        <ArticleCard key={indx} article={article} />
+                                    )
+                                }) :
+                                /* otherwise tell them how to save articles */
+                                <h3 className="text-center">You haven't bookmarked any articles! Click "Bookmark" when viewing an article to save it.</h3>
+                            }
                         </div>
                     </div>
                 </div>
