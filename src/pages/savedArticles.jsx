@@ -28,13 +28,16 @@ function SavedArticles() {
             content = (
                 <div>
                     <h1 className="text-center animate__animated animate__flipInX">Your Saved Articles</h1>
-                    {articles.map((article, indx) => {
-                        return (
-                            <div>
-                                <h1>article ID: {article.article}</h1>
-                            </div>
-                        )
-                    })}
+                    <div className="row">
+                        <div className="col-md-3"></div>
+                        <div className="col-md-6">
+                            {articles.map((article, indx) => {
+                                return (
+                                    <ArticleCard key={indx} article={article} />
+                                )
+                            })}
+                        </div>
+                    </div>
                 </div>
             );
         }
