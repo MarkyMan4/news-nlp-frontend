@@ -114,12 +114,17 @@ function ArticleDetail() {
                     <div>{article.content}</div>
                     <hr />
                     <h3 className="text-center">Similar Articles</h3>
-                    {similarArticles ?
-                        similarArticles.map((art, indx) => {
-                            return <ArticleCard key={indx} article={art} />;
-                        })
-                        : <h4>No similar articles</h4>
-                    }
+                    <div className="row">
+                        <div className="col-md-2"></div>
+                        <div className="col-md-8">
+                            {similarArticles ?
+                                similarArticles.map((art, indx) => {
+                                    return <ArticleCard key={indx} article={art} />;
+                                })
+                                : <h4>No similar articles</h4>
+                            }
+                        </div>
+                    </div>
                 </div>
             );
         }
