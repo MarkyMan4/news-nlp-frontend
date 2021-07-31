@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { getArticleById, getSimilarArticles, saveArticle, isArticleSaved, removeSavedArticle } from '../api/newsRequests';
 import BasicCard from '../components/basicCard';
 import ArticleCard from '../components/articleCard';
+import BookmarkButton from '../components/bookmarkButton';
 import { isUserAuthenticated } from '../utils/storage';
 
 
@@ -13,7 +14,6 @@ function ArticleDetail() {
     const [errorHasOccurred, setErrorHasOccurred] = useState(false); // used when the article ID doesn't exist
     const [similarArticles, setSimilarArticles] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [articleIsSaved, setArticleIsSaved] = useState(false);
     const { id } = useParams();
     
     // useEffect for handling whether the user is logged in
@@ -39,25 +39,7 @@ function ArticleDetail() {
         getSimilarArticles(id, 5) // only want to show 5 results on detail page
             .then(res => setSimilarArticles(res))
             .catch(err => console.log(err));
-
-        isArticleSaved(id)
-            .then(res => setArticleIsSaved(res))
-            .catch(err => console.log(err));
     }, [id]);
-
-    // save an article (bookmark)
-    const bookmark = () => {
-        saveArticle(id)
-            .then(() => setArticleIsSaved(true))
-            .catch(err => console.log(err));
-    }
-
-    // delete a saved article (remove bookmark)
-    const removeBookmark = () => {
-        removeSavedArticle(id)
-            .then(() => setArticleIsSaved(false))
-            .catch(err => console.log(err));
-    }
 
     // Creates the bookmark button. Whether it renders depends on whether the user is logged in.
     // It is only enabled if the user has not already bookmarked the article
@@ -65,12 +47,7 @@ function ArticleDetail() {
         let btn = <div></div>;
 
         if(isLoggedIn) {
-            if(articleIsSaved) {
-                btn = <button onClick={removeBookmark} className="btn btn-danger">Remove bookmark</button>
-            }
-            else {
-                btn = <button onClick={bookmark} className="btn btn-success">Bookmark</button>
-            }
+            btn = <BookmarkButton articleId={id} />
         }
 
         return btn;
