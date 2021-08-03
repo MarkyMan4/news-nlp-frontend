@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getArticleCounts, getTopicList } from '../api/newsRequests';
 import BasicCard from '../components/basicCard';
+import { Link } from 'react-router-dom';
 
 function Home() {
     const [totalArticles, setTotalArticles] = useState(0);
@@ -37,12 +38,20 @@ function Home() {
         return topicCounts;
     }
 
+    const cardStyle = {
+        justifyContent: 'center'
+    }
+
     return (
         <div className="text-center">
-            <BasicCard title="Total articles" content={totalArticles} />
-            <h1>Article counts by topic</h1>
+            <h1>News NLP</h1>
+            <h4 className="mb-5">Browse recent news articles and find trends.</h4>
+            <Link to="/articles/1">Browse articles</Link><br />
+            <Link to={"/article/" + Math.ceil(Math.random() * totalArticles)}>Random article</Link>
             <hr />
-            <div className="row">
+            <h2>Article counts</h2>
+            <BasicCard title="Total articles" content={totalArticles} />
+            <div className="row" style={cardStyle}>
                 {topicArticleCounts.map((topic, indx) => {
                     return (
                         <BasicCard 
