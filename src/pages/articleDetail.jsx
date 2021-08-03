@@ -47,7 +47,7 @@ function ArticleDetail() {
         let btn = <div></div>;
 
         if(isLoggedIn) {
-            btn = <BookmarkButton articleId={id} />
+            btn = <div className="animate__animated animate__bounce"><BookmarkButton articleId={id} /></div>
         }
 
         return btn;
@@ -65,7 +65,7 @@ function ArticleDetail() {
         }
         else {
             html = (
-                <div className="m-5">
+                <div className="m-5 animate__animated animate__fadeIn">
                     <h1>{article.headline}</h1>
                     <hr />
                     <div className="row">

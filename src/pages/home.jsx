@@ -44,23 +44,25 @@ function Home() {
 
     return (
         <div className="text-center">
-            <h1>News NLP</h1>
-            <h4 className="mb-5">Browse recent news articles and find trends.</h4>
-            <Link to="/articles/1">Browse articles</Link><br />
-            <Link to={"/article/" + Math.ceil(Math.random() * totalArticles)}>Random article</Link>
-            <hr />
-            <h2>Article counts</h2>
-            <BasicCard title="Total articles" content={totalArticles} />
-            <div className="row" style={cardStyle}>
-                {topicArticleCounts.map((topic, indx) => {
-                    return (
-                        <BasicCard 
-                            key={indx} 
-                            title={topic.topic}
-                            content={topic.count}
-                        />
-                    )
-                })}
+            <h1 className="animate__animated animate__flipInX">News NLP</h1>
+            <div className="animate__animated animate__fadeIn">
+                <h4 className="mb-5">Browse recent news articles and find trends.</h4>
+                <Link to="/articles/1">Browse articles</Link><br />
+                <Link to={"/article/" + Math.ceil(Math.random() * totalArticles)}>Random article</Link>
+                <hr />
+                <h2>Article counts</h2>
+                <BasicCard title="Total articles" content={totalArticles} />
+                <div className="row" style={cardStyle}>
+                    {topicArticleCounts.map((topic, indx) => {
+                        return (
+                            <BasicCard 
+                                key={indx} 
+                                title={topic.topic}
+                                content={topic.count}
+                            />
+                        )
+                    })}
+                </div>
             </div>
         </div>
     )

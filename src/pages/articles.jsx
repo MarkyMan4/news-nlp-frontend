@@ -144,7 +144,7 @@ function Articles() {
                 <div>
                     <div className="text-center">
                         <h1 className="text-center animate__animated animate__flipInX">Recent Articles</h1>
-                        <div className="d-flex justify-content-center">
+                        <div className="d-flex justify-content-center animate__animated animate__fadeIn">
                             {/* should make the page nav controls a component so it can be reused */}
                             <div>
                                 <Link to={getFirstPageUrl} className="btn btn-outline-dark page-nav-btn">&lt;&lt;</Link>
@@ -156,7 +156,7 @@ function Articles() {
                         </div>
                     </div>
                     <div className="row w-100">
-                        <div className="text-center mt-4 col-md-3">
+                        <div className="text-center mt-4 col-md-3 animate__animated animate__fadeIn">
                             <div className="filter-controls shadow">
                                 <h4>Select filters</h4>
                                 <hr />
