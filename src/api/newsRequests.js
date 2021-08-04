@@ -9,7 +9,7 @@ const formatKeywords = (keywords) => {
     return keywordsList.join(', ');
 }
 
-// need to include options for query parameters 
+// gets paginated articles with any specified filters
 export const getArticlePage = async (pageNo, filters) => {
     return axios.get(`${baseUrl}/article?page=${pageNo}`, {params: filters})
         .then(res => {
@@ -24,6 +24,26 @@ export const getArticlePage = async (pageNo, filters) => {
         })
         .catch(err => {
             return {'error': 'invalid page'};
+        });
+}
+
+// gets non-paginated articles with an specified filters
+// TODO: consolidate this method and getArticlePage into one method by making pageno optional,
+//       or include pageno with the other filters
+export const getArticles = async (filters) => {
+    return axios.get(`${baseUrl}/article`, {params: filters})
+        .then(res => {
+            let articles = res.data;
+
+            // apply keyword formatting to each article
+            for(let i = 0; i < articles.length; i++) {
+                articles[i].nlp.keywords = formatKeywords(articles[i].nlp.keywords);
+            }
+
+            return articles;
+        })
+        .catch(err => {
+            return {'error': 'failed to retrieve articles'};
         });
 }
 
@@ -63,7 +83,7 @@ export const getArticleCounts = async (topic=null) => {
     let url = `${baseUrl}/article/get_article_count`;
 
     // topic is an optional parameter
-    if(topic)
+    if(topic !== null)
         url += `?topic=${topic}`;
 
     return axios.get(url)
