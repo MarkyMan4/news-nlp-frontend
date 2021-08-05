@@ -30,7 +30,36 @@ function Home() {
         topics.forEach(topic => topicCounts[topic.topic_name] = 0);
         articles.forEach(article => topicCounts[article.nlp.topic_name] += 1);
 
-        setTopicCountsThisWeek(topicCounts);
+        // order the topics by count (descending order)
+        // TODO: find a better way to do this, this is pretty messy
+        let orderedCounts = {};
+        
+        const keys = Object.keys(topicCounts);
+        const values = Object.values(topicCounts);
+
+        let orderedIndices = [];
+
+        while(orderedIndices.length < values.length) {
+            let maxIndex = 0;
+
+            // set max index to the first unused index
+            for(let i = 0; i < values.length; i++) {
+                if(!orderedIndices.includes(i))
+                    maxIndex = i;
+            }
+
+            for(let i = 0; i < values.length; i++) {
+                if(values[i] > values[maxIndex] && !orderedIndices.includes(i)) {
+                    maxIndex = i;
+                }
+            }
+
+            orderedIndices.push(maxIndex);
+        }
+
+        orderedIndices.forEach(indx => orderedCounts[keys[indx]] = values[indx]);
+
+        setTopicCountsThisWeek(orderedCounts);
     }
 
     useEffect(() => {
@@ -82,6 +111,10 @@ function Home() {
         justifyContent: 'center'
     }
 
+    const tableStyle = {
+        borderRadius: '20px'
+    }
+
     return (
         <div className="text-center">
             <h1 className="animate__animated animate__flipInX">News NLP</h1>
@@ -103,9 +136,30 @@ function Home() {
                         )
                     })}
                 </div>
-                <hr className="ml-5 mr-5" />
-                <h2>Popular topics this week</h2>
-                {Object.keys(topicCountsThisWeek).map((topic, indx) => <p key={indx}>{topic} - {topicCountsThisWeek[topic]}</p>)}
+                <hr className="ml-5 mr-5 mb-5" />
+                <h2>Number of articles by topic - this week</h2>
+                <div className="row w-100">
+                    <div className="col-md-3"></div>
+                    <div className="col-md-6">
+                        <table className="table table-striped mb-5 shadow" style={tableStyle}>
+                            <thead>
+                                <tr>
+                                    <th>Topic</th>
+                                    <th>No. Articles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {Object.keys(topicCountsThisWeek).map((topic, indx) => (
+                                        <tr key={indx}>
+                                            <td>{topic}</td>
+                                            <td>{topicCountsThisWeek[topic]}</td>
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     )
