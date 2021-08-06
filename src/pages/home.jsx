@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getArticleCounts, getTopicList, getArticles } from '../api/newsRequests';
 import BasicCard from '../components/basicCard';
+import NlpModal from '../components/nlpModal';
 import { Link } from 'react-router-dom';
 
 function Home() {
@@ -153,6 +154,7 @@ function Home() {
                                         <tr key={indx}>
                                             <td>{topic}</td>
                                             <td>{topicCountsThisWeek[topic]}</td>
+                                            <td><NlpModal buttonText={`${topic} details`} /></td>
                                         </tr>
                                     ))
                                 }
