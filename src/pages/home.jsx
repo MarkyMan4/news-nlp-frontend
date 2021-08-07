@@ -9,7 +9,41 @@ function Home() {
     const [topics, setTopics] = useState([]);
     const [topicArticleCounts, setTopicArticleCounts] = useState([]);
     const [articlesThisWeek, setArticlesThisWeek] = useState([]);
+    const [articlesThisWeekGrouped, setArticlesThisWeekGrouped] = useState({}); // articles this week grouped by topic. this is a object where each key contains a list of articles for certain topic
     const [topicCountsThisWeek, setTopicCountsThisWeek] = useState({});
+
+    useEffect(() => {
+        getArticleCounts()
+            .then(res => setTotalArticles(res))
+            .catch(err => console.log(err));
+
+        getTopicList()
+            .then(res => setTopics(res))
+            .catch(err => console.log(err));
+    }, []);
+
+    // things that need to be done once topics are populated
+    useEffect(() => {
+        // get total counts for each topic
+        getArticleCountsByTopic()
+            .then(res => setTopicArticleCounts(res))
+            .catch(err => console.log(err)); 
+            
+        // get topic counts for articles from the past week
+        let date = new Date(Date.now());
+        date = new Date(date.setDate(date.getDate() - 7)); // get the date of one week ago
+        const formattedDate = formatDate(date);
+
+        getArticles({startDate: formattedDate})
+            .then(res => {
+                if(!res.error) {
+                    setArticlesThisWeek(res);
+                    calculateTopicCounts(res);
+                    setArticlesThisWeekGrouped(groupArticlesByTopic(res));
+                }
+            })
+            .catch(err => console.log(err));
+    }, [topics]);
 
     // format a date as yyyy-mm-dd
     const formatDate = (date) => {
@@ -63,37 +97,20 @@ function Home() {
         setTopicCountsThisWeek(orderedCounts);
     }
 
-    useEffect(() => {
-        getArticleCounts()
-            .then(res => setTotalArticles(res))
-            .catch(err => console.log(err));
+    const groupArticlesByTopic = (articles) => {
+        let grouped = {};
 
-        getTopicList()
-            .then(res => setTopics(res))
-            .catch(err => console.log(err));
-    }, []);
+        articles.forEach(article => {
+            let topic = article.nlp.topic_name;
+            // if there is already a group for the topic, add it to that list
+            if(topic in grouped)
+                grouped[topic].push(article);
+            else // otherwise create a new group with a single article
+                grouped[topic] = [article];
+        });
 
-    // things that need to be done once topics are populated
-    useEffect(() => {
-        // get total counts for each topic
-        getArticleCountsByTopic()
-            .then(res => setTopicArticleCounts(res))
-            .catch(err => console.log(err)); 
-            
-        // get topic counts for articles from the past week
-        let date = new Date(Date.now());
-        date = new Date(date.setDate(date.getDate() - 7)); // get the date of one week ago
-        const formattedDate = formatDate(date);
-
-        getArticles({startDate: formattedDate})
-            .then(res => {
-                if(!res.error) {
-                    setArticlesThisWeek(res);
-                    calculateTopicCounts(res);
-                }
-            })
-            .catch(err => console.log(err));
-    }, [topics]);
+        return grouped;
+    }
 
     // async function to get article counts for each topic
     // this way the useEffect can wait for all counts to be retrieved and then set the state
@@ -147,6 +164,7 @@ function Home() {
                                 <tr>
                                     <th>Topic</th>
                                     <th>No. Articles</th>
+                                    <th>Topic Details</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -154,7 +172,7 @@ function Home() {
                                         <tr key={indx}>
                                             <td>{topic}</td>
                                             <td>{topicCountsThisWeek[topic]}</td>
-                                            <td><NlpModal buttonText={`${topic} details`} /></td>
+                                            <td><NlpModal buttonText={`${topic} details`} topicName={topic} articles={articlesThisWeekGrouped[topic]} /></td>
                                         </tr>
                                     ))
                                 }
