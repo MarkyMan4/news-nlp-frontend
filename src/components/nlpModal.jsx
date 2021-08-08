@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import BasicCard from '../components/basicCard';
+import { TagCloud } from 'react-tagcloud';
 
 /*
     The NlpModal component contains a button which will display a modal.
@@ -16,7 +17,7 @@ function NlpModal(props) {
     const [display, setDisplay] = useState('none'); // this is the CSS property to show/hide the modal, defaults to hidden
     const [avgSentiment, setAvgSentiment] = useState(0.0);
     const [avgSubjectivity, setAvgSubjectivity] = useState(0.0);
-    const [keywords, setKeywords] = useState([]);
+    const [wordcloudData, setWordcloudData] = useState([]); // this needs to be a list of objects with attributes "value" and "count"
 
     useEffect(() => {
         // find the average sentiment and subjectivity of the articles
@@ -31,12 +32,27 @@ function NlpModal(props) {
         setAvgSentiment(totalSentiment / props.articles.length);
         setAvgSubjectivity(totalSubjectivity / props.articles.length);
 
-        // find the keywords in the articles
-        let allKeywords = [];
+        // construct the data for the wordcloud
+        // first create a list of all the keywords
+        let keywords = [];
+        props.articles.forEach(article => keywords = keywords.concat(article.nlp.keywords.split(',')));
+        
+        // find the count of each word
+        let counts = {};
+        keywords.forEach(word => {
+            if(word in counts)
+                counts[word] += 1;
+            else
+                counts[word] = 1;
+        });
 
-        props.articles.forEach(article => allKeywords = allKeywords.concat(article.nlp.keywords.split(',')));
-        console.log(allKeywords);
-        setKeywords(allKeywords);
+        // construct the data how it's needed for the TagCloud component
+        let cloudData = [];
+        Object.keys(counts).forEach(word => {
+            cloudData.push({value: word, count: counts[word]});
+        });
+
+        setWordcloudData(cloudData);
     }, [])
 
     const toggleModal = () => {
@@ -65,7 +81,7 @@ function NlpModal(props) {
                         <BasicCard title="Avg. Subjectivity" content={avgSubjectivity.toFixed(2)} />
                     </div>
                     <h2>Keywords</h2>
-                    <p>{keywords.join(', ')}</p>
+                    <TagCloud tags={wordcloudData} minSize={12} maxSize={35} onClick={tag => alert(`'${tag.count}' was selected!`)} />
                     <p className="mt-5">down here I'll display some fun stuff like keywords and a link to the articles page with the topic filter applied</p>
                 </div>
             </div>
