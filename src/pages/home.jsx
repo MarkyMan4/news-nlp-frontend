@@ -155,31 +155,36 @@ function Home() {
                     })}
                 </div>
                 <hr className="ml-5 mr-5 mb-5" />
-                <h2>Number of articles by topic - this week</h2>
-                <div className="row w-100">
-                    <div className="col-md-3"></div>
-                    <div className="col-md-6">
-                        <table className="table table-striped mb-5 shadow" style={tableStyle}>
-                            <thead>
-                                <tr>
-                                    <th>Topic</th>
-                                    <th>No. Articles</th>
-                                    <th>Topic Details</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {Object.keys(topicCountsThisWeek).map((topic, indx) => (
-                                        <tr key={indx}>
-                                            <td>{topic}</td>
-                                            <td>{topicCountsThisWeek[topic]}</td>
-                                            <td><NlpModal buttonText={`${topic} details`} topicName={topic} articles={articlesThisWeekGrouped[topic]} /></td>
+                {Object.keys(topicCountsThisWeek).length > 0 && Object.keys(articlesThisWeekGrouped).length > 0 ?
+                    <div className="animate__animated animate__fadeIn">
+                        <h2>Number of articles by topic - this week</h2>
+                        <div className="row w-100">
+                            <div className="col-md-3"></div>
+                            <div className="col-md-6">
+                                <table className="table table-striped mb-5 shadow" style={tableStyle}>
+                                    <thead>
+                                        <tr>
+                                            <th>Topic</th>
+                                            <th>No. Articles</th>
+                                            <th>Topic Details</th>
                                         </tr>
-                                    ))
-                                }
-                            </tbody>
-                        </table>
+                                    </thead>
+                                    <tbody>
+                                        {Object.keys(topicCountsThisWeek).map((topic, indx) => (
+                                                <tr key={indx}>
+                                                    <td>{topic}</td>
+                                                    <td>{topicCountsThisWeek[topic]}</td>
+                                                    <td><NlpModal buttonText={`${topic} details`} topicName={topic} articles={articlesThisWeekGrouped[topic]} /></td>
+                                                </tr>
+                                            ))
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                : <div></div>
+            }
             </div>
         </div>
     )
