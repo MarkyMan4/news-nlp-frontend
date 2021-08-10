@@ -13,8 +13,9 @@ import { TagCloud } from 'react-tagcloud';
                    so that it doesn't slow down the home page. It's better to have a little load 
                    time when waiting for the modal to appear than on the home page itself.
 */
-function NlpModal(props) {
+function NlpModal({buttonText, topicName, articles}) {
     const [display, setDisplay] = useState('none'); // this is the CSS property to show/hide the modal, defaults to hidden
+    const [keywordDisplay, setKeywordDisplay] = useState('none'); // CSS property for showing and hiding keywords
     const [avgSentiment, setAvgSentiment] = useState(0.0);
     const [avgSubjectivity, setAvgSubjectivity] = useState(0.0);
     const [wordcloudData, setWordcloudData] = useState([]); // this needs to be a list of objects with attributes "value" and "count"
@@ -24,18 +25,18 @@ function NlpModal(props) {
         let totalSentiment = 0.0;
         let totalSubjectivity = 0.0;
 
-        props.articles.forEach(article => {
+        articles.forEach(article => {
             totalSentiment += parseFloat(article.nlp.sentiment);
             totalSubjectivity += parseFloat(article.nlp.subjectivity);
         });
 
-        setAvgSentiment(totalSentiment / props.articles.length);
-        setAvgSubjectivity(totalSubjectivity / props.articles.length);
+        setAvgSentiment(totalSentiment / articles.length);
+        setAvgSubjectivity(totalSubjectivity / articles.length);
 
         // construct the data for the wordcloud
         // first create a list of all the keywords
         let keywords = [];
-        props.articles.forEach(article => keywords = keywords.concat(article.nlp.keywords.split(',')));
+        articles.forEach(article => keywords = keywords.concat(article.nlp.keywords.split(',')));
         
         // find the count of each word
         let counts = {};
@@ -62,26 +63,48 @@ function NlpModal(props) {
             setDisplay('none');
     }
 
+    const toggleKeywords = () => {
+        if(keywordDisplay === 'none')
+            setKeywordDisplay('flex');
+        else
+            setKeywordDisplay('none');
+    }
+
     let modalDisplay = {
         display: display
     }
 
+    let keywordStyle = {
+        display: keywordDisplay
+    }
+
     return (
         <div>
-            <button onClick={toggleModal} className="btn btn-info">{props.buttonText}</button>
+            <button onClick={toggleModal} className="btn btn-primary">{buttonText}</button>
             <div className="modal" style={modalDisplay}>
                 <div className="modal-content">
                     <div className="text-right">
                         <button onClick={toggleModal} class="btn btn-outline-danger pb-0 pt-0 pl-2 pr-2">&times;</button>
                     </div>
-                    <h3>Details about the topic "{props.topicName}" from the past week</h3>
+                    <h3>Details about the topic "{topicName}" from the past week</h3>
                     <div className="row w-100 justify-content-center">
                         {/* converting these to strings and only showing two decimals for display */}
                         <BasicCard title="Avg. Sentiment" content={avgSentiment.toFixed(2)} />
                         <BasicCard title="Avg. Subjectivity" content={avgSubjectivity.toFixed(2)} />
                     </div>
                     <h2>Keywords</h2>
-                    <TagCloud tags={wordcloudData} minSize={12} maxSize={35} onClick={tag => alert(`'${tag.count}' was selected!`)} />
+                    <div className="mt-3 mb-3">
+                        <button onClick={toggleKeywords} className="btn btn-primary">
+                            {
+                                keywordDisplay === 'none'
+                                    ? "Show keywords"
+                                    : "Hide keywords" 
+                            }
+                        </button>
+                    </div>
+                    <div style={keywordStyle}>
+                        <TagCloud tags={wordcloudData} minSize={12} maxSize={35} onClick={tag => alert(`'${tag.count}' articles have this keyword`)} />
+                    </div>
                     <p className="mt-5">down here I'll display some fun stuff like keywords and a link to the articles page with the topic filter applied</p>
                 </div>
             </div>
