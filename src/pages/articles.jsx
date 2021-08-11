@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useLocation, Link } from 'react-router-dom';
 import { getArticlePage, getTopicList } from '../api/newsRequests';
 import ArticleCard from '../components/articleCard';
 import NotFound from '../components/notFound';
+
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
 
 function Articles() {
     const [articles, setArticles] = useState([]);
@@ -15,6 +19,8 @@ function Articles() {
     const [selectedTopicFilter, setSelectedTopicFilter] = useState('');
     const [startDateFilter, setStartDateFilter] = useState(''); // date represented as string
     const [endDateFilter, setEndDateFilter] = useState(''); // date represented as string
+
+    let query = useQuery();
 
     const filtersAsObject = () => {
         let filters = {};
@@ -31,6 +37,27 @@ function Articles() {
         return filters;
     }
 
+    // construct the query params that correspond to the page filters
+    const getUrlWithFilters = (baseUrl = '/articles/1') => {
+        let url = baseUrl;
+        let queryParams = [];
+
+        if(selectedTopicFilter !== '')
+            queryParams.push(`topic=${selectedTopicFilter}`);
+
+        if(startDateFilter !== '')
+            queryParams.push(`startDate=${startDateFilter}`);
+
+        if(endDateFilter !== '')
+            queryParams.push(`endDate=${endDateFilter}`);
+
+        if(queryParams.length > 0) {
+            url += '?' + queryParams.join('&');
+        }
+
+        return url;
+    }
+
     // fetch the topic list right away, only do this once
     useEffect(() => {
         getTopicList()
@@ -39,7 +66,28 @@ function Articles() {
     }, []);
 
     useEffect(() => {
-        getArticlePage(pageNum, filtersAsObject())
+        let filters = {};
+
+        // set filters right away if there are any available in query params
+        // this sets the state based on query params and also constructs body of request
+        // for getting a filtered set of articles
+        // NOTE - this basically does the same work as filtersAsObject() to construct the request
+        //        body. But it needs to be done using the values from the query params here because
+        //        the state is set asynchronously, so the values can't be used directly after setting them
+        if(query.get('topic')) {
+            setSelectedTopicFilter(query.get('topic'));
+            filters['topicName'] = query.get('topic');
+        }
+        if(query.get('startDate')) {
+            setStartDateFilter(query.get('startDate'));
+            filters['startDate'] = query.get('startDate');
+        }
+        if(query.get('endDate')) {
+            setEndDateFilter(query.get('endDate'));
+            filters['startDate'] = query.get('startDate');
+        }
+        
+        getArticlePage(pageNum, filters)
             .then(res => {
                 if(res.error) {
                     setErrorOccurred(true);
@@ -53,7 +101,12 @@ function Articles() {
     }, [pageNum]); // run the code in this useEffect whenever the value of pageNum changes
 
     const getFirstPageUrl = () => {
-        return '/articles/1';
+        let firstPageUrl = '/articles/1';
+
+        // apply any query params if available
+        firstPageUrl = getUrlWithFilters(firstPageUrl);
+
+        return firstPageUrl;
     }
 
     // only decrease the page number if it is not on the last page already
@@ -65,6 +118,9 @@ function Articles() {
             prevPageUrl += (currentPage - 1);
         else
             prevPageUrl += currentPage;
+
+        // apply any query params if available
+        prevPageUrl = getUrlWithFilters(prevPageUrl);
 
         return prevPageUrl;
     }
@@ -79,11 +135,19 @@ function Articles() {
         else
             nextPageUrl += currentPage;
 
+        // apply any query params if available
+        nextPageUrl = getUrlWithFilters(nextPageUrl);
+
         return nextPageUrl;
     }
 
     const getLastPageUrl = () => {
-        return '/articles/' + totalPages;
+        let lastPageUrl = '/articles/' + totalPages;
+
+        // apply any query params if available
+        lastPageUrl = getUrlWithFilters(lastPageUrl);
+
+        return lastPageUrl;
     }
 
     const handleTopicSelect = (event) => {
@@ -190,7 +254,7 @@ function Articles() {
                                 <br />
                                 {getClearFiltersButtonOrEmpty()}
                                 <br />
-                                <Link to="/articles/1" className="btn btn-success mt-2 mb-4" onClick={applyFilters}>Apply</Link>
+                                <Link to={getUrlWithFilters()} className="btn btn-success mt-2 mb-4" onClick={applyFilters}>Apply</Link>
                             </div>
                         </div>
                         <div className="col-md-6">

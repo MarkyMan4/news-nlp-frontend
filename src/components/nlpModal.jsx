@@ -84,7 +84,7 @@ function NlpModal({buttonText, topicName, articles}) {
             <div className="modal" style={modalDisplay}>
                 <div className="modal-content">
                     <div className="text-right">
-                        <button onClick={toggleModal} class="btn btn-outline-danger pb-0 pt-0 pl-2 pr-2">&times;</button>
+                        <button onClick={toggleModal} className="btn btn-outline-danger pb-0 pt-0 pl-2 pr-2">&times;</button>
                     </div>
                     <h3>Details about the topic "{topicName}" from the past week</h3>
                     <div className="row w-100 justify-content-center">
