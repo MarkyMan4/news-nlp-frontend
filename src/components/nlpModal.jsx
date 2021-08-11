@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import BasicCard from '../components/basicCard';
 import { TagCloud } from 'react-tagcloud';
+import { Link } from 'react-router-dom';
 
 /*
     The NlpModal component contains a button which will display a modal.
@@ -105,7 +106,7 @@ function NlpModal({buttonText, topicName, articles}) {
                     <div style={keywordStyle}>
                         <TagCloud tags={wordcloudData} minSize={12} maxSize={35} onClick={tag => alert(`'${tag.count}' articles have this keyword`)} />
                     </div>
-                    <p className="mt-5">down here I'll display some fun stuff like keywords and a link to the articles page with the topic filter applied</p>
+                    <Link to={'/articles/1?topic=' + topicName} className="mt-4">Browse articles with this topic</Link>
                 </div>
             </div>
         </div>
