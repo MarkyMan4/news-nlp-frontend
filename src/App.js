@@ -7,6 +7,7 @@ import SavedArticles from './pages/savedArticles';
 import Register from './pages/register';
 import Articles from './pages/articles';
 import ArticleDetail from './pages/articleDetail';
+import VisualPage from './pages/visualPage';
 import NotFound from './components/notFound';
 import Nav from './components/nav';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -22,6 +23,7 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/article/:id" component={ArticleDetail} />
+        <Route path="/visuals" component={VisualPage} />
         <Route component={NotFound} />
       </Switch>
     </Router>
