@@ -40,7 +40,7 @@ function Nav() {
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow mb-4">
-                <Link className="navbar-brand" to="/">
+                <Link className="navbar-brand ml-5" to="/">
                     News NLP
                 </Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,6 +54,9 @@ function Nav() {
                         <Link style={navStyle} to="/articles/1">
                             <li className="mr-3">Articles</li>
                         </Link>
+                        <Link style={navStyle} to="/visuals">
+                            <li className="mr-3">Visualizations</li>
+                        </Link>
                         {isLoggedIn ? 
                             <Link style={navStyle} to="/savedarticles">
                                 <li>Saved Articles</li>
@@ -61,7 +64,7 @@ function Nav() {
                         }
                         
                     </ul>
-                    <span className="navbar-text">
+                    <span className="navbar-text mr-5">
                         {getButton()}
                     </span>
                 </div>
