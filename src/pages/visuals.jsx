@@ -17,7 +17,7 @@ function Visuals() {
     return (
         <div className="ml-5 mr-5">
             <svg ref={barChartRef}></svg>
-            <BarChart />
+            <BarChart svgRef={barChartRef} />
         </div>
     )
 }
