@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getArticleCounts, getTopicList, getArticles } from '../api/newsRequests';
+import { getArticleCounts, getArticleCountsByTopic, getTopicList, getArticles } from '../api/newsRequests';
 import BasicCard from '../components/basicCard';
 import NlpModal from '../components/nlpModal';
 import { Link } from 'react-router-dom';
@@ -7,28 +7,30 @@ import { Link } from 'react-router-dom';
 function Home() {
     const [totalArticles, setTotalArticles] = useState(0);
     const [topics, setTopics] = useState([]);
-    const [topicArticleCounts, setTopicArticleCounts] = useState([]);
+    const [topicArticleCounts, setTopicArticleCounts] = useState({});
     const [articlesThisWeek, setArticlesThisWeek] = useState([]);
     const [articlesThisWeekGrouped, setArticlesThisWeekGrouped] = useState({}); // articles this week grouped by topic. this is a object where each key contains a list of articles for certain topic
     const [topicCountsThisWeek, setTopicCountsThisWeek] = useState({});
 
     useEffect(() => {
+        // get the total number of articles in the database
         getArticleCounts()
             .then(res => setTotalArticles(res))
             .catch(err => console.log(err));
 
+        // get the list of topics
         getTopicList()
             .then(res => setTopics(res))
             .catch(err => console.log(err));
-    }, []);
-
-    // things that need to be done once topics are populated
-    useEffect(() => {
+        
         // get total counts for each topic
         getArticleCountsByTopic()
             .then(res => setTopicArticleCounts(res))
             .catch(err => console.log(err)); 
-            
+    }, []);
+
+    // things that need to be done once topics are populated
+    useEffect(() => {
         // get topic counts for articles from the past week
         let date = new Date(Date.now());
         date = new Date(date.setDate(date.getDate() - 7)); // get the date of one week ago
@@ -63,7 +65,7 @@ function Home() {
 
         // initialize counts for each topic to 0
         topics.forEach(topic => topicCounts[topic.topic_name] = 0);
-        articles.forEach(article => topicCounts[article.nlp.topic_name] += 1);
+        articles.forEach(article => topicCounts[article.nlp.topic_name] += 1); // this calculates the count for each topic
 
         // order the topics by count (descending order)
         // TODO: find a better way to do this, this is pretty messy
@@ -112,19 +114,6 @@ function Home() {
         return grouped;
     }
 
-    // async function to get article counts for each topic
-    // this way the useEffect can wait for all counts to be retrieved and then set the state
-    const getArticleCountsByTopic = async () => {
-        let topicCounts = [];
-
-        for(let i = 0; i < topics.length; i++) {
-            const count = await getArticleCounts(topics[i].topic_id);
-            topicCounts.push({'topic': topics[i].topic_name, 'count': count});
-        }
-
-        return topicCounts;
-    }
-
     const cardStyle = {
         justifyContent: 'center'
     }
@@ -144,12 +133,12 @@ function Home() {
                 <h2>Article counts</h2>
                 <BasicCard title="Total articles" content={totalArticles} />
                 <div className="row w-100" style={cardStyle}>
-                    {topicArticleCounts.map((topic, indx) => {
+                    {Object.keys(topicArticleCounts).map((topic, indx) => {
                         return (
                             <BasicCard 
                                 key={indx} 
-                                title={topic.topic}
-                                content={topic.count}
+                                title={topic}
+                                content={topicArticleCounts[topic]}
                             />
                         )
                     })}
