@@ -90,7 +90,25 @@ select {
 }
 
 .graph-container {
-  width: 600px;
+  width: 700px;
   height: 400px;
   border: 1px solid black;
+}
+
+.chart-label {
+  text-anchor: middle;
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.chart-data-label {
+  text-anchor: middle;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.chart-title {
+  text-anchor: middle;
+  font-size: 28px;
+  font-family: Arial, Helvetica, sans-serif;
 }
