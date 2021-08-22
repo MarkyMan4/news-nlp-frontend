@@ -92,7 +92,7 @@ select {
 .graph-container {
   width: 700px;
   height: 400px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 .chart-label {
