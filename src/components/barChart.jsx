@@ -8,7 +8,8 @@ const containerHeight = 400;
 // margins for the graph area
 let margin = {
     bottom: 30,
-    top: 50
+    top: 50,
+    left: 35
 }
 
 function BarChart({chartData, svgRef, chartTitle}) {
@@ -27,7 +28,7 @@ function BarChart({chartData, svgRef, chartTitle}) {
 
         const xScale = scaleBand()
             .domain(chartData.map(data => data.x))
-            .rangeRound([0, containerWidth])
+            .rangeRound([margin.left, containerWidth])
             .padding(0.25);
 
         const yScale = scaleLinear()
@@ -40,11 +41,48 @@ function BarChart({chartData, svgRef, chartTitle}) {
         container.selectAll('*').remove();
         container.classed('graph-container', true);
 
+        // add grid lines on the y-axis
+        container
+            .append('g')
+            .attr('class', 'y-axis-grid')
+            .attr('transform', `translate(${margin.left}, 0)`) // This controls the vertical position of the Axis
+            .call(d3.axisLeft(yScale).tickSize(-containerWidth).tickFormat(''));
+
+        // add ticks on the y-axis
+        container
+            .append('g')
+            .attr('transform', `translate(${margin.left}, 0)`) // This controls the vertical position of the Axis
+            .call(d3.axisLeft(yScale));
+
+        // add text labels to tell what topic each bar represents
+        container
+            .append("g")
+            .attr('transform', `translate(0,${barBottom})`) // This controls the vertical position of the Axis
+            .call(d3.axisBottom(xScale))
+            .selectAll('text')
+                .attr('font-size', '18px');
+
+        // add the chart title
+        container
+            .append('text')
+            .classed('chart-title', true)
+            .attr('x', containerWidth / 2)
+            .attr('y', 25)
+            .text(chartTitle);
+
         const handleMouseOver = (d, i) => {
             d3.select(d.target)
                 .transition()
                 .duration(100)
                 .attr('opacity', 0.75);
+
+            // show data value on the bar
+            container
+                .append('text')
+                .classed('chart-data-label', true)
+                .attr('x', parseFloat(d3.select(d.target).attr('x')) + (xScale.bandwidth() / 2)) // centered in the bar
+                .attr('y', parseFloat(d3.select(d.target).attr('y')) + 30) // place text near the top of the bar
+                .text(d.target.__data__.y);
         }
 
         const handleMouseOut = (d, i) => {
@@ -52,6 +90,9 @@ function BarChart({chartData, svgRef, chartTitle}) {
                 .transition()
                 .duration(100)
                 .attr('opacity', 1);
+
+            // remove data labels
+            container.selectAll('.chart-data-label').remove();
         }
 
         // create the bar chart
@@ -68,43 +109,6 @@ function BarChart({chartData, svgRef, chartTitle}) {
             .on('mouseover', handleMouseOver)
             .on('mouseout', handleMouseOut);
 
-        // add labels to each bar to show the data value
-        container
-            .selectAll('.chart-data-label')
-            .data(chartData)
-            .enter()
-            .append('text')
-            .classed('chart-data-label', true)
-            .attr('x', data => xScale(data.x) + (xScale.bandwidth() / 2)) // centered in bars
-            .attr('y', data => yScale(data.y) + 30) // place text near the top of the bar
-            .text(data => data.y);
-
-        // container.remove('g');
-
-        // add text labels to tell what topic each bar represents
-        // TODO: see if there is a way to adjust font size
-        container
-            .append("g")
-            .attr('transform', `translate(0,${barBottom})`) // This controls the vertical position of the Axis
-            .call(d3.axisBottom(xScale))
-            .selectAll('text')
-                .attr('font-size', '18px');
-
-        // add ticks for the y-axis
-        container
-            .append('g')
-            .attr('transform', `translate(${containerWidth - 35}, 0)`) // This controls the vertical position of the Axis
-            .call(d3.axisRight(yScale));
-
-        // add the chart title
-        container
-            .append('text')
-            .classed('chart-title', true)
-            .attr('x', containerWidth / 2)
-            .attr('y', 25)
-            .text(chartTitle);
-
-        
     }, [chartData, svgRef]);
 
     // no need to return anything since this only manipulates an svg in the parent component
