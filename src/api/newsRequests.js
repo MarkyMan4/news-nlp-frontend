@@ -99,6 +99,14 @@ export const getArticleCountsByTopic = async () => {
         .catch(err => console.log(err));
 }
 
+export const getArticleCountsBySentiment = async () => {
+    let url = `${baseUrl}/article/count_by_sentiment`;
+
+    return axios.get(url)
+        .then(res => res.data)
+        .catch(err => console.log(err));
+}
+
 // bookmark an article for the current user
 export const saveArticle = async (articleId) => {
     const body = {

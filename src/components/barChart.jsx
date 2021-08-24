@@ -12,6 +12,17 @@ let margin = {
     left: 35
 }
 
+/*
+ * This is a generic bar chart component. It is not specific to one bar chart in this website.
+ * Anywhere that a bar chart is needed, this component can be used. The caller of this component
+ * Is required to provide a reference to an svg, a chart title, and data in the following format:
+ * 
+ * [
+ *     {x: <label for bar on x-axis>, y: <data for bar>},
+ *     {x: <label for bar on x-axis>, y: <data for bar>},
+ *     ...
+ * ]
+ */
 function BarChart({chartData, svgRef, chartTitle}) {
     // handle d3 usage here
     useEffect(() => {
