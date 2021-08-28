@@ -22,39 +22,43 @@ function NlpModal({buttonText, topicName, articles}) {
     const [wordcloudData, setWordcloudData] = useState([]); // this needs to be a list of objects with attributes "value" and "count"
 
     useEffect(() => {
-        // find the average sentiment and subjectivity of the articles
-        let totalSentiment = 0.0;
-        let totalSubjectivity = 0.0;
 
-        articles.forEach(article => {
-            totalSentiment += parseFloat(article.nlp.sentiment);
-            totalSubjectivity += parseFloat(article.nlp.subjectivity);
-        });
+        // don't do any of this if no articles were passed in
+        if(articles) {
+            // find the average sentiment and subjectivity of the articles
+            let totalSentiment = 0.0;
+            let totalSubjectivity = 0.0;
 
-        setAvgSentiment(totalSentiment / articles.length);
-        setAvgSubjectivity(totalSubjectivity / articles.length);
+            articles.forEach(article => {
+                totalSentiment += parseFloat(article.nlp.sentiment);
+                totalSubjectivity += parseFloat(article.nlp.subjectivity);
+            });
 
-        // construct the data for the wordcloud
-        // first create a list of all the keywords
-        let keywords = [];
-        articles.forEach(article => keywords = keywords.concat(article.nlp.keywords.split(',')));
-        
-        // find the count of each word
-        let counts = {};
-        keywords.forEach(word => {
-            if(word in counts)
-                counts[word] += 1;
-            else
-                counts[word] = 1;
-        });
+            setAvgSentiment(totalSentiment / articles.length);
+            setAvgSubjectivity(totalSubjectivity / articles.length);
 
-        // construct the data how it's needed for the TagCloud component
-        let cloudData = [];
-        Object.keys(counts).forEach(word => {
-            cloudData.push({value: word, count: counts[word]});
-        });
+            // construct the data for the wordcloud
+            // first create a list of all the keywords
+            let keywords = [];
+            articles.forEach(article => keywords = keywords.concat(article.nlp.keywords.split(',')));
+            
+            // find the count of each word
+            let counts = {};
+            keywords.forEach(word => {
+                if(word in counts)
+                    counts[word] += 1;
+                else
+                    counts[word] = 1;
+            });
 
-        setWordcloudData(cloudData);
+            // construct the data how it's needed for the TagCloud component
+            let cloudData = [];
+            Object.keys(counts).forEach(word => {
+                cloudData.push({value: word, count: counts[word]});
+            });
+
+            setWordcloudData(cloudData);
+        }
     }, [])
 
     const toggleModal = () => {
