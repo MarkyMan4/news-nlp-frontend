@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import BarChart from '../components/barChart';
+import DonutChart from '../components/donutChart';
 import { getArticleCountsByTopic, getArticleCountsBySentiment } from '../api/newsRequests';
 
 function Visuals() {
@@ -24,11 +25,7 @@ function Visuals() {
         // retrieve article counts by sentiment
         getArticleCountsBySentiment()
             .then(res => {
-                // format data in a nice way for the bar chart (list of data)
-                // [{<sentiment1>: <count1>}, {<sentiment2>: <count2>}, ...]
-                const chartData = Object.keys(res).map(sentiment => {return {x: sentiment, y: res[sentiment]}});
-
-                setArticleCountsBySentiment(chartData);
+                setArticleCountsBySentiment(res);
             })
     }, []);
 
@@ -42,7 +39,7 @@ function Visuals() {
 
                 <div className="col-md-6">
                     <svg ref={countBySentimentBarChartRef}></svg>
-                    <BarChart chartData={articleCountsBySentiment} svgRef={countBySentimentBarChartRef} chartTitle="Article Counts by Sentiment" />
+                    <DonutChart chartData={articleCountsBySentiment} svgRef={countBySentimentBarChartRef} />
                 </div>
             </div>
         </div>
