@@ -19,7 +19,7 @@ function ScatterPlot({chartData, svgRef}) {
             .append('circle')
                 .attr('cx', d => d.x * width)
                 .attr('cy', d => d.y * height)
-                .attr('r', 10)
+                .attr('r', 5)
                 .attr('fill', '#4e79a7');
 
     }, [chartData, svgRef]);
