@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 import { scaleOrdinal } from 'd3-scale';
 
-const width = 600;
+const width = 700;
 const height = 400;
 const radius = 150;
 
@@ -18,7 +18,7 @@ function DonutChart({chartData, svgRef}) {
             .attr('transform', `translate(${width / 2}, ${height / 2})`);
 
         // set the color scale
-        const color = d3.scaleOrdinal().domain(Object.keys(chartData)).range(d3.schemeDark2);
+        const color = scaleOrdinal().domain(Object.keys(chartData)).range(d3.schemeSet2);
 
         const pie = d3.pie();
         const pieData = pie(Object.values(chartData));
@@ -85,32 +85,53 @@ function DonutChart({chartData, svgRef}) {
         
         // add text labels to each slice of the chart
         svg
-          .selectAll('allLabels')
-          .data(pieData)
-          .enter()
-          .append('text')
-            .text((data, indx) => Object.entries(chartData)[indx][0])
-            .attr('transform', d => 'translate(' + getTextPos(d) + ')')
-            .style('text-anchor', d => {
-                var midangle = getMidangle(d)
-                return (midangle < Math.PI ? 'start' : 'end')
-            });
+            .selectAll('allLabels')
+            .data(pieData)
+            .enter()
+            .append('text')
+                .text((data, indx) => Object.entries(chartData)[indx][0])
+                .attr('transform', d => 'translate(' + getTextPos(d) + ')')
+                .style('text-anchor', d => {
+                    var midangle = getMidangle(d)
+                    return (midangle < Math.PI ? 'start' : 'end')
+                });
         
         // add lines pointing labels to section of chart
         svg
-          .selectAll('allPolylines')
-          .data(pieData)
-          .enter()
-          .append('polyline')
-            .attr("stroke", "black")
-            .style("fill", "none")
-            .attr("stroke-width", 1)
-            .attr('points', function(d) {
-              var posA = arc.centroid(d);
-              var posB = outerArc.centroid(d);
-              var posC = outerArc.centroid(d);
-              return [posA, posB, posC]
-            });
+            .selectAll('allPolylines')
+            .data(pieData)
+            .enter()
+            .append('polyline')
+                .attr('stroke', 'black')
+                .style('fill', 'none')
+                .attr('stroke-width', 1)
+                .attr('points', function(d) {
+                    var posA = arc.centroid(d);
+                    var posB = outerArc.centroid(d);
+                    var posC = outerArc.centroid(d);
+                    return [posA, posB, posC]
+                });
+
+        // legend showing values for each piece of the chart
+        svg
+            .selectAll('legendCircles')
+            .data(pieData)
+            .enter()
+            .append('circle')
+                .attr('fill', (d, i) => color(Object.entries(chartData)[i][0]))
+                .attr('cx', (width / 2) - 75) // for x and y, need to remember that 0, 0 for this chart is the center
+                .attr('cy', (d, i) => (i * 30) - ((height / 2) - 15))
+                .attr('r', 10);
+
+        svg
+            .selectAll('legendText')
+            .data(pieData)
+            .enter()
+            .append('text')
+                .attr('text-anchor', 'left')
+                .attr('x', (width / 2) - 60)
+                .attr('y', (d, i) => (i * 30) - ((height / 2) - 20))
+                .text(d => d.data);
     }, [chartData, svgRef]);
 
     return null;
