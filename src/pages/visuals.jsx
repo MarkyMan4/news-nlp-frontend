@@ -31,7 +31,7 @@ function Visuals() {
 
     return (
         <div className="ml-5 mr-5">
-            <div className="row">
+            <div className="row ml-5 mr-5">
                 <div className="col-md-6">
                     <svg ref={countByTopicBarChartRef}></svg>
                     <BarChart chartData={articleCountsByTopic} svgRef={countByTopicBarChartRef} chartTitle="Article Counts by Topic" />
