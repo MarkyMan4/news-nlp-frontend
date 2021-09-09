@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
-import { scaleLinear, scaleBand } from 'd3-scale';
+import { scaleLinear, scaleBand, scaleOrdinal } from 'd3-scale';
 
 const containerWidth = 700;
 const containerHeight = 400;
@@ -33,6 +33,9 @@ function BarChart({chartData, svgRef, chartTitle}) {
             if(chartData[i].y > maxY)
                 maxY = chartData[i].y;
         }
+
+        // set the color scale
+        const color = scaleOrdinal().domain(chartData.map(d => d.x)).range(d3.schemeTableau10);
 
         // lowest bars will show in svg, this allows room for labels on the x-axis
         const barBottom = containerHeight - margin.bottom;
@@ -116,7 +119,7 @@ function BarChart({chartData, svgRef, chartTitle}) {
             .attr('y', data => yScale(data.y))
             .attr('width', xScale.bandwidth())
             .attr('height', data => barBottom - yScale(data.y))
-            .attr('fill', 'DodgerBlue')
+            .attr('fill', data => color(data.x))
             .on('mouseover', handleMouseOver)
             .on('mouseout', handleMouseOut);
 
