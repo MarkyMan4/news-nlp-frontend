@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import BarChart from '../components/barChart';
 import DonutChart from '../components/donutChart';
+import ScatterPlot from '../components/scatterPlot';
 import { getArticleCountsByTopic, getArticleCountsBySentiment } from '../api/newsRequests';
 
 function Visuals() {
     const countByTopicBarChartRef = useRef(null);
     const countBySentimentBarChartRef = useRef(null);
+    const subjectivityBySentimentScatterRef = useRef(null);
 
     const [articleCountsByTopic, setArticleCountsByTopic] = useState([]);
     const [articleCountsBySentiment, setArticleCountsBySentiment] = useState([]);
+    const [subjectivityBySentiment, setSubjectivityBySentiment] = useState([]);
 
     useEffect(() => {
         // retrieve article count for each topic
@@ -27,11 +30,23 @@ function Visuals() {
             .then(res => {
                 setArticleCountsBySentiment(res);
             })
+
+        // --------------------------------
+        // TODO: get the data for making a scatter plot showing article sentiment
+        //       on the x-axis and article subjectivity on the y-axis
+        //       This is just dummy data for now
+        // --------------------------------
+        let dummyData = [];
+        for(let i = 0; i < 50; i++) {
+            dummyData.push({x: Math.random(), y: Math.random()});
+        }
+
+        setSubjectivityBySentiment(dummyData);
     }, []);
 
     return (
         <div className="ml-5 mr-5">
-            <div className="row ml-5 mr-5">
+            <div className="row m-5">
                 <div className="col-md-6">
                     <svg ref={countByTopicBarChartRef}></svg>
                     <BarChart chartData={articleCountsByTopic} svgRef={countByTopicBarChartRef} chartTitle="Article Counts by Topic" />
@@ -40,6 +55,13 @@ function Visuals() {
                 <div className="col-md-6">
                     <svg ref={countBySentimentBarChartRef}></svg>
                     <DonutChart chartData={articleCountsBySentiment} svgRef={countBySentimentBarChartRef} />
+                </div>
+            </div>
+            &nbsp;
+            <div className="row m-5">
+                <div className="col-md-6">
+                    <svg ref={subjectivityBySentimentScatterRef}></svg>
+                    <ScatterPlot chartData={subjectivityBySentiment} svgRef={subjectivityBySentimentScatterRef} />
                 </div>
             </div>
         </div>
