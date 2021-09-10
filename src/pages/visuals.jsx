@@ -45,7 +45,7 @@ function Visuals() {
     }, []);
 
     return (
-        <div className="ml-5 mr-5">
+        <div className="ml-5 mr-5 animate__animated animate__fadeIn">
             <div className="row m-5">
                 <div className="col-md-6">
                     <svg ref={countByTopicBarChartRef}></svg>
