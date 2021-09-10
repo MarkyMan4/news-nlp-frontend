@@ -58,7 +58,7 @@ function BarChart({chartData, svgRef, chartTitle}) {
         // add grid lines on the y-axis
         container
             .append('g')
-            .attr('class', 'y-axis-grid')
+            .attr('class', 'chart-grid')
             .attr('transform', `translate(${margin.left}, 0)`) // This controls the vertical position of the Axis
             .call(d3.axisLeft(yScale).tickSize(-containerWidth).tickFormat(''));
 

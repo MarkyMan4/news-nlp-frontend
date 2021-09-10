@@ -37,8 +37,8 @@ function Visuals() {
         //       This is just dummy data for now
         // --------------------------------
         let dummyData = [];
-        for(let i = 0; i < 50; i++) {
-            dummyData.push({x: Math.random(), y: Math.random()});
+        for(let i = 0; i < 100; i++) {
+            dummyData.push({x: Math.random() * (Math.random() > 0.5 ? 1 : -1), y: Math.random()});
         }
 
         setSubjectivityBySentiment(dummyData);
@@ -61,7 +61,7 @@ function Visuals() {
             <div className="row m-5">
                 <div className="col-md-6">
                     <svg ref={subjectivityBySentimentScatterRef}></svg>
-                    <ScatterPlot chartData={subjectivityBySentiment} svgRef={subjectivityBySentimentScatterRef} />
+                    <ScatterPlot chartData={subjectivityBySentiment} svgRef={subjectivityBySentimentScatterRef} chartTitle="Subjectivity By Sentiment" />
                 </div>
             </div>
         </div>
