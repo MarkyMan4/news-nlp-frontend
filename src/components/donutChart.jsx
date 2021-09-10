@@ -3,19 +3,33 @@ import * as d3 from 'd3';
 import { scaleOrdinal } from 'd3-scale';
 
 const width = 700;
-const height = 400;
+const height = 450;
 const radius = 150;
 
+const margin = {
+    top: 20
+};
+
 /*
- * TODO: add chart title, hover text should show percentage instead of actual number
+ * TODO: hover text should show percentage instead of actual number
+ *       could make the width and height of each graph a prop
  */ 
-function DonutChart({chartData, svgRef}) {
+function DonutChart({chartData, svgRef, chartTitle}) {
     useEffect(() => {
         // create the svg and remove any previous components from the
         const svg = d3.select(svgRef.current)
             .classed('graph-container', true)
+            .attr('height', height) // manually adjusting the height for this chart so I can make it bigger
             .append('g')
             .attr('transform', `translate(${width / 2}, ${height / 2})`);
+
+        // add the chart title
+        svg
+            .append('text')
+            .classed('chart-title', true)
+            .attr('x', 0)
+            .attr('y', -height / 2 + margin.top)
+            .text(chartTitle);
 
         // set the color scale
         const color = scaleOrdinal().domain(Object.keys(chartData)).range(d3.schemeTableau10);
@@ -120,7 +134,7 @@ function DonutChart({chartData, svgRef}) {
             .append('circle')
                 .attr('fill', (d, i) => color(Object.entries(chartData)[i][0]))
                 .attr('cx', (width / 2) - 75) // for x and y, need to remember that 0, 0 for this chart is the center
-                .attr('cy', (d, i) => (i * 30) - ((height / 2) - 15))
+                .attr('cy', (d, i) => (i * 30) - (height / 2 - margin.top - 15))
                 .attr('r', 10);
 
         svg
@@ -130,7 +144,7 @@ function DonutChart({chartData, svgRef}) {
             .append('text')
                 .attr('text-anchor', 'left')
                 .attr('x', (width / 2) - 60)
-                .attr('y', (d, i) => (i * 30) - ((height / 2) - 20))
+                .attr('y', (d, i) => (i * 30) - (height / 2 - margin.top - 20))
                 .text(d => d.data);
     }, [chartData, svgRef]);
 

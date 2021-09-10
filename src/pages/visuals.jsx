@@ -54,7 +54,7 @@ function Visuals() {
 
                 <div className="col-md-6">
                     <svg ref={countBySentimentBarChartRef}></svg>
-                    <DonutChart chartData={articleCountsBySentiment} svgRef={countBySentimentBarChartRef} />
+                    <DonutChart chartData={articleCountsBySentiment} svgRef={countBySentimentBarChartRef} chartTitle="Count By Sentiment" />
                 </div>
             </div>
             &nbsp;
