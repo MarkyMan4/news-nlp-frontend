@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import BarChart from '../components/barChart';
 import DonutChart from '../components/donutChart';
 import ScatterPlot from '../components/scatterPlot';
-import { getArticleCountsByTopic, getArticleCountsBySentiment } from '../api/newsRequests';
+import { getArticleCountsByTopic, getArticleCountsBySentiment, getSentimentAndSubjectivity } from '../api/newsRequests';
 
 function Visuals() {
     const countByTopicBarChartRef = useRef(null);
@@ -27,21 +27,13 @@ function Visuals() {
 
         // retrieve article counts by sentiment
         getArticleCountsBySentiment()
-            .then(res => {
-                setArticleCountsBySentiment(res);
-            })
+            .then(res => setArticleCountsBySentiment(res))
+            .catch(err => console.log(err));
 
-        // --------------------------------
-        // TODO: get the data for making a scatter plot showing article sentiment
-        //       on the x-axis and article subjectivity on the y-axis
-        //       This is just dummy data for now
-        // --------------------------------
-        let dummyData = [];
-        for(let i = 0; i < 100; i++) {
-            dummyData.push({x: Math.random() * (Math.random() > 0.5 ? 1 : -1), y: Math.random()});
-        }
-
-        setSubjectivityBySentiment(dummyData);
+        // retrieve sentiment and subjectivity data for scatter plot
+        getSentimentAndSubjectivity()
+            .then(res => setSubjectivityBySentiment(res))
+            .catch(err => console.log(err));        
     }, []);
 
     return (

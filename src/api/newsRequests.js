@@ -171,3 +171,10 @@ export const removeSavedArticle = async (articleId) => {
             return false;
         });
 }
+
+// gets sentiment and subjectivity data used for graphing
+export const getSentimentAndSubjectivity = async () => {
+    return axios.get(`${baseUrl}/article/subjectivity_by_sentiment`)
+        .then(res => res.data)
+        .catch(err => console.log(err));
+}

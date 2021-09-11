@@ -88,8 +88,9 @@ function ScatterPlot({chartData, svgRef, chartTitle}) {
             .append('circle')
                 .attr('cx', d => xScale(d.x))
                 .attr('cy', d => yScale(d.y))
-                .attr('r', 4)
-                .attr('fill', '#4e79a7');
+                .attr('r', 3)
+                .attr('fill', '#4e79a7')
+                .attr('opacity', 0.5);
 
     }, [chartData, svgRef]);
 
