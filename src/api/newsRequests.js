@@ -91,16 +91,24 @@ export const getArticleCounts = async (topic=null) => {
         .catch(err => console.log(err));
 }
 
-export const getArticleCountsByTopic = async () => {
+export const getArticleCountsByTopic = async (timeFrame) => {
     let url = `${baseUrl}/topics/counts`;
+
+    if(timeFrame && timeFrame !== '') {
+        url += `?timeFrame=${timeFrame}`;
+    }
 
     return axios.get(url)
         .then(res => res.data)
         .catch(err => console.log(err));
 }
 
-export const getArticleCountsBySentiment = async () => {
+export const getArticleCountsBySentiment = async (timeFrame) => {
     let url = `${baseUrl}/article/count_by_sentiment`;
+
+    if(timeFrame && timeFrame !== '') {
+        url += `?timeFrame=${timeFrame}`;
+    }
 
     return axios.get(url)
         .then(res => res.data)
@@ -173,8 +181,14 @@ export const removeSavedArticle = async (articleId) => {
 }
 
 // gets sentiment and subjectivity data used for graphing
-export const getSentimentAndSubjectivity = async () => {
-    return axios.get(`${baseUrl}/article/subjectivity_by_sentiment`)
+export const getSentimentAndSubjectivity = async (timeFrame) => {
+    let url = `${baseUrl}/article/subjectivity_by_sentiment`;
+
+    if(timeFrame && timeFrame !== '') {
+        url += `?timeFrame=${timeFrame}`;
+    }
+
+    return axios.get(url)
         .then(res => res.data)
         .catch(err => console.log(err));
 }

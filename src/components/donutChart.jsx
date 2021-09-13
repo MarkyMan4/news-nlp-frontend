@@ -16,6 +16,10 @@ const margin = {
  */ 
 function DonutChart({chartData, svgRef, chartTitle}) {
     useEffect(() => {
+        // these two lines are just used to clear out SVG elements between renders
+        const temp = d3.select(svgRef.current);
+        temp.selectAll('*').remove();
+
         // create the svg and remove any previous components from the
         const svg = d3.select(svgRef.current)
             .classed('graph-container', true)
