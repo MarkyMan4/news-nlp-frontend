@@ -42,12 +42,21 @@ function Visuals() {
         setSelectedTimeFrameFilter(event.target.value);
     }
 
+    const filterMenuStyle = {
+        padding: '10px',
+        borderStyle: 'solid',
+        borderWidth: '1px',
+        borderColor: 'rgb(214, 214, 214)',
+        borderRadius: '10px',
+        display: 'inline-block'
+    }
+
     return (
         <div className="ml-5 mr-5 animate__animated animate__fadeIn">
-            <div>
+            <div className="ml-5 mr-5 shadow" style={filterMenuStyle}>
                 {/* TODO: make this look nicer */}
-                Select filters | 
-                <label>Time frame</label>
+                <b>Select filters</b> | 
+                <label className="ml-2 mr-2">Time frame</label>
                 <select onChange={handleSelectTimeFrame}>
                     <option value="all">All</option>
                     <option value="day">Day</option>
@@ -55,7 +64,6 @@ function Visuals() {
                     <option value="month">Month</option>
                     <option value="year">Year</option>
                 </select>
-                <button>Apply</button>
             </div>
             <div className="row m-5">
                 <div className="col-md-6">
