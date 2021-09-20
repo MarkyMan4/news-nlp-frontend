@@ -2,16 +2,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import BarChart from '../components/barChart';
 import DonutChart from '../components/donutChart';
 import ScatterPlot from '../components/scatterPlot';
+import LineChart from '../components/lineChart';
 import { getArticleCountsByTopic, getArticleCountsBySentiment, getSentimentAndSubjectivity } from '../api/newsRequests';
 
 function Visuals() {
     const countByTopicBarChartRef = useRef(null);
     const countBySentimentBarChartRef = useRef(null);
     const subjectivityBySentimentScatterRef = useRef(null);
+    const topicCountsOverTimeRef = useRef(null);
 
     const [articleCountsByTopic, setArticleCountsByTopic] = useState([]);
     const [articleCountsBySentiment, setArticleCountsBySentiment] = useState([]);
     const [subjectivityBySentiment, setSubjectivityBySentiment] = useState([]);
+    const [topicCountsOverTime, setTopicCountsOverTime] = useState([]);
 
     const [selectedTimeFrameFilter, setSelectedTimeFrameFilter] = useState('all');
 
@@ -35,7 +38,16 @@ function Visuals() {
         // retrieve sentiment and subjectivity data for scatter plot
         getSentimentAndSubjectivity(selectedTimeFrameFilter)
             .then(res => setSubjectivityBySentiment(res))
-            .catch(err => console.log(err));        
+            .catch(err => console.log(err));
+
+        // temporarily generating dummy data for line chart
+        let dummyData = [];
+
+        for(let i = 0; i < 20; i++) {
+            dummyData.push({x: i, y: Math.random() * 5});
+        }
+
+        setTopicCountsOverTime(dummyData);
     }, [selectedTimeFrameFilter]);
 
     const handleSelectTimeFrame = (event) => {
@@ -80,6 +92,10 @@ function Visuals() {
                 <div className="col-md-6">
                     <svg ref={subjectivityBySentimentScatterRef}></svg>
                     <ScatterPlot chartData={subjectivityBySentiment} svgRef={subjectivityBySentimentScatterRef} chartTitle="Subjectivity By Sentiment" />
+                </div>
+                <div className="col-md-6">
+                    <svg ref={topicCountsOverTimeRef}></svg>
+                    <LineChart chartData={topicCountsOverTime} svgRef={topicCountsOverTimeRef} />
                 </div>
             </div>
         </div>
