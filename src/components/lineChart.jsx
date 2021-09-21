@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import * as d3 from 'd3';
-import { scaleLinear } from 'd3-scale';
+import { scaleLinear, scaleOrdinal } from 'd3-scale';
 
 const margin = {
     top: 10,
@@ -18,12 +18,22 @@ function LineChart({chartData, svgRef}) {
         svg.selectAll('*').remove();
         svg.classed('graph-container', true);
 
+        const xs = [];
+        const ys = [];
+
+        chartData.forEach(data => {
+            data.forEach(d => {
+                xs.push(d.x);
+                ys.push(d.y);
+            })
+        });
+
         const xScale = scaleLinear()
-            .domain([0, d3.max(chartData, d => d.x) + 1]) // giving one unit of padding right now, should find a more dynamic way to calculate this
+            .domain([0, d3.max(xs, x => x) + 1]) // giving one unit of padding right now, should find a more dynamic way to calculate this
             .range([0, width]);
 
         const yScale = scaleLinear()
-            .domain([0, d3.max(chartData, d => d.y) + (d3.max(chartData, d => d.y) * 0.3)]) // padding at top is 30% of the max y-value
+            .domain([0, d3.max(ys, y => y) + (d3.max(ys, y => y) * 0.3)]) // padding at top is 30% of the max y-value
             .range([height, 0]);
 
         // x-axis
@@ -57,14 +67,19 @@ function LineChart({chartData, svgRef}) {
             .x(d => xScale(d.x) + margin.left)
             .y(d => yScale(d.y) - margin.bottom);
 
-        // draw the line
-        svg
-            .append('path')
-            .datum(chartData)
-            .attr('fill', 'none')
-            .attr('stroke', 'red')
-            .attr('stroke-width', 1)
-            .attr('d', line);
+        // set the color scale
+        const color = scaleOrdinal().domain(chartData.map((d, i) => i)).range(d3.schemeTableau10);
+
+        // draw the lines
+        chartData.forEach((data, indx) => {
+            svg
+                .append('path')
+                .datum(data)
+                .attr('fill', 'none')
+                .attr('stroke', color(indx))
+                .attr('stroke-width', 2)
+                .attr('d', line);
+        });
 
     }, [chartData, svgRef]);
 

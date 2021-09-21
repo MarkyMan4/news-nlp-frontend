@@ -43,8 +43,14 @@ function Visuals() {
         // temporarily generating dummy data for line chart
         let dummyData = [];
 
-        for(let i = 0; i < 20; i++) {
-            dummyData.push({x: i, y: Math.random() * 5});
+        for(let i = 0; i < 3; i++) {
+            let lineData = [];
+            
+            for(let j = 0; j < 20; j++) {
+                lineData.push({x: j, y: Math.random() * 5});
+            }
+
+            dummyData.push(lineData);
         }
 
         setTopicCountsOverTime(dummyData);
