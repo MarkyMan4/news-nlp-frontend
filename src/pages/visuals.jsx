@@ -56,13 +56,16 @@ function Visuals() {
                     let countsForTopic = [];
 
                     res[topic].forEach((dataPoint, indx) => {
-                        countsForTopic.push({x: indx, y: dataPoint['count']});
+                        let stringDate = dataPoint['date'];
+                        stringDate = stringDate.split('-');
+                        const date = new Date(stringDate[0], stringDate[1], stringDate[2]);
+
+                        if(parseInt(stringDate[0]) >= 2020) //filtering out some additional outliers so the graph looks more uniform
+                            countsForTopic.push({x: date, y: dataPoint['count']});
                     });
 
                     countsByTopicAndDate.push(countsForTopic);
                 });
-
-                console.log(countsByTopicAndDate);
 
                 setTopicCountsOverTime(countsByTopicAndDate);
             })

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import * as d3 from 'd3';
-import { scaleLinear, scaleOrdinal } from 'd3-scale';
+import { scaleLinear, scaleOrdinal, scaleTime } from 'd3-scale';
 
 const margin = {
     top: 10,
@@ -23,7 +23,7 @@ const height = 400;
  * ]
  * 
  * TODO: 
- * - handle displaying dates on x-axis
+ * - handle displaying dates on x-axis - kind of done, need to do some validation
  * - accept chart title as prop and display it
  * - accept labels for each line that can be displayed on the legend
  */
@@ -43,8 +43,8 @@ function LineChart({chartData, svgRef}) {
             })
         });
 
-        const xScale = scaleLinear()
-            .domain([0, d3.max(xs, x => x) + 1]) // giving one unit of padding right now, should find a more dynamic way to calculate this
+        const xScale = scaleTime()
+            .domain(d3.extent(xs, x => x))
             .range([0, width]);
 
         const yScale = scaleLinear()
