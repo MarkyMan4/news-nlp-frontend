@@ -192,3 +192,15 @@ export const getSentimentAndSubjectivity = async (timeFrame) => {
         .then(res => res.data)
         .catch(err => console.log(err));
 }
+
+export const getCountByTopicAndDate = async (timeFrame) => {
+    let url = `${baseUrl}/article/count_by_topic_date`;
+
+    if(timeFrame && timeFrame !== '') {
+        url += `?timeFrame=${timeFrame}`;
+    }
+
+    return axios.get(url)
+        .then(res => res.data)
+        .catch(err => console.log(err));
+}

@@ -12,6 +12,21 @@ const margin = {
 const width = 600;
 const height = 400;
 
+/*
+ * Line chart component
+ * Accepts a 2d array of data points, this is so that data for multiple lines can be provided
+ * e.g. 
+ * [
+ *      [{x: ..., y: ...}, {x: ..., y: ...}, ...],  // line 1
+ *      [{x: ..., y: ...}, {x: ..., y: ...}, ...],  // line 2
+ *      ...                                         // line n
+ * ]
+ * 
+ * TODO: 
+ * - handle displaying dates on x-axis
+ * - accept chart title as prop and display it
+ * - accept labels for each line that can be displayed on the legend
+ */
 function LineChart({chartData, svgRef}) {
     useEffect(() => {
         const svg = d3.select(svgRef.current);

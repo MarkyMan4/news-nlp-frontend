@@ -3,7 +3,12 @@ import BarChart from '../components/barChart';
 import DonutChart from '../components/donutChart';
 import ScatterPlot from '../components/scatterPlot';
 import LineChart from '../components/lineChart';
-import { getArticleCountsByTopic, getArticleCountsBySentiment, getSentimentAndSubjectivity } from '../api/newsRequests';
+import { 
+    getArticleCountsByTopic, 
+    getArticleCountsBySentiment, 
+    getSentimentAndSubjectivity,
+    getCountByTopicAndDate
+} from '../api/newsRequests';
 
 function Visuals() {
     const countByTopicBarChartRef = useRef(null);
@@ -40,20 +45,29 @@ function Visuals() {
             .then(res => setSubjectivityBySentiment(res))
             .catch(err => console.log(err));
 
-        // temporarily generating dummy data for line chart
-        let dummyData = [];
+        // retrieve counts by date for each topic
+        // this also needs to be formatted so each topic contains an array of data points with x and y as the attributes
+        getCountByTopicAndDate(selectedTimeFrameFilter)
+            .then(res => {
+                const topics = ['Coronavirus', 'Social', 'Government/Politics', 'Science/Tech']; // TODO: need to get this from backend instead of hardcoding
+                let countsByTopicAndDate = [];
 
-        for(let i = 0; i < 3; i++) {
-            let lineData = [];
-            
-            for(let j = 0; j < 20; j++) {
-                lineData.push({x: j, y: Math.random() * 5});
-            }
+                topics.forEach(topic => {
+                    let countsForTopic = [];
 
-            dummyData.push(lineData);
-        }
+                    res[topic].forEach((dataPoint, indx) => {
+                        countsForTopic.push({x: indx, y: dataPoint['count']});
+                    });
 
-        setTopicCountsOverTime(dummyData);
+                    countsByTopicAndDate.push(countsForTopic);
+                });
+
+                console.log(countsByTopicAndDate);
+
+                setTopicCountsOverTime(countsByTopicAndDate);
+            })
+            .catch(err => console.log(err));
+
     }, [selectedTimeFrameFilter]);
 
     const handleSelectTimeFrame = (event) => {
