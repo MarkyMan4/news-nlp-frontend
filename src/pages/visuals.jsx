@@ -55,7 +55,7 @@ function Visuals() {
                 topics.forEach(topic => {
                     let countsForTopic = [];
 
-                    res[topic].forEach((dataPoint, indx) => {
+                    res[topic].forEach(dataPoint => {
                         let stringDate = dataPoint['date'];
                         stringDate = stringDate.split('-');
                         const date = new Date(stringDate[0], stringDate[1], stringDate[2]);
