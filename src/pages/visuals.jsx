@@ -118,7 +118,7 @@ function Visuals() {
                 </div>
                 <div className="col-md-6">
                     <svg ref={topicCountsOverTimeRef}></svg>
-                    <LineChart chartData={topicCountsOverTime} svgRef={topicCountsOverTimeRef} />
+                    <LineChart chartData={topicCountsOverTime} svgRef={topicCountsOverTimeRef} chartTitle="Topic Counts By Date" />
                 </div>
             </div>
         </div>

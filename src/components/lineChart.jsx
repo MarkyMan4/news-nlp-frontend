@@ -3,9 +3,9 @@ import * as d3 from 'd3';
 import { scaleLinear, scaleOrdinal, scaleTime } from 'd3-scale';
 
 const margin = {
-    top: 10,
+    top: 60,
     left: 30,
-    bottom: 30,
+    bottom: 20,
     right: 10
 };
 
@@ -27,7 +27,7 @@ const height = 400;
  * - accept chart title as prop and display it
  * - accept labels for each line that can be displayed on the legend
  */
-function LineChart({chartData, svgRef}) {
+function LineChart({chartData, svgRef, chartTitle}) {
     useEffect(() => {
         const svg = d3.select(svgRef.current);
         svg.selectAll('*').remove();
@@ -49,7 +49,7 @@ function LineChart({chartData, svgRef}) {
 
         const yScale = scaleLinear()
             .domain([0, d3.max(ys, y => y) + (d3.max(ys, y => y) * 0.3)]) // padding at top is 30% of the max y-value
-            .range([height, 0]);
+            .range([height, margin.top]);
 
         // x-axis
         svg
@@ -68,7 +68,7 @@ function LineChart({chartData, svgRef}) {
             .append('g')
             .attr('class', 'chart-grid')
             .attr('transform', `translate(${margin.left}, ${height - margin.bottom})`) // This controls the vertical position of the Axis
-            .call(d3.axisBottom(xScale).tickSize(-height + margin.top + margin.bottom).tickFormat(''));
+            .call(d3.axisBottom(xScale).tickSize(-height + margin.top).tickFormat(''));
 
         // add grid lines on the y-axis
         svg
@@ -95,6 +95,14 @@ function LineChart({chartData, svgRef}) {
                 .attr('stroke-width', 2)
                 .attr('d', line);
         });
+
+        // add the chart title
+        svg
+            .append('text')
+            .classed('chart-title', true)
+            .attr('x', width / 2)
+            .attr('y', 25)
+            .text(chartTitle);
 
     }, [chartData, svgRef]);
 
