@@ -103,22 +103,42 @@ function Visuals() {
             <div className="row m-5">
                 <div className="col-md-6">
                     <svg ref={countByTopicBarChartRef}></svg>
-                    <BarChart chartData={articleCountsByTopic} svgRef={countByTopicBarChartRef} chartTitle="Article Counts by Topic" />
+                    <BarChart 
+                        chartData={articleCountsByTopic} 
+                        svgRef={countByTopicBarChartRef} 
+                        chartTitle="Article Counts by Topic" 
+                    />
                 </div>
                 <div className="col-md-6">
                     <svg ref={countBySentimentBarChartRef}></svg>
-                    <DonutChart chartData={articleCountsBySentiment} svgRef={countBySentimentBarChartRef} chartTitle="Count By Sentiment" />
+                    <DonutChart 
+                        chartData={articleCountsBySentiment} 
+                        svgRef={countBySentimentBarChartRef} 
+                        chartTitle="Count By Sentiment" 
+                    />
                 </div>
             </div>
             &nbsp;
             <div className="row m-5">
                 <div className="col-md-6">
                     <svg ref={subjectivityBySentimentScatterRef}></svg>
-                    <ScatterPlot chartData={subjectivityBySentiment} svgRef={subjectivityBySentimentScatterRef} chartTitle="Subjectivity By Sentiment" />
+                    <ScatterPlot 
+                        chartData={subjectivityBySentiment} 
+                        svgRef={subjectivityBySentimentScatterRef} 
+                        chartTitle="Subjectivity By Sentiment" 
+                        xAxisTitle="Sentiment"
+                        yAxisTitle="Subjectivity"
+                    />
                 </div>
                 <div className="col-md-6">
                     <svg ref={topicCountsOverTimeRef}></svg>
-                    <LineChart chartData={topicCountsOverTime} svgRef={topicCountsOverTimeRef} chartTitle="Topic Counts By Date" />
+                    <LineChart 
+                        chartData={topicCountsOverTime} 
+                        svgRef={topicCountsOverTimeRef} 
+                        chartTitle="Topic Counts By Date" 
+                        xAxisTitle="Date"
+                        yAxisTitle="Count"
+                    />
                 </div>
             </div>
         </div>

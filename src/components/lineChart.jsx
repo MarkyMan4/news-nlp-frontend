@@ -3,13 +3,13 @@ import * as d3 from 'd3';
 import { scaleLinear, scaleOrdinal, scaleTime } from 'd3-scale';
 
 const margin = {
-    top: 60,
-    left: 30,
-    bottom: 20,
-    right: 10
+    top: 75,
+    left: 40,
+    bottom: 40,
+    right: 40
 };
 
-const width = 600;
+const width = 700;
 const height = 400;
 
 /*
@@ -27,7 +27,7 @@ const height = 400;
  * - accept chart title as prop and display it
  * - accept labels for each line that can be displayed on the legend
  */
-function LineChart({chartData, svgRef, chartTitle}) {
+function LineChart({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
     useEffect(() => {
         const svg = d3.select(svgRef.current);
         svg.selectAll('*').remove();
@@ -45,10 +45,10 @@ function LineChart({chartData, svgRef, chartTitle}) {
 
         const xScale = scaleTime()
             .domain(d3.extent(xs, x => x))
-            .range([0, width]);
+            .range([0, width - margin.right]);
 
         const yScale = scaleLinear()
-            .domain([0, d3.max(ys, y => y) + (d3.max(ys, y => y) * 0.3)]) // padding at top is 30% of the max y-value
+            .domain([0, d3.max(ys, y => y) + (d3.max(ys, y => y) * 0.1)]) // padding at top is 10% of the max y-value
             .range([height, margin.top]);
 
         // x-axis
@@ -69,6 +69,21 @@ function LineChart({chartData, svgRef, chartTitle}) {
             .attr('class', 'chart-grid')
             .attr('transform', `translate(${margin.left}, ${height - margin.bottom})`) // This controls the vertical position of the Axis
             .call(d3.axisBottom(xScale).tickSize(-height + margin.top).tickFormat(''));
+
+        // x-axis title
+        svg
+            .append('text')
+            .attr('text-anchor', 'middle')
+            .attr('x', width / 2)
+            .attr('y', height - 5)
+            .text(xAxisTitle);
+
+        // y-axis title
+        svg
+            .append('text')
+            .attr('text-anchor', 'middle')
+            .attr('transform', `translate(13, ${height / 2}) rotate(-90)`)
+            .text(yAxisTitle);
 
         // add grid lines on the y-axis
         svg

@@ -7,12 +7,12 @@ const height = 400;
 
 // margins for the graph area
 let margin = {
-    bottom: 30,
+    bottom: 40,
     top: 50,
-    left: 35
+    left: 45
 }
 
-function ScatterPlot({chartData, svgRef, chartTitle}) {
+function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
     useEffect(() => {
         // find the min/max x & y values for the scales
         let maxY = Number.MIN_SAFE_INTEGER;
@@ -80,6 +80,21 @@ function ScatterPlot({chartData, svgRef, chartTitle}) {
             .attr('class', 'chart-grid')
             .attr('transform', `translate(${margin.left}, 0)`) // This controls the vertical position of the Axis
             .call(d3.axisLeft(yScale).tickSize(-width).tickFormat(''));
+
+        // x-axis title
+        svg
+            .append('text')
+            .attr('text-anchor', 'middle')
+            .attr('x', width / 2)
+            .attr('y', height - 5)
+            .text(xAxisTitle);
+
+        // y-axis title
+        svg
+            .append('text')
+            .attr('text-anchor', 'middle')
+            .attr('transform', `translate(13, ${height / 2}) rotate(-90)`)
+            .text(yAxisTitle);
 
         svg
             .selectAll('dataPoints')

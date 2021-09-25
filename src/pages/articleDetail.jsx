@@ -88,8 +88,6 @@ function ArticleDetail() {
                         <BasicCard title="Topic" content={article.nlp ? article.nlp.topic_name : ''}></BasicCard>
                     </div>
                     <hr />
-                    <div>{article.content}</div>
-                    <hr />
                     <h3 className="text-center">Similar Articles</h3>
                     <div className="row">
                         <div className="col-md-2"></div>
