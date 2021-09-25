@@ -58,7 +58,9 @@ function Visuals() {
                     res[topic].forEach(dataPoint => {
                         let stringDate = dataPoint['date'];
                         stringDate = stringDate.split('-');
-                        const date = new Date(stringDate[0], stringDate[1], stringDate[2]);
+
+                        // need to subtract 1 from date since javascript months start from 0
+                        const date = new Date(stringDate[0], parseInt(stringDate[1]) - 1, stringDate[2]);
 
                         if(parseInt(stringDate[0]) >= 2020) //filtering out some additional outliers so the graph looks more uniform
                             countsForTopic.push({x: date, y: dataPoint['count']});
