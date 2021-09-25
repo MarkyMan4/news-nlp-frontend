@@ -57,6 +57,9 @@ function Nav() {
                         <Link style={navStyle} to="/visuals">
                             <li className="mr-3">Visualizations</li>
                         </Link>
+                        <Link style={navStyle} to="/about">
+                            <li className="mr-3">About</li>
+                        </Link>
                         {isLoggedIn ? 
                             <Link style={navStyle} to="/savedarticles">
                                 <li>Saved Articles</li>
