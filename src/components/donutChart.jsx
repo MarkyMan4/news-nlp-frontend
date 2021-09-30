@@ -36,7 +36,7 @@ function DonutChart({chartData, svgRef, chartTitle}) {
             .text(chartTitle);
 
         // set the color scale
-        const color = scaleOrdinal().domain(Object.keys(chartData)).range(d3.schemeTableau10);
+        const color = scaleOrdinal().domain(Object.keys(chartData)).range(d3.schemeDark2);
 
         const pie = d3.pie();
         const pieData = pie(Object.values(chartData));

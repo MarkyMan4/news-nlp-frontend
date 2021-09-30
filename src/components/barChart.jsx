@@ -46,7 +46,7 @@ function BarChart({chartData, svgRef, chartTitle}) {
             .padding(0.25);
 
         const yScale = scaleLinear()
-            .domain([0, maxY + 50]) // give a little padding at the top of the chart
+            .domain([0, maxY + (maxY * 0.1)]) // pad the top of the bars by 10% of the max y-value
             .range([barBottom, margin.top]); // need set barBottom as the max so there are bounds for the graph, margin top allows room for title
 
         // container (i.e. the svg) that hold the chart
