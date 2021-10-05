@@ -6,7 +6,7 @@ const margin = {
     top: 75,
     left: 40,
     bottom: 40,
-    right: 40
+    right: 70
 };
 
 const width = 700;
@@ -24,10 +24,9 @@ const height = 400;
  * 
  * TODO: 
  * - handle displaying dates on x-axis - kind of done, need to do some validation
- * - accept chart title as prop and display it
  * - accept labels for each line that can be displayed on the legend
  */
-function LineChart({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
+function LineChart({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, legendLabels}) {
     useEffect(() => {
         const svg = d3.select(svgRef.current);
         svg.selectAll('*').remove();
@@ -118,6 +117,27 @@ function LineChart({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
             .attr('x', width / 2)
             .attr('y', 25)
             .text(chartTitle);
+
+        // legend showing values for each piece of the chart
+        svg
+            .selectAll('legendCircles')
+            .data(chartData)
+            .enter()
+            .append('circle')
+                .attr('fill', (d, i) => color(i))
+                .attr('cx', width - margin.right) // for x and y, need to remember that 0, 0 for this chart is the center
+                .attr('cy', (d, i) => (i * 30) + margin.top)
+                .attr('r', 10);
+
+        svg
+            .selectAll('legendText')
+            .data(legendLabels)
+            .enter()
+            .append('text')
+                .attr('text-anchor', 'left')
+                .attr('x', width - margin.right + 15)
+                .attr('y', (d, i) => (i * 30) + margin.top + 5)
+                .text(d => d);
 
     }, [chartData, svgRef]);
 

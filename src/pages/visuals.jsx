@@ -10,6 +10,8 @@ import {
     getCountByTopicAndDate
 } from '../api/newsRequests';
 
+const topics = ['Coronavirus', 'Social', 'Government/Politics', 'Science/Tech']; // TODO: need to get this from backend instead of hardcoding
+
 function Visuals() {
     const countByTopicBarChartRef = useRef(null);
     const countBySentimentBarChartRef = useRef(null);
@@ -49,7 +51,6 @@ function Visuals() {
         // this also needs to be formatted so each topic contains an array of data points with x and y as the attributes
         getCountByTopicAndDate(selectedTimeFrameFilter)
             .then(res => {
-                const topics = ['Coronavirus', 'Social', 'Government/Politics', 'Science/Tech']; // TODO: need to get this from backend instead of hardcoding
                 let countsByTopicAndDate = [];
 
                 topics.forEach(topic => {
@@ -140,6 +141,7 @@ function Visuals() {
                         chartTitle="Topic Counts By Date" 
                         xAxisTitle="Date"
                         yAxisTitle="Count"
+                        legendLabels={topics}
                     />
                 </div>
             </div>
