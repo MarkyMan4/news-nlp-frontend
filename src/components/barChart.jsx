@@ -53,7 +53,7 @@ function BarChart({chartData, svgRef, chartTitle}) {
         // this also clears things out between renders so it doesn't get drawn multiple times
         const container = d3.select(svgRef.current);
         container.selectAll('*').remove();
-        container.classed('graph-container', true);
+        container.classed('graph-container', true).attr('viewBox', `0 0 ${containerWidth} ${containerHeight}`);
 
         // add grid lines on the y-axis
         container

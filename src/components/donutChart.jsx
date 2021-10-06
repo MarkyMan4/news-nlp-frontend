@@ -23,6 +23,7 @@ function DonutChart({chartData, svgRef, chartTitle}) {
         // create the svg and remove any previous components from the
         const svg = d3.select(svgRef.current)
             .classed('graph-container', true)
+            .attr('viewBox', `0 0 ${width} ${height}`)
             .attr('height', height) // manually adjusting the height for this chart so I can make it bigger
             .append('g')
             .attr('transform', `translate(${width / 2}, ${height / 2})`);

@@ -90,7 +90,7 @@ function Visuals() {
     }
 
     return (
-        <div className="ml-5 mr-5 animate__animated animate__fadeIn">
+        <div className="ml-1 mr-5 animate__animated animate__fadeIn">
             <div className="ml-5 mr-5 shadow" style={filterMenuStyle}>
                 {/* TODO: make this look nicer */}
                 <b>Select filters</b> | 

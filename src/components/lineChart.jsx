@@ -30,7 +30,7 @@ function LineChart({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, legen
     useEffect(() => {
         const svg = d3.select(svgRef.current);
         svg.selectAll('*').remove();
-        svg.classed('graph-container', true);
+        svg.classed('graph-container', true).attr('viewBox', `0 0 ${width} ${height}`);
 
         const xs = [];
         const ys = [];

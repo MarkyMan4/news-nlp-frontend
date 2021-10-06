@@ -45,7 +45,7 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
         const svg = d3.select(svgRef.current);
         svg.selectAll('*').remove();
         
-        svg.classed('graph-container', true);
+        svg.classed('graph-container', true).attr('viewBox', `0 0 ${width} ${height}`);
 
         // x-axis
         svg
