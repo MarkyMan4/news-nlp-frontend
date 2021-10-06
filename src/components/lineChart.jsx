@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as d3 from 'd3';
 import { scaleLinear, scaleOrdinal, scaleTime } from 'd3-scale';
 
@@ -11,6 +11,8 @@ const margin = {
 
 const width = 700;
 const height = 400;
+
+let legendHidden = true;
 
 /*
  * Line chart component
@@ -27,6 +29,8 @@ const height = 400;
  * - accept labels for each line that can be displayed on the legend
  */
 function LineChart({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, legendLabels}) {
+    const [isLegendHidden, setIsLegendHidden] = useState(true);
+
     useEffect(() => {
         const svg = d3.select(svgRef.current);
         svg.selectAll('*').remove();
@@ -118,28 +122,91 @@ function LineChart({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, legen
             .attr('y', 25)
             .text(chartTitle);
 
-        // legend showing values for each piece of the chart
+        // button to show/hide legend
         svg
-            .selectAll('legendCircles')
-            .data(chartData)
-            .enter()
-            .append('circle')
-                .attr('fill', (d, i) => color(i))
-                .attr('cx', width - margin.right) // for x and y, need to remember that 0, 0 for this chart is the center
-                .attr('cy', (d, i) => (i * 30) + margin.top)
-                .attr('r', 10);
+            .append('text')
+            .attr('x', margin.left + 5)
+            .attr('y', 17)
+            .attr('id', 'toggleLegendBtnText')
+            .text('Show Legend');
+
+
+        // some weird workaround of react state
+        const toggleLegend = (d, i) => {
+            legendHidden = !legendHidden;
+            setIsLegendHidden(legendHidden);
+        }
 
         svg
-            .selectAll('legendText')
-            .data(legendLabels)
-            .enter()
-            .append('text')
-                .attr('text-anchor', 'left')
-                .attr('x', width - margin.right + 15)
-                .attr('y', (d, i) => (i * 30) + margin.top + 5)
-                .text(d => d);
+            .append('rect')
+            .attr('x', margin.left)
+            .attr('y', 0)
+            .attr('width', 106)
+            .attr('height', 25)
+            .attr('opacity', 0)
+            .attr('rx', 5)
+            .on('click', toggleLegend);
+
+
+        svg
+            .append('rect')
+            .attr('x', margin.left)
+            .attr('y', 0)
+            .attr('width', 106)
+            .attr('height', 25)
+            .attr('fill', 'none')
+            .attr('stroke', 'black')
+            .attr('rx', 5);
 
     }, [chartData, svgRef]);
+
+    useEffect(() => {
+        const svg = d3.select(svgRef.current);
+        const color = scaleOrdinal().domain(chartData.map((d, i) => i)).range(d3.schemeTableau10);
+        
+        // toggle show/hide button text
+        svg.select('#toggleLegendBtnText').text(`${legendHidden ? 'Show Legend' : 'Hide Legend'}`)
+
+        if(legendHidden) {
+            svg.select('#legendBox').remove();
+            svg.selectAll('circle[id^=legend]').remove();
+            svg.selectAll('text[id^=legend]').remove();
+        }
+        else { // draw legend if it's toggled
+            svg
+                .append('rect')
+                .attr('x', 75)
+                .attr('y', 40)
+                .attr('width', 180)
+                .attr('height', 140)
+                .attr('fill', 'white')
+                .attr('stroke', 'black')
+                .attr('id', 'legendBox');
+
+            // legend showing values for each piece of the chart
+            svg
+                .selectAll('legendCircles')
+                .data(chartData)
+                .enter()
+                .append('circle')
+                    .attr('fill', (d, i) => color(i))
+                    .attr('cx', 90) // for x and y, need to remember that 0, 0 for this chart is the center
+                    .attr('cy', (d, i) => (i * 30) + 60)
+                    .attr('r', 10)
+                    .attr('id', (d, i) => `legendCircle${i}`);
+
+            svg
+                .selectAll('legendText')
+                .data(legendLabels)
+                .enter()
+                .append('text')
+                    .attr('text-anchor', 'left')
+                    .attr('x', 105)
+                    .attr('y', (d, i) => (i * 30) + 65)
+                    .attr('id', (d, i) => `legendText${i}`)
+                    .text(d => d);
+        }
+    }, [legendHidden]);
 
     // no need to return anything since this only manipulates an svg in the parent component
     return null;
