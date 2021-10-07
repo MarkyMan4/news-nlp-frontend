@@ -124,6 +124,17 @@ function LineChart({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, legen
 
         // button to show/hide legend
         svg
+            .append('rect')
+            .attr('x', margin.left)
+            .attr('y', 0)
+            .attr('width', 106)
+            .attr('height', 25)
+            .attr('fill', 'white')
+            .attr('stroke', 'black')
+            .attr('rx', 5)
+            .attr('id', 'btnBackground');
+
+        svg
             .append('text')
             .attr('x', margin.left + 5)
             .attr('y', 17)
@@ -137,6 +148,20 @@ function LineChart({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, legen
             setIsLegendHidden(legendHidden);
         }
 
+        const handleMouseOver = (d, i) => {
+            d3.select('#btnBackground')
+                .transition()
+                .duration(200)
+                .attr('fill', '#D8E2FC');
+        }
+
+        const handleMouseOut = (d, i) => {
+            d3.select('#btnBackground')
+                .transition()
+                .duration(200)
+                .attr('fill', 'white');
+        }
+
         svg
             .append('rect')
             .attr('x', margin.left)
@@ -145,18 +170,9 @@ function LineChart({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, legen
             .attr('height', 25)
             .attr('opacity', 0)
             .attr('rx', 5)
-            .on('click', toggleLegend);
-
-
-        svg
-            .append('rect')
-            .attr('x', margin.left)
-            .attr('y', 0)
-            .attr('width', 106)
-            .attr('height', 25)
-            .attr('fill', 'none')
-            .attr('stroke', 'black')
-            .attr('rx', 5);
+            .on('click', toggleLegend)
+            .on('mouseover', handleMouseOver)
+            .on('mouseout', handleMouseOut);
 
     }, [chartData, svgRef]);
 
