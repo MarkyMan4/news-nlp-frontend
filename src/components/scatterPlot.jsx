@@ -96,6 +96,23 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
             .attr('transform', `translate(13, ${height / 2}) rotate(-90)`)
             .text(yAxisTitle);
 
+
+        // increase radius on mouse over
+        const handleMouseOver = (d, i) => {
+            d3.select(d.target)
+                .transition()
+                .duration(200)
+                .attr('r', 6);
+        }
+
+        // decrease radius on mouse out
+        const handleMouseOut = (d, i) => {
+            d3.select(d.target)
+                .transition()
+                .duration(200)
+                .attr('r', 3);
+        }
+
         svg
             .selectAll('dataPoints')
             .data(chartData)
@@ -105,7 +122,9 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
                 .attr('cy', d => yScale(d.y))
                 .attr('r', 3)
                 .attr('fill', '#4e79a7')
-                .attr('opacity', 0.5);
+                .attr('opacity', 0.5)
+                .on('mouseover', handleMouseOver)
+                .on('mouseout', handleMouseOut);
 
     }, [chartData, svgRef]);
 
