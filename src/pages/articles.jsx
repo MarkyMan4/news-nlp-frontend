@@ -225,30 +225,30 @@ function Articles() {
                                 <h4>Select filters</h4>
                                 <hr />
                                 <div className="row">
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 col-sm-4">
                                         <span className="align-middle float-right">Topic:</span><br />
                                     </div>
-                                    <div className="col-md-8">
-                                        <select className="ml-3" value={selectedTopicFilter} onChange={handleTopicSelect}>
+                                    <div className="col-md-8 col-sm-8">
+                                        <select className="float-left" value={selectedTopicFilter} onChange={handleTopicSelect}>
                                             <option value="">All</option> {/* value is blank so it won't be included in query params */}
                                             {topics.map(topic => <option key={topic.topic_id} value={topic.topic_name}>{topic.topic_name}</option>)}
                                         </select>
                                     </div>
                                 </div>
                                 <div className="row mt-2">
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 col-sm-4">
                                         <span className="align-middle float-right">Start date:</span>
                                     </div>
-                                    <div className="col-md-8">
-                                        <input type="date" value={startDateFilter} onChange={handleStartDateSelect} />
+                                    <div className="col-md-8 col-sm-8">
+                                        <input className="float-left" type="date" value={startDateFilter} onChange={handleStartDateSelect} />
                                     </div>
                                 </div>
                                 <div className="row mt-2">
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 col-sm-4">
                                         <span className="align-middle float-right">End date:</span>
                                     </div>
-                                    <div className="col-md-8">
-                                        <input type="date" value={endDateFilter} onChange={handleEndDateSelect} />
+                                    <div className="col-md-8 col-sm-8">
+                                        <input className="float-left" type="date" value={endDateFilter} onChange={handleEndDateSelect} />
                                     </div>
                                 </div>
                                 <br />
