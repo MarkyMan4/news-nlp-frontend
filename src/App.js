@@ -11,7 +11,7 @@ import Visuals from './pages/visuals';
 import About from './pages/about';
 import NotFound from './components/notFound';
 import Nav from './components/nav';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
   return (
