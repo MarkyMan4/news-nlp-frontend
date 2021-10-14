@@ -162,6 +162,10 @@ function Articles() {
         setEndDateFilter(event.target.value);
     }
 
+    // const handleSearchButtonClicked = (event) => {
+
+    // }
+
     const goToFirstPageAndApplyFilters = (filters) => {
         getArticlePage(1, filters)
             .then(res => {
@@ -218,6 +222,8 @@ function Articles() {
                                 <Link to={getLastPageUrl} className="btn btn-outline-dark page-nav-btn">&gt;&gt;</Link>
                             </div>
                         </div>
+                        <input className="mt-4 mr-3" placeholder="search by headline" />
+                        <button className="btn btn-success">Search</button>
                     </div>
                     <div className="row w-100">
                         <div className="text-center mt-4 col-md-3 animate__animated animate__fadeIn">
