@@ -19,6 +19,7 @@ function Articles() {
     const [selectedTopicFilter, setSelectedTopicFilter] = useState('');
     const [startDateFilter, setStartDateFilter] = useState(''); // date represented as string
     const [endDateFilter, setEndDateFilter] = useState(''); // date represented as string
+    const [searchText, setSearchText] = useState('');
 
     let query = useQuery();
 
@@ -50,6 +51,10 @@ function Articles() {
 
         if(endDateFilter !== '')
             queryParams.push(`endDate=${endDateFilter}`);
+
+        if(searchText.trim() !== '') {
+            queryParams.push(`headlineLike=${searchText.trim()}`);
+        }
 
         if(queryParams.length > 0) {
             url += '?' + queryParams.join('&');
@@ -85,6 +90,11 @@ function Articles() {
         if(query.get('endDate')) {
             setEndDateFilter(query.get('endDate'));
             filters['startDate'] = query.get('startDate');
+        }
+
+        if(query.get('headlineLike')) {
+            setSearchText(query.get('headlineLike'));
+            filters['headlineLike'] = query.get('headlineLike');
         }
         
         getArticlePage(pageNum, filters)
@@ -162,9 +172,9 @@ function Articles() {
         setEndDateFilter(event.target.value);
     }
 
-    // const handleSearchButtonClicked = (event) => {
-
-    // }
+    const handleSearchInput = (event) => {
+        setSearchText(event.target.value);
+    }
 
     const goToFirstPageAndApplyFilters = (filters) => {
         getArticlePage(1, filters)
@@ -172,6 +182,16 @@ function Articles() {
                 setArticles(res.articles);
                 setTotalPages(res.total_pages);
             });
+    }
+
+    const handleSearchButtonClicked = () => {
+        let filters = filtersAsObject();
+
+        if(searchText.trim() !== '') {
+            filters['headlineLike'] = searchText.trim();
+        }
+
+        goToFirstPageAndApplyFilters(filters);
     }
 
     const applyFilters = () => {
@@ -211,7 +231,7 @@ function Articles() {
             html = (
                 <div>
                     <div className="text-center">
-                        <h1 className="text-center animate__animated animate__flipInX">Recent Articles</h1>
+                        <h1 className="text-center animate__animated animate__flipInX">Browse Articles</h1>
                         <div className="d-flex justify-content-center animate__animated animate__fadeIn">
                             {/* should make the page nav controls a component so it can be reused */}
                             <div>
@@ -222,8 +242,8 @@ function Articles() {
                                 <Link to={getLastPageUrl} className="btn btn-outline-dark page-nav-btn">&gt;&gt;</Link>
                             </div>
                         </div>
-                        <input className="mt-4 mr-3" placeholder="search by headline" />
-                        <button className="btn btn-success">Search</button>
+                        <input value={searchText} onChange={handleSearchInput} className="mt-4 mr-3" placeholder="search by headline" />
+                        <Link to={getUrlWithFilters()} onClick={handleSearchButtonClicked} className="btn btn-success">Search</Link>
                     </div>
                     <div className="row w-100">
                         <div className="text-center mt-4 col-md-3 animate__animated animate__fadeIn">
