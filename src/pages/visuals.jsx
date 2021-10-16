@@ -97,10 +97,10 @@ function Visuals() {
                 <label className="ml-2 mr-2">Time frame</label>
                 <select onChange={handleSelectTimeFrame}>
                     <option value="all">All</option>
-                    <option value="day">Day</option>
-                    <option value="week">Week</option>
-                    <option value="month">Month</option>
-                    <option value="year">Year</option>
+                    <option value="day">Past day</option>
+                    <option value="week">Past week</option>
+                    <option value="month">Past month</option>
+                    <option value="year">Past year</option>
                 </select>
             </div>
             <div className="row m-5">
