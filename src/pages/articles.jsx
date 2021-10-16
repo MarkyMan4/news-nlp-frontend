@@ -38,11 +38,23 @@ function Articles() {
         return filters;
     }
 
-    // construct the query params that correspond to the page filters
+    /*
+     * Construct the query params that correspond to the page filters
+     * This only includes the filter options for topic and dates. The reasons
+     * for this is I don't want the text entered in the search bar to get applied
+     * when the user applies these filters.
+     */
     const getUrlWithFilters = (baseUrl = '/articles/1') => {
         let url = baseUrl;
         let queryParams = [];
 
+        // check for existing query params and make sure they are included
+        if(query.get('headlineLike')) {
+            const appliedHeadlineFilter = query.get('headlineLike');
+            queryParams.push(`headlineLike=${appliedHeadlineFilter}`);
+        }
+
+        // add selected filters to query params
         if(selectedTopicFilter !== '')
             queryParams.push(`topic=${selectedTopicFilter}`);
 
@@ -52,6 +64,35 @@ function Articles() {
         if(endDateFilter !== '')
             queryParams.push(`endDate=${endDateFilter}`);
 
+        if(queryParams.length > 0) {
+            url += '?' + queryParams.join('&');
+        }
+
+        return url;
+    }
+
+    /*
+     * Add the search text to the URL params when the user clicks the "Search" button
+     */
+    const getUrlWithFiltersIncludingSearch = (baseUrl = '/articles/1') => {
+        let url = baseUrl;
+        let queryParams = []; 
+
+        // get any other filters that have been applied
+        if(query.get('topic')) {
+            const appliedTopicFilter = query.get('topic');
+            queryParams.push(`topic=${appliedTopicFilter}`);
+        }
+        if(query.get('startDate')) {
+            const appliedStartDateFilter = query.get('topic');
+            queryParams.push(`startDate=${appliedStartDateFilter}`);
+        }
+        if(query.get('endDate')) {
+            const appliedEndDateFilter = query.get('topic');
+            queryParams.push(`startDate=${appliedEndDateFilter}`);
+        }
+
+        // add search text to query params if it's not empty
         if(searchText.trim() !== '') {
             queryParams.push(`headlineLike=${searchText.trim()}`);
         }
@@ -243,7 +284,7 @@ function Articles() {
                             </div>
                         </div>
                         <input value={searchText} onChange={handleSearchInput} className="mt-4 mr-3" placeholder="search by headline" />
-                        <Link to={getUrlWithFilters()} onClick={handleSearchButtonClicked} className="btn btn-success">Search</Link>
+                        <Link to={getUrlWithFiltersIncludingSearch()} onClick={handleSearchButtonClicked} className="btn btn-success">Search</Link>
                     </div>
                     <div className="row w-100">
                         <div className="text-center mt-4 col-md-3 animate__animated animate__fadeIn">
