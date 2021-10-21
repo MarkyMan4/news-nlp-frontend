@@ -9,6 +9,7 @@ import Articles from './pages/articles';
 import ArticleDetail from './pages/articleDetail';
 import Visuals from './pages/visuals';
 import About from './pages/about';
+import Analaysis from './pages/analysis';
 import NotFound from './components/notFound';
 import Nav from './components/nav';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
@@ -26,6 +27,7 @@ function App() {
         <Route path="/article/:id" component={ArticleDetail} />
         <Route path="/visuals" component={Visuals} />
         <Route path="/about" component={About} />
+        <Route path="/analysis" component={Analaysis} />
         <Route component={NotFound} />
       </Switch>
     </Router>
