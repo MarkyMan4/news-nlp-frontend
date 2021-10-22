@@ -204,3 +204,11 @@ export const getCountByTopicAndDate = async (timeFrame) => {
         .then(res => res.data)
         .catch(err => console.log(err));
 }
+
+export const getTextAnalysis = async (text) => {
+    let url = `${baseUrl}/analysis/get_sentiment`;
+
+    return axios.post(url, {text: text})
+        .then(res => res.data)
+        .catch(err => console.log(err));
+}

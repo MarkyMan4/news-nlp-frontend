@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
+import { getTextAnalysis } from '../api/newsRequests';
 
 function Analaysis() {
     const [inputText, setInputText] = useState('');
-    const [outputText, setOutputText] = useState('');
+    const [analysisResult, setAnalysisResult] = useState({});
 
     const handleTextInput = (event) => {
         setInputText(event.target.value);
     }
 
     const handleAnalyzeBtnClicked = () => {
-        setOutputText(inputText);
+        getTextAnalysis(inputText)
+            .then(res => setAnalysisResult(res))
+            .catch(err => console.log(err));
     }
 
     return (
@@ -20,8 +23,19 @@ function Analaysis() {
                 <hr />
                 <textarea value={inputText} onChange={handleTextInput} className="form-control w-100 mb-5 shadow"></textarea>
                 <button onClick={handleAnalyzeBtnClicked} className="btn btn-success">Analyze</button>
-                <h4 className="mt-5">You Entered</h4>
-                <p>{outputText}</p>
+
+                {/* only show results if text has been entered */}
+                { 
+                    Object.keys(analysisResult).length === 0 
+                    ? <div></div> 
+                    : <div>
+                        <h3 className="mt-5 mb-4">Results</h3>
+                        <h5>Sentiment</h5>
+                        <p>{analysisResult.sentiment}</p>
+                        <h5>Subjectivity</h5>
+                        <p>{analysisResult.subjectivity}</p>
+                    </div> 
+                }
             </div>
         </div>
     );
