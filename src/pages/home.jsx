@@ -127,8 +127,8 @@ function Home() {
             <h1 className="animate__animated animate__flipInX">News NLP</h1>
             <div className="animate__animated animate__fadeIn">
                 <h4 className="mb-5">Browse recent news articles and find trends.</h4>
-                <Link to="/articles/1">Browse articles</Link><br />
-                <Link to={"/article/" + Math.ceil(Math.random() * totalArticles)}>Random article</Link>
+                <Link to="/articles/1" className="btn btn-outline-success">Browse articles</Link><br />
+                <Link to={"/article/" + Math.ceil(Math.random() * totalArticles)} className="btn btn-outline-success mt-3">Random article</Link>
                 <hr className="ml-5 mr-5" />
                 <h2>Article counts</h2>
                 <BasicCard title="Total articles" content={totalArticles} />

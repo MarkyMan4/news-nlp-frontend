@@ -66,28 +66,33 @@ function ArticleDetail() {
         else {
             html = (
                 <div className="m-5 animate__animated animate__fadeIn">
-                    <h1>{article.headline}</h1>
-                    <hr />
                     <div className="row">
+                        <div className="col-md-2"></div>
                         <div className="col-md-8">
-                            <div style={infoStyle}><b>Date Published: </b>{article.date_published}</div>
-                            <div style={infoStyle}><b>Publisher: </b>{article.publisher}</div>
-                            <div style={infoStyle}><a href={article.url} target="_blank" rel="noreferrer">Link to article</a></div>
-                        </div>
-                        <div className="col-md-4 text-right">
-                            {getBookmarkButton()}
-                        </div>
-                    </div>
-                    <hr />
+                            <h1>{article.headline}</h1>
+                            <hr />
+                            <div className="row">
+                                <div className="col-md-8">
+                                    <div style={infoStyle}><b>Date Published: </b>{article.date_published}</div>
+                                    <div style={infoStyle}><b>Publisher: </b>{article.publisher}</div>
+                                    <div style={infoStyle}><a href={article.url} target="_blank" rel="noreferrer">Link to article</a></div>
+                                </div>
+                                <div className="col-md-4 text-right">
+                                    {getBookmarkButton()}
+                                </div>
+                            </div>
+                            <hr />
 
-                    <div style={infoStyle}><b>Keywords: </b>{article.nlp ? article.nlp.keywords : ''}</div>
-                    <div className="row">
-                        {/* need this to be a condition since the first time this renders, these fields may not be available */}
-                        <BasicCard title="Sentiment" content={article.nlp ? article.nlp.sentiment : ''}></BasicCard>
-                        <BasicCard title="Subjectivity" content={article.nlp ? article.nlp.subjectivity : ''}></BasicCard>
-                        <BasicCard title="Topic" content={article.nlp ? article.nlp.topic_name : ''}></BasicCard>
+                            <div style={infoStyle}><b>Keywords: </b>{article.nlp ? article.nlp.keywords : ''}</div>
+                            <div className="row">
+                                {/* need this to be a condition since the first time this renders, these fields may not be available */}
+                                <BasicCard title="Sentiment" content={article.nlp ? article.nlp.sentiment : ''}></BasicCard>
+                                <BasicCard title="Subjectivity" content={article.nlp ? article.nlp.subjectivity : ''}></BasicCard>
+                                <BasicCard title="Topic" content={article.nlp ? article.nlp.topic_name : ''}></BasicCard>
+                            </div>
+                            <hr />
+                        </div>
                     </div>
-                    <hr />
                     <h3 className="text-center">Similar Articles</h3>
                     <div className="row">
                         <div className="col-md-2"></div>
