@@ -144,7 +144,9 @@ function Home() {
                     })}
                 </div>
                 <hr className="ml-5 mr-5 mb-5" />
-                {Object.keys(topicCountsThisWeek).length > 0 && Object.keys(articlesThisWeekGrouped).length > 0 ?
+                {Object.keys(topicCountsThisWeek).length > 0 
+                    && Object.keys(articlesThisWeekGrouped).length > 0 
+                    && !Object.values(topicCountsThisWeek).includes(NaN) ?
                     <div className="animate__animated animate__fadeIn">
                         <h2>Number of articles by topic - this week</h2>
                         <div className="row w-100">
