@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BookmarkButton from './bookmarkButton';
 import { isUserAuthenticated } from '../utils/storage';
+import { topicColors } from '../utils/colors';
 
 function ArticleCard(props) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -32,7 +33,7 @@ function ArticleCard(props) {
                     <div><b>Sentiment: </b>{props.article.nlp.sentiment} -- <b>Subjectivity: </b>{props.article.nlp.subjectivity}</div>
                 </div>
                 <div className="col-md-6 text-right">
-                    {props.article.nlp.topic_name}
+                    <span style={{color: topicColors[props.article.nlp.topic_name]}}>{props.article.nlp.topic_name}</span>
 
                     {
                         /* only show bookmark button if user is logged in */

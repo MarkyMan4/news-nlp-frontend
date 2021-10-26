@@ -1,12 +1,12 @@
 import React from 'react';
 
 // basic card component that contains a title and content
-function BasicCard(props) {
+function BasicCard({title, titleColor="black", content}) {
     return (
         <div className="basic-card shadow">
             <div className = "text-center">
-                <h3><b>{props.title}</b></h3>
-                <div className="card-content">{props.content}</div>
+                <h3 style={{color: titleColor}}><b>{title}</b></h3>
+                <div className="card-content">{content}</div>
             </div>
         </div>
     );

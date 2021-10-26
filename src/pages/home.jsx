@@ -3,6 +3,7 @@ import { getArticleCounts, getArticleCountsByTopic, getTopicList, getArticles } 
 import BasicCard from '../components/basicCard';
 import NlpModal from '../components/nlpModal';
 import { Link } from 'react-router-dom';
+import { topicColors } from '../utils/colors';
 
 function Home() {
     const [totalArticles, setTotalArticles] = useState(0);
@@ -138,6 +139,7 @@ function Home() {
                             <BasicCard 
                                 key={indx} 
                                 title={topic}
+                                titleColor={topicColors[topic]}
                                 content={topicArticleCounts[topic]}
                             />
                         )
@@ -163,7 +165,7 @@ function Home() {
                                     <tbody>
                                         {Object.keys(topicCountsThisWeek).map((topic, indx) => (
                                                 <tr key={indx}>
-                                                    <td>{topic}</td>
+                                                    <td style={{color: topicColors[topic]}}>{topic}</td>
                                                     <td>{topicCountsThisWeek[topic]}</td>
                                                     <td><NlpModal buttonText={`${topic} details`} topicName={topic} articles={articlesThisWeekGrouped[topic]} /></td>
                                                 </tr>
