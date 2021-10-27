@@ -117,3 +117,11 @@ select {
 .chart-grid line {
   stroke: rgb(173, 173, 173);
 }
+
+.nav-link {
+  color: white;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}

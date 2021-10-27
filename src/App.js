@@ -11,13 +11,13 @@ import Visuals from './pages/visuals';
 import About from './pages/about';
 import Analaysis from './pages/analysis';
 import NotFound from './components/notFound';
-import Nav from './components/nav';
+import NavMenu from './components/nav';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
   return (
     <Router>
-      <Nav />
+      <NavMenu />
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/articles/:pageNum" component={Articles} />
