@@ -31,9 +31,9 @@ function Analaysis() {
                     : <div>
                         <h3 className="mt-5 mb-4">Results</h3>
                         <h5>Sentiment</h5>
-                        <p>{analysisResult.sentiment}</p>
+                        <p>{Math.round(analysisResult.sentiment * 100) / 100}</p>
                         <h5>Subjectivity</h5>
-                        <p>{analysisResult.subjectivity}</p>
+                        <p>{Math.round(analysisResult.subjectivity * 100) / 100}</p>
                     </div> 
                 }
             </div>
