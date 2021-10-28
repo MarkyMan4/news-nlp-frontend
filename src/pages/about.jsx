@@ -1,6 +1,6 @@
 function About() {
     return (
-        <div className="row w-100 mb-5">
+        <div className="row w-100 mb-5 animate__animated animate__fadeIn">
             <div className="col-md-3"></div>
             <div className="col-md-6">
                 <h1>What is NLP?</h1>

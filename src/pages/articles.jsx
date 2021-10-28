@@ -201,6 +201,39 @@ function Articles() {
         return lastPageUrl;
     }
 
+    const getPageButtons = () => {
+        const currentPage = parseInt(pageNum);
+
+        let buttons = (
+            <span>
+                <Link to={"/articles/" + (currentPage - 1)} className="btn btn-outline-dark page-nav-btn">{currentPage - 1}</Link>
+                <Link to={"/articles/" + currentPage} className="btn btn-dark page-nav-btn">{currentPage}</Link>
+                <Link to={"/articles/" + (currentPage + 1)} className="btn btn-outline-dark page-nav-btn">{currentPage + 1}</Link>
+            </span>
+        );
+
+        if(currentPage === 1) {
+            buttons = (
+                <span>
+                    <Link to={"/articles/" + currentPage} className="btn btn-dark page-nav-btn">{currentPage}</Link>
+                    <Link to={"/articles/" + (currentPage + 1)} className="btn btn-outline-dark page-nav-btn">{currentPage + 1}</Link>
+                    <Link to={"/articles/" + (currentPage + 2)} className="btn btn-outline-dark page-nav-btn">{currentPage + 2}</Link>
+                </span>
+            );
+        }
+        else if (currentPage === totalPages) {
+            buttons = (
+                <span>
+                    <Link to={"/articles/" + (currentPage - 2)} className="btn btn-outline-dark page-nav-btn">{currentPage - 2}</Link>
+                    <Link to={"/articles/" + (currentPage - 1)} className="btn btn-outline-dark page-nav-btn">{currentPage - 1}</Link>
+                    <Link to={"/articles/" + currentPage} className="btn btn-dark page-nav-btn">{currentPage}</Link>
+                </span>
+            );
+        }
+
+        return buttons;
+    }
+
     const handleTopicSelect = (event) => {
         setSelectedTopicFilter(event.target.value);
     }
@@ -277,9 +310,9 @@ function Articles() {
                             {/* should make the page nav controls a component so it can be reused */}
                             <div>
                                 <Link to={getFirstPageUrl} className="btn btn-outline-dark page-nav-btn">&lt;&lt;</Link>
-                                <Link to={getPrevPageUrl} className="btn btn-outline-dark mr-5 page-nav-btn">&lt;</Link>
-                                Page {pageNum} of {totalPages} 
-                                <Link to={getNextPageUrl} className="btn btn-outline-dark ml-5 page-nav-btn">&gt;</Link>
+                                <Link to={getPrevPageUrl} className="btn btn-outline-dark mr-2 page-nav-btn">&lt;</Link>
+                                {getPageButtons()}
+                                <Link to={getNextPageUrl} className="btn btn-outline-dark ml-2 page-nav-btn">&gt;</Link>
                                 <Link to={getLastPageUrl} className="btn btn-outline-dark page-nav-btn">&gt;&gt;</Link>
                             </div>
                         </div>

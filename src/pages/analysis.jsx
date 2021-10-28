@@ -16,7 +16,7 @@ function Analaysis() {
     }
 
     return (
-        <div className="row w-100">
+        <div className="row w-100 animate__animated animate__fadeIn">
             <div className="col-md-3"></div>
             <div className="col-md-6 text-center">
                 <h3>Enter some text to get NLP analysis</h3>
