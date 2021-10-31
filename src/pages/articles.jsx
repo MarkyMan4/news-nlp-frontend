@@ -201,37 +201,46 @@ function Articles() {
         return lastPageUrl;
     }
 
+    /*
+     * Page navigation menu shows 5 page links at a time.
+     * The current page is highlighted
+     */
     const getPageButtons = () => {
         const currentPage = parseInt(pageNum);
+        const numPageLinks = 7; // can adjust this to show more or less page links
+        let pagesLeftOfCurrent = Math.floor(numPageLinks / 2);
+        let pagesRightOfCurrent = Math.floor(numPageLinks / 2);
+        let pageNums = [];
 
-        let buttons = (
+        // We know the current page the user is on.
+        // This calculates how many page links should be on the left and right hand side of 
+        // the current page in the links. This is done to make sure the page links don't give
+        // the user the option to select a page below 1 or greater than the max number of pages
+        while(currentPage - pagesLeftOfCurrent <= 0) {
+            pagesLeftOfCurrent--;
+            pagesRightOfCurrent++;
+        }
+
+        while(currentPage + pagesRightOfCurrent > totalPages) {
+            pagesRightOfCurrent--;
+            pagesLeftOfCurrent++;
+        }
+
+        for(let i = currentPage - pagesLeftOfCurrent; i <= currentPage + pagesRightOfCurrent; i++) {
+            pageNums.push(i);
+        }
+
+        return (
             <span>
-                <Link to={"/articles/" + (currentPage - 1)} className="btn btn-outline-dark page-nav-btn">{currentPage - 1}</Link>
-                <Link to={"/articles/" + currentPage} className="btn btn-dark page-nav-btn">{currentPage}</Link>
-                <Link to={"/articles/" + (currentPage + 1)} className="btn btn-outline-dark page-nav-btn">{currentPage + 1}</Link>
+                {pageNums.map(num => 
+                    <Link 
+                        to={"/articles/" + num} 
+                        className={num === currentPage ? "btn btn-dark page-nav-btn" : "btn btn-outline-dark page-nav-btn"}>
+                    {num}
+                    </Link>
+                )}
             </span>
         );
-
-        if(currentPage === 1) {
-            buttons = (
-                <span>
-                    <Link to={"/articles/" + currentPage} className="btn btn-dark page-nav-btn">{currentPage}</Link>
-                    <Link to={"/articles/" + (currentPage + 1)} className="btn btn-outline-dark page-nav-btn">{currentPage + 1}</Link>
-                    <Link to={"/articles/" + (currentPage + 2)} className="btn btn-outline-dark page-nav-btn">{currentPage + 2}</Link>
-                </span>
-            );
-        }
-        else if (currentPage === totalPages) {
-            buttons = (
-                <span>
-                    <Link to={"/articles/" + (currentPage - 2)} className="btn btn-outline-dark page-nav-btn">{currentPage - 2}</Link>
-                    <Link to={"/articles/" + (currentPage - 1)} className="btn btn-outline-dark page-nav-btn">{currentPage - 1}</Link>
-                    <Link to={"/articles/" + currentPage} className="btn btn-dark page-nav-btn">{currentPage}</Link>
-                </span>
-            );
-        }
-
-        return buttons;
     }
 
     const handleTopicSelect = (event) => {
