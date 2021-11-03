@@ -4,6 +4,7 @@ import BasicCard from '../components/basicCard';
 import NlpModal from '../components/nlpModal';
 import { Link } from 'react-router-dom';
 import { topicColors } from '../utils/colors';
+import SyncLoader from 'react-spinners/SyncLoader';
 
 function Home() {
     const [totalArticles, setTotalArticles] = useState(0);
@@ -176,7 +177,7 @@ function Home() {
                             </div>
                         </div>
                     </div>
-                : <div></div>
+                : <SyncLoader className="mb-5" color="#BFBFBF" loading="true" size={50} />
             }
             </div>
         </div>
