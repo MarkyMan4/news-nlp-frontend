@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { getTextAnalysis } from '../api/newsRequests';
+import { getTextAnalysis, getKeywordsInText } from '../api/newsRequests';
 
 function Analaysis() {
     const [inputText, setInputText] = useState('');
     const [analysisResult, setAnalysisResult] = useState({});
+    const [keywords, setKeywords] = useState([]);
 
     const handleTextInput = (event) => {
         setInputText(event.target.value);
@@ -12,6 +13,10 @@ function Analaysis() {
     const handleAnalyzeBtnClicked = () => {
         getTextAnalysis(inputText)
             .then(res => setAnalysisResult(res))
+            .catch(err => console.log(err));
+
+        getKeywordsInText(inputText)
+            .then(res => setKeywords(res))
             .catch(err => console.log(err));
     }
 
@@ -34,6 +39,8 @@ function Analaysis() {
                         <p>{Math.round(analysisResult.sentiment * 100) / 100}</p>
                         <h5>Subjectivity</h5>
                         <p>{Math.round(analysisResult.subjectivity * 100) / 100}</p>
+                        <h5>Key words</h5>
+                        <p>{keywords.join(', ')}</p>
                     </div> 
                 }
             </div>

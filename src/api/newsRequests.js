@@ -212,3 +212,11 @@ export const getTextAnalysis = async (text) => {
         .then(res => res.data)
         .catch(err => console.log(err));
 }
+
+export const getKeywordsInText = async (text) => {
+    let url = `${baseUrl}/analysis/get_keywords`;
+
+    return axios.post(url, {text: text})
+        .then(res => res.data.keywords) // only return keywords, not the whole JSON object
+        .catch(err => console.log(err));
+}
