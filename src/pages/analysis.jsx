@@ -43,12 +43,13 @@ function Analaysis() {
                         <p>{Math.round(analysisResult.sentiment * 100) / 100}</p>
                         <h4>Subjectivity</h4>
                         <p>{Math.round(analysisResult.subjectivity * 100) / 100}</p>
-                        <h4>Key words</h4>
-                        <p>{keywords.join(', ')}</p>
-                        <h4>Topic probabilities</h4>
-                        {topicProbabilities.map(item => <p>{item.topic_name}: {Math.round(item.probability * 100) / 100}</p>)}
                     </div> 
                 }
+                <h4>Key words</h4>
+                <p>{keywords.join(', ')}</p>
+                
+                <h4>Topic probabilities</h4>
+                {topicProbabilities.map(item => <p>{item.topic_name}: {Math.round(item.probability * 100) / 100}</p>)}
             </div>
         </div>
     );

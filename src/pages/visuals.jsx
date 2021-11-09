@@ -9,6 +9,7 @@ import {
     getSentimentAndSubjectivity,
     getCountByTopicAndDate
 } from '../api/newsRequests';
+import { isUserAuthenticated } from '../utils/storage';
 
 const topics = ['Coronavirus', 'Social', 'Government/Politics', 'Science/Tech']; // TODO: need to get this from backend instead of hardcoding
 
@@ -18,12 +19,20 @@ function Visuals() {
     const subjectivityBySentimentScatterRef = useRef(null);
     const topicCountsOverTimeRef = useRef(null);
 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [articleCountsByTopic, setArticleCountsByTopic] = useState([]);
     const [articleCountsBySentiment, setArticleCountsBySentiment] = useState([]);
     const [subjectivityBySentiment, setSubjectivityBySentiment] = useState([]);
     const [topicCountsOverTime, setTopicCountsOverTime] = useState([]);
 
     const [selectedTimeFrameFilter, setSelectedTimeFrameFilter] = useState('all');
+    const [savedArticlesOnly, setSavedArticlesOnly] = useState(false);
+
+    useEffect(() => {
+        isUserAuthenticated()
+            .then(res => setIsLoggedIn(res))
+            .catch(err => console.log(err));
+    }, [localStorage.getItem('token')]);
 
     useEffect(() => {
         // retrieve article count for each topic
@@ -80,6 +89,10 @@ function Visuals() {
         setSelectedTimeFrameFilter(event.target.value);
     }
 
+    const handleSelectSavedArticlesOnly = (event) => {
+        setSavedArticlesOnly(!savedArticlesOnly);
+    }
+
     const filterMenuStyle = {
         padding: '10px',
         borderStyle: 'solid',
@@ -102,6 +115,19 @@ function Visuals() {
                     <option value="month">Past month</option>
                     <option value="year">Past year</option>
                 </select>
+                <br />
+                {
+                    isLoggedIn 
+                    ? <label>
+                        <input 
+                            type="checkbox" 
+                            value={savedArticlesOnly}
+                            onChange={handleSelectSavedArticlesOnly}
+                            className="mr-3" 
+                        />
+                        Apply charts to my saved articles only
+                    </label>
+                    : <div></div>}
             </div>
             <div className="row m-5">
                 <div className="col-md-6">
