@@ -7,7 +7,8 @@ import {
     getArticleCountsByTopic, 
     getArticleCountsBySentiment, 
     getSentimentAndSubjectivity,
-    getCountByTopicAndDate
+    getCountByTopicAndDate,
+    getSavedArticleCountsByTopic
 } from '../api/newsRequests';
 import { isUserAuthenticated } from '../utils/storage';
 
@@ -35,16 +36,29 @@ function Visuals() {
     }, [localStorage.getItem('token')]);
 
     useEffect(() => {
-        // retrieve article count for each topic
-        getArticleCountsByTopic(selectedTimeFrameFilter)
-            .then(res => {
-                // format data in a nice way for the bar chart (list of data)
-                // [{<topic1>: <count1>}, {<topic2>: <count2>}, ...]
-                const chartData = Object.keys(res).map(topic => {return {x: topic, y: res[topic]}});
+        if(savedArticlesOnly) {
+            getSavedArticleCountsByTopic(selectedTimeFrameFilter)
+                .then(res => {
+                    // format data in a nice way for the bar chart (list of data)
+                    // [{<topic1>: <count1>}, {<topic2>: <count2>}, ...]
+                    const chartData = Object.keys(res).map(topic => {return {x: topic, y: res[topic]}});
 
-                setArticleCountsByTopic(chartData);
-            })
-            .catch(err => console.log(err));
+                    setArticleCountsByTopic(chartData);
+                })
+                .catch(err => console.log(err));
+        }
+        else {
+            // retrieve article count for each topic
+            getArticleCountsByTopic(selectedTimeFrameFilter)
+                .then(res => {
+                    // format data in a nice way for the bar chart (list of data)
+                    // [{<topic1>: <count1>}, {<topic2>: <count2>}, ...]
+                    const chartData = Object.keys(res).map(topic => {return {x: topic, y: res[topic]}});
+
+                    setArticleCountsByTopic(chartData);
+                })
+                .catch(err => console.log(err));
+        }
 
         // retrieve article counts by sentiment
         getArticleCountsBySentiment(selectedTimeFrameFilter)
@@ -83,7 +97,7 @@ function Visuals() {
             })
             .catch(err => console.log(err));
 
-    }, [selectedTimeFrameFilter]);
+    }, [selectedTimeFrameFilter, savedArticlesOnly]);
 
     const handleSelectTimeFrame = (event) => {
         setSelectedTimeFrameFilter(event.target.value);

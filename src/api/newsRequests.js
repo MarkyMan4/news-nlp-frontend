@@ -228,3 +228,23 @@ export const getTopicProbabilities = async (text) => {
         .then(res => res.data)
         .catch(err => console.log(err));
 }
+
+// get counts by topic for the users saved articles
+export const getSavedArticleCountsByTopic = async (timeFrame) => {
+    let url = `${baseUrl}/savearticle/count_by_topic`;
+
+    if(timeFrame && timeFrame !== '') {
+        url += `?timeFrame=${timeFrame}`;
+    }
+
+    const headers = {
+        headers: {
+            'Authorization': 'Token ' + localStorage.getItem('token')
+        }
+    };
+
+    return axios.get(url, headers)
+        .then(res => res.data)
+        .catch(err => console.log(err));
+
+}
