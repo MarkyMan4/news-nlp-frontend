@@ -248,3 +248,44 @@ export const getSavedArticleCountsByTopic = async (timeFrame) => {
         .catch(err => console.log(err));
 
 }
+
+// get counts by sentiment for the users saved articles
+export const getSavedArticleCountsBySentiment = async (timeFrame) => {
+    let url = `${baseUrl}/savearticle/count_by_sentiment`;
+
+    if(timeFrame && timeFrame !== '') {
+        url += `?timeFrame=${timeFrame}`;
+    }
+
+    const headers = {
+        headers: {
+            'Authorization': 'Token ' + localStorage.getItem('token')
+        }
+    };
+
+    return axios.get(url, headers)
+        .then(res => res.data)
+        .catch(err => console.log(err));
+
+}
+
+// get counts by sentiment for the users saved articles
+export const getSavedArticleSentimentAndSubjectivity = async (timeFrame) => {
+    let url = `${baseUrl}/savearticle/subjectivity_by_sentiment`;
+
+    if(timeFrame && timeFrame !== '') {
+        url += `?timeFrame=${timeFrame}`;
+    }
+
+    const headers = {
+        headers: {
+            'Authorization': 'Token ' + localStorage.getItem('token')
+        }
+    };
+
+    return axios.get(url, headers)
+        .then(res => res.data)
+        .catch(err => console.log(err));
+
+}
+

@@ -8,7 +8,9 @@ import {
     getArticleCountsBySentiment, 
     getSentimentAndSubjectivity,
     getCountByTopicAndDate,
-    getSavedArticleCountsByTopic
+    getSavedArticleCountsByTopic,
+    getSavedArticleCountsBySentiment,
+    getSavedArticleSentimentAndSubjectivity
 } from '../api/newsRequests';
 import { isUserAuthenticated } from '../utils/storage';
 
@@ -46,6 +48,16 @@ function Visuals() {
                     setArticleCountsByTopic(chartData);
                 })
                 .catch(err => console.log(err));
+
+            // retrieve article counts by sentiment
+            getSavedArticleCountsBySentiment(selectedTimeFrameFilter)
+                .then(res => setArticleCountsBySentiment(res))
+                .catch(err => console.log(err));
+
+            // retrieve sentiment and subjectivity data for scatter plot
+            getSavedArticleSentimentAndSubjectivity(selectedTimeFrameFilter)
+                .then(res => setSubjectivityBySentiment(res))
+                .catch(err => console.log(err));
         }
         else {
             // retrieve article count for each topic
@@ -58,17 +70,17 @@ function Visuals() {
                     setArticleCountsByTopic(chartData);
                 })
                 .catch(err => console.log(err));
+
+            // retrieve article counts by sentiment
+            getArticleCountsBySentiment(selectedTimeFrameFilter)
+                .then(res => setArticleCountsBySentiment(res))
+                .catch(err => console.log(err));
+
+            // retrieve sentiment and subjectivity data for scatter plot
+            getSentimentAndSubjectivity(selectedTimeFrameFilter)
+                .then(res => setSubjectivityBySentiment(res))
+                .catch(err => console.log(err));
         }
-
-        // retrieve article counts by sentiment
-        getArticleCountsBySentiment(selectedTimeFrameFilter)
-            .then(res => setArticleCountsBySentiment(res))
-            .catch(err => console.log(err));
-
-        // retrieve sentiment and subjectivity data for scatter plot
-        getSentimentAndSubjectivity(selectedTimeFrameFilter)
-            .then(res => setSubjectivityBySentiment(res))
-            .catch(err => console.log(err));
 
         // retrieve counts by date for each topic
         // this also needs to be formatted so each topic contains an array of data points with x and y as the attributes
