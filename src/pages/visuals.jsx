@@ -10,7 +10,8 @@ import {
     getCountByTopicAndDate,
     getSavedArticleCountsByTopic,
     getSavedArticleCountsBySentiment,
-    getSavedArticleSentimentAndSubjectivity
+    getSavedArticleSentimentAndSubjectivity,
+    getSavedArticleCountByTopicAndDate
 } from '../api/newsRequests';
 import { isUserAuthenticated } from '../utils/storage';
 
@@ -58,6 +59,12 @@ function Visuals() {
             getSavedArticleSentimentAndSubjectivity(selectedTimeFrameFilter)
                 .then(res => setSubjectivityBySentiment(res))
                 .catch(err => console.log(err));
+
+            // retrieve counts by date for each topic
+            // this also needs to be formatted so each topic contains an array of data points with x and y as the attributes
+            getSavedArticleCountByTopicAndDate(selectedTimeFrameFilter)
+                .then(res => parseTopicCountsByDate(res))
+                .catch(err => console.log(err));
         }
         else {
             // retrieve article count for each topic
@@ -80,36 +87,38 @@ function Visuals() {
             getSentimentAndSubjectivity(selectedTimeFrameFilter)
                 .then(res => setSubjectivityBySentiment(res))
                 .catch(err => console.log(err));
+
+            // retrieve counts by date for each topic
+            // this also needs to be formatted so each topic contains an array of data points with x and y as the attributes
+            getCountByTopicAndDate(selectedTimeFrameFilter)
+                .then(res => parseTopicCountsByDate(res))
+                .catch(err => console.log(err));
         }
 
-        // retrieve counts by date for each topic
-        // this also needs to be formatted so each topic contains an array of data points with x and y as the attributes
-        getCountByTopicAndDate(selectedTimeFrameFilter)
-            .then(res => {
-                let countsByTopicAndDate = [];
-
-                topics.forEach(topic => {
-                    let countsForTopic = [];
-
-                    res[topic].forEach(dataPoint => {
-                        let stringDate = dataPoint['date'];
-                        stringDate = stringDate.split('-');
-
-                        // need to subtract 1 from date since javascript months start from 0
-                        const date = new Date(stringDate[0], parseInt(stringDate[1]) - 1, stringDate[2]);
-
-                        if(parseInt(stringDate[0]) >= 2020) //filtering out some additional outliers so the graph looks more uniform
-                            countsForTopic.push({x: date, y: dataPoint['count']});
-                    });
-
-                    countsByTopicAndDate.push(countsForTopic);
-                });
-
-                setTopicCountsOverTime(countsByTopicAndDate);
-            })
-            .catch(err => console.log(err));
-
     }, [selectedTimeFrameFilter, savedArticlesOnly]);
+
+    const parseTopicCountsByDate = (counts) => {
+        let countsByTopicAndDate = [];
+
+        topics.forEach(topic => {
+            let countsForTopic = [];
+
+            counts[topic].forEach(dataPoint => {
+                let stringDate = dataPoint['date'];
+                stringDate = stringDate.split('-');
+
+                // need to subtract 1 from date since javascript months start from 0
+                const date = new Date(stringDate[0], parseInt(stringDate[1]) - 1, stringDate[2]);
+
+                if(parseInt(stringDate[0]) >= 2020) //filtering out some additional outliers so the graph looks more uniform
+                    countsForTopic.push({x: date, y: dataPoint['count']});
+            });
+
+            countsByTopicAndDate.push(countsForTopic);
+        });
+
+        setTopicCountsOverTime(countsByTopicAndDate);
+    }
 
     const handleSelectTimeFrame = (event) => {
         setSelectedTimeFrameFilter(event.target.value);

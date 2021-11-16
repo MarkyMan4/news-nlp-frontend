@@ -289,3 +289,23 @@ export const getSavedArticleSentimentAndSubjectivity = async (timeFrame) => {
 
 }
 
+// get counts by sentiment for the users saved articles
+export const getSavedArticleCountByTopicAndDate = async (timeFrame) => {
+    let url = `${baseUrl}/savearticle/count_by_topic_date`;
+
+    if(timeFrame && timeFrame !== '') {
+        url += `?timeFrame=${timeFrame}`;
+    }
+
+    const headers = {
+        headers: {
+            'Authorization': 'Token ' + localStorage.getItem('token')
+        }
+    };
+
+    return axios.get(url, headers)
+        .then(res => res.data)
+        .catch(err => console.log(err));
+
+}
+
