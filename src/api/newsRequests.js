@@ -309,3 +309,16 @@ export const getSavedArticleCountByTopicAndDate = async (timeFrame) => {
 
 }
 
+export const clearAllSavedArticles = async () => {
+    let url = `${baseUrl}/savearticle/clear_saved_articles`;
+
+    const headers = {
+        headers: {
+            'Authorization': 'Token ' + localStorage.getItem('token')
+        }
+    };
+
+    return axios.post(url, {}, headers)
+        .then(res => res.data)
+        .catch(err => console.log(err));
+}
