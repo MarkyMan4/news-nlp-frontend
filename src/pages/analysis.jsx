@@ -11,18 +11,29 @@ function Analaysis() {
         setInputText(event.target.value);
     }
 
+    // perform analysis - only if input text isn't empty
     const handleAnalyzeBtnClicked = () => {
-        getTextAnalysis(inputText)
-            .then(res => setAnalysisResult(res))
-            .catch(err => console.log(err));
+        if(inputText.trim() !== '') {
+            getTextAnalysis(inputText)
+                .then(res => setAnalysisResult(res))
+                .catch(err => console.log(err));
 
-        getKeywordsInText(inputText)
-            .then(res => setKeywords(res))
-            .catch(err => console.log(err));
+            getKeywordsInText(inputText)
+                .then(res => setKeywords(res))
+                .catch(err => console.log(err));
 
-        getTopicProbabilities(inputText)
-            .then(res => setTopicProbabilities(res))
-            .catch(err => console.log(err));
+            getTopicProbabilities(inputText)
+                .then(res => setTopicProbabilities(res))
+                .catch(err => console.log(err));
+        }
+    }
+
+    // clear input and all analysis results
+    const handleClearBtnClicked = () => {
+        setInputText('');
+        setAnalysisResult({});
+        setKeywords([]);
+        setTopicProbabilities([]);
     }
 
     return (
@@ -32,7 +43,8 @@ function Analaysis() {
                 <h3>Enter some text to get NLP analysis</h3>
                 <hr />
                 <textarea value={inputText} onChange={handleTextInput} className="form-control w-100 mb-5 shadow"></textarea>
-                <button onClick={handleAnalyzeBtnClicked} className="btn btn-success mb-5">Analyze</button>
+                <button onClick={handleAnalyzeBtnClicked} className="btn btn-outline-success mr-2 mb-5">Analyze</button>
+                <button onClick={handleClearBtnClicked} className="btn btn-outline-danger ml-3 mb-5">Clear</button>
 
                 {/* only show results if text has been entered */}
                 { 
@@ -45,11 +57,22 @@ function Analaysis() {
                         <p>{Math.round(analysisResult.subjectivity * 100) / 100}</p>
                     </div> 
                 }
-                <h4>Key words</h4>
-                <p>{keywords.join(', ')}</p>
-                
-                <h4>Topic probabilities</h4>
-                {topicProbabilities.map(item => <p>{item.topic_name}: {Math.round(item.probability * 100) / 100}</p>)}
+                {
+                    keywords.length > 0 ?
+                    <div>
+                        <h4>Key words</h4>
+                        <p>{keywords.join(', ')}</p>
+                    </div>
+                    : <div></div>
+                }
+                {
+                    topicProbabilities.length > 0 ?
+                    <div>
+                        <h4>Topic probabilities</h4>
+                        {topicProbabilities.map(item => <p>{item.topic_name}: {Math.round(item.probability * 100) / 100}</p>)}
+                    </div>
+                    : <div></div>
+                }
             </div>
         </div>
     );
