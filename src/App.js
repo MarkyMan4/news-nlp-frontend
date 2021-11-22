@@ -10,6 +10,7 @@ import ArticleDetail from './pages/articleDetail';
 import Visuals from './pages/visuals';
 import About from './pages/about';
 import Analaysis from './pages/analysis';
+import Profile from './pages/profile';
 import NotFound from './components/notFound';
 import NavMenu from './components/nav';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
@@ -28,6 +29,7 @@ function App() {
         <Route path="/visuals" component={Visuals} />
         <Route path="/about" component={About} />
         <Route path="/analysis" component={Analaysis} />
+        <Route path="/profile" component={Profile} />
         <Route component={NotFound} />
       </Switch>
     </Router>
