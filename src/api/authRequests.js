@@ -11,7 +11,7 @@ export const getUser = async () => {
             }
         }
     )
-    .then(res => res.data.username)
+    .then(res => res.data)
     .catch(err => {return {'error': 'invalid token'}});
 }
 
