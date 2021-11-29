@@ -91,24 +91,36 @@ export const getArticleCounts = async (topic=null) => {
         .catch(err => console.log(err));
 }
 
-export const getArticleCountsByTopic = async (timeFrame) => {
+export const getArticleCountsByTopic = async (timeFrame, topic) => {
     let url = `${baseUrl}/topics/counts`;
+    let queryParams = [];
 
-    if(timeFrame && timeFrame !== '') {
-        url += `?timeFrame=${timeFrame}`;
-    }
+    if(timeFrame && timeFrame !== '')
+        queryParams.push(`timeFrame=${timeFrame}`);
+
+    if(topic && topic !== 'all')
+        queryParams.push(`topic=${topic}`);
+
+    if(queryParams.length > 0)
+        url += '?' + queryParams.join('&');
 
     return axios.get(url)
         .then(res => res.data)
         .catch(err => console.log(err));
 }
 
-export const getArticleCountsBySentiment = async (timeFrame) => {
+export const getArticleCountsBySentiment = async (timeFrame, topic) => {
     let url = `${baseUrl}/article/count_by_sentiment`;
+    let queryParams = [];
 
-    if(timeFrame && timeFrame !== '') {
-        url += `?timeFrame=${timeFrame}`;
-    }
+    if(timeFrame && timeFrame !== '')
+        queryParams.push(`timeFrame=${timeFrame}`);
+
+    if(topic && topic !== 'all')
+        queryParams.push(`topic=${topic}`);
+
+    if(queryParams.length > 0)
+        url += '?' + queryParams.join('&');
 
     return axios.get(url)
         .then(res => res.data)
@@ -181,12 +193,18 @@ export const removeSavedArticle = async (articleId) => {
 }
 
 // gets sentiment and subjectivity data used for graphing
-export const getSentimentAndSubjectivity = async (timeFrame) => {
+export const getSentimentAndSubjectivity = async (timeFrame, topic) => {
     let url = `${baseUrl}/article/subjectivity_by_sentiment`;
+    let queryParams = [];
 
-    if(timeFrame && timeFrame !== '') {
-        url += `?timeFrame=${timeFrame}`;
-    }
+    if(timeFrame && timeFrame !== '')
+        queryParams.push(`timeFrame=${timeFrame}`);
+
+    if(topic && topic !== 'all')
+        queryParams.push(`topic=${topic}`);
+
+    if(queryParams.length > 0)
+        url += '?' + queryParams.join('&');
 
     return axios.get(url)
         .then(res => res.data)

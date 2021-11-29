@@ -11,11 +11,12 @@ import {
     getSavedArticleCountsByTopic,
     getSavedArticleCountsBySentiment,
     getSavedArticleSentimentAndSubjectivity,
-    getSavedArticleCountByTopicAndDate
+    getSavedArticleCountByTopicAndDate,
+    getTopicList
 } from '../api/newsRequests';
 import { isUserAuthenticated } from '../utils/storage';
 
-const topics = ['Coronavirus', 'Social', 'Government/Politics', 'Science/Tech']; // TODO: need to get this from backend instead of hardcoding
+// const topics = ['Coronavirus', 'Social', 'Government/Politics', 'Science/Tech']; // TODO: need to get this from backend instead of hardcoding
 
 function Visuals() {
     const countByTopicBarChartRef = useRef(null);
@@ -30,7 +31,16 @@ function Visuals() {
     const [topicCountsOverTime, setTopicCountsOverTime] = useState([]);
 
     const [selectedTimeFrameFilter, setSelectedTimeFrameFilter] = useState('all');
+    const [selectedTopicFilter, setSelectedTopicFilter] = useState('all');
+    const [topics, setTopics] = useState([]);
     const [savedArticlesOnly, setSavedArticlesOnly] = useState(false);
+
+    // retrieve list of topics
+    useEffect(() => {
+        getTopicList()
+            .then(res => setTopics(res))
+            .catch(err => console.log(err));
+    }, []);
 
     useEffect(() => {
         isUserAuthenticated()
@@ -40,7 +50,7 @@ function Visuals() {
 
     useEffect(() => {
         if(savedArticlesOnly) {
-            getSavedArticleCountsByTopic(selectedTimeFrameFilter)
+            getSavedArticleCountsByTopic(selectedTimeFrameFilter, selectedTopicFilter)
                 .then(res => {
                     // format data in a nice way for the bar chart (list of data)
                     // [{<topic1>: <count1>}, {<topic2>: <count2>}, ...]
@@ -51,12 +61,12 @@ function Visuals() {
                 .catch(err => console.log(err));
 
             // retrieve article counts by sentiment
-            getSavedArticleCountsBySentiment(selectedTimeFrameFilter)
+            getSavedArticleCountsBySentiment(selectedTimeFrameFilter, selectedTopicFilter)
                 .then(res => setArticleCountsBySentiment(res))
                 .catch(err => console.log(err));
 
             // retrieve sentiment and subjectivity data for scatter plot
-            getSavedArticleSentimentAndSubjectivity(selectedTimeFrameFilter)
+            getSavedArticleSentimentAndSubjectivity(selectedTimeFrameFilter, selectedTopicFilter)
                 .then(res => setSubjectivityBySentiment(res))
                 .catch(err => console.log(err));
 
@@ -68,7 +78,7 @@ function Visuals() {
         }
         else {
             // retrieve article count for each topic
-            getArticleCountsByTopic(selectedTimeFrameFilter)
+            getArticleCountsByTopic(selectedTimeFrameFilter, selectedTopicFilter)
                 .then(res => {
                     // format data in a nice way for the bar chart (list of data)
                     // [{<topic1>: <count1>}, {<topic2>: <count2>}, ...]
@@ -79,12 +89,12 @@ function Visuals() {
                 .catch(err => console.log(err));
 
             // retrieve article counts by sentiment
-            getArticleCountsBySentiment(selectedTimeFrameFilter)
+            getArticleCountsBySentiment(selectedTimeFrameFilter, selectedTopicFilter)
                 .then(res => setArticleCountsBySentiment(res))
                 .catch(err => console.log(err));
 
             // retrieve sentiment and subjectivity data for scatter plot
-            getSentimentAndSubjectivity(selectedTimeFrameFilter)
+            getSentimentAndSubjectivity(selectedTimeFrameFilter, selectedTopicFilter)
                 .then(res => setSubjectivityBySentiment(res))
                 .catch(err => console.log(err));
 
@@ -95,7 +105,7 @@ function Visuals() {
                 .catch(err => console.log(err));
         }
 
-    }, [selectedTimeFrameFilter, savedArticlesOnly]);
+    }, [selectedTimeFrameFilter, selectedTopicFilter, savedArticlesOnly]);
 
     const parseTopicCountsByDate = (counts) => {
         let countsByTopicAndDate = [];
@@ -103,7 +113,7 @@ function Visuals() {
         topics.forEach(topic => {
             let countsForTopic = [];
 
-            counts[topic].forEach(dataPoint => {
+            counts[topic.topic_name].forEach(dataPoint => {
                 let stringDate = dataPoint['date'];
                 stringDate = stringDate.split('-');
 
@@ -124,6 +134,10 @@ function Visuals() {
         setSelectedTimeFrameFilter(event.target.value);
     }
 
+    const handleSelectTopic = (event) => {
+        setSelectedTopicFilter(event.target.value);
+    }
+
     const handleSelectSavedArticlesOnly = (event) => {
         setSavedArticlesOnly(!savedArticlesOnly);
     }
@@ -141,7 +155,8 @@ function Visuals() {
         <div className="ml-1 mr-5 animate__animated animate__fadeIn">
             <div className="ml-5 mr-5 shadow" style={filterMenuStyle}>
                 {/* TODO: make this look nicer */}
-                <b>Select filters</b> | 
+                <h4><b>Select filters</b></h4> 
+                <hr />
                 <label className="ml-2 mr-2">Time frame</label>
                 <select onChange={handleSelectTimeFrame}>
                     <option value="all">All</option>
@@ -149,6 +164,12 @@ function Visuals() {
                     <option value="week">Past week</option>
                     <option value="month">Past month</option>
                     <option value="year">Past year</option>
+                </select>
+                <br />
+                <label className="ml-2 mr-2">Topic</label>
+                <select onChange={handleSelectTopic}>
+                    <option value="all">All</option>
+                    {topics.map(topic => <option id={topic.topic_id} value={topic.topic_name}>{topic.topic_name}</option>)}
                 </select>
                 <br />
                 {
