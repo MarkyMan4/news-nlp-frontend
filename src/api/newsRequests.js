@@ -211,12 +211,18 @@ export const getSentimentAndSubjectivity = async (timeFrame, topic) => {
         .catch(err => console.log(err));
 }
 
-export const getCountByTopicAndDate = async (timeFrame) => {
+export const getCountByTopicAndDate = async (timeFrame, topic) => {
     let url = `${baseUrl}/article/count_by_topic_date`;
+    let queryParams = [];
 
-    if(timeFrame && timeFrame !== '') {
-        url += `?timeFrame=${timeFrame}`;
-    }
+    if(timeFrame && timeFrame !== '')
+        queryParams.push(`timeFrame=${timeFrame}`);
+
+    if(topic && topic !== 'all')
+        queryParams.push(`topic=${topic}`);
+
+    if(queryParams.length > 0)
+        url += '?' + queryParams.join('&');
 
     return axios.get(url)
         .then(res => res.data)

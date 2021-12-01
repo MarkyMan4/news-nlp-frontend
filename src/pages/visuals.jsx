@@ -100,20 +100,20 @@ function Visuals() {
 
             // retrieve counts by date for each topic
             // this also needs to be formatted so each topic contains an array of data points with x and y as the attributes
-            getCountByTopicAndDate(selectedTimeFrameFilter)
+            getCountByTopicAndDate(selectedTimeFrameFilter, selectedTopicFilter)
                 .then(res => parseTopicCountsByDate(res))
                 .catch(err => console.log(err));
         }
 
-    }, [selectedTimeFrameFilter, selectedTopicFilter, savedArticlesOnly]);
+    }, [selectedTimeFrameFilter, selectedTopicFilter, savedArticlesOnly, topics]);
 
     const parseTopicCountsByDate = (counts) => {
         let countsByTopicAndDate = [];
 
-        topics.forEach(topic => {
+        Object.keys(counts).forEach(topic => {
             let countsForTopic = [];
 
-            counts[topic.topic_name].forEach(dataPoint => {
+            counts[topic].forEach(dataPoint => {
                 let stringDate = dataPoint['date'];
                 stringDate = stringDate.split('-');
 
@@ -223,7 +223,7 @@ function Visuals() {
                         chartTitle="Topic Counts By Date" 
                         xAxisTitle="Date"
                         yAxisTitle="Count"
-                        legendLabels={topics}
+                        legendLabels={selectedTopicFilter === 'all' ? topics.map(topic => topic.topic_name) : [selectedTopicFilter]} // if filtered, still need to wrap it in an array
                     />
                 </div>
             </div>
