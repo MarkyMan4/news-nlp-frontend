@@ -254,12 +254,18 @@ export const getTopicProbabilities = async (text) => {
 }
 
 // get counts by topic for the users saved articles
-export const getSavedArticleCountsByTopic = async (timeFrame) => {
+export const getSavedArticleCountsByTopic = async (timeFrame, topic) => {
     let url = `${baseUrl}/savearticle/count_by_topic`;
+    let queryParams = [];
 
-    if(timeFrame && timeFrame !== '') {
-        url += `?timeFrame=${timeFrame}`;
-    }
+    if(timeFrame && timeFrame !== '')
+        queryParams.push(`timeFrame=${timeFrame}`);
+
+    if(topic && topic !== 'all')
+        queryParams.push(`topic=${topic}`);
+
+    if(queryParams.length > 0)
+        url += '?' + queryParams.join('&');
 
     const headers = {
         headers: {
@@ -274,12 +280,18 @@ export const getSavedArticleCountsByTopic = async (timeFrame) => {
 }
 
 // get counts by sentiment for the users saved articles
-export const getSavedArticleCountsBySentiment = async (timeFrame) => {
+export const getSavedArticleCountsBySentiment = async (timeFrame, topic) => {
     let url = `${baseUrl}/savearticle/count_by_sentiment`;
+    let queryParams = [];
 
-    if(timeFrame && timeFrame !== '') {
-        url += `?timeFrame=${timeFrame}`;
-    }
+    if(timeFrame && timeFrame !== '')
+        queryParams.push(`timeFrame=${timeFrame}`);
+
+    if(topic && topic !== 'all')
+        queryParams.push(`topic=${topic}`);
+
+    if(queryParams.length > 0)
+        url += '?' + queryParams.join('&');
 
     const headers = {
         headers: {
@@ -294,12 +306,18 @@ export const getSavedArticleCountsBySentiment = async (timeFrame) => {
 }
 
 // get counts by sentiment for the users saved articles
-export const getSavedArticleSentimentAndSubjectivity = async (timeFrame) => {
+export const getSavedArticleSentimentAndSubjectivity = async (timeFrame, topic) => {
     let url = `${baseUrl}/savearticle/subjectivity_by_sentiment`;
+    let queryParams = [];
 
-    if(timeFrame && timeFrame !== '') {
-        url += `?timeFrame=${timeFrame}`;
-    }
+    if(timeFrame && timeFrame !== '')
+        queryParams.push(`timeFrame=${timeFrame}`);
+
+    if(topic && topic !== 'all')
+        queryParams.push(`topic=${topic}`);
+
+    if(queryParams.length > 0)
+        url += '?' + queryParams.join('&');
 
     const headers = {
         headers: {

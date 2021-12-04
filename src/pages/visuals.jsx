@@ -169,7 +169,7 @@ function Visuals() {
                 <label className="ml-2 mr-2">Topic</label>
                 <select onChange={handleSelectTopic}>
                     <option value="all">All</option>
-                    {topics.map(topic => <option id={topic.topic_id} value={topic.topic_name}>{topic.topic_name}</option>)}
+                    {topics.map(topic => <option key={topic.topic_id} id={topic.topic_id} value={topic.topic_name}>{topic.topic_name}</option>)}
                 </select>
                 <br />
                 {
