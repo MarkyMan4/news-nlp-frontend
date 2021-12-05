@@ -72,7 +72,7 @@ function Visuals() {
 
             // retrieve counts by date for each topic
             // this also needs to be formatted so each topic contains an array of data points with x and y as the attributes
-            getSavedArticleCountByTopicAndDate(selectedTimeFrameFilter)
+            getSavedArticleCountByTopicAndDate(selectedTimeFrameFilter, selectedTopicFilter)
                 .then(res => parseTopicCountsByDate(res))
                 .catch(err => console.log(err));
         }
