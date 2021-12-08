@@ -102,7 +102,7 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
             d3.select(d.target)
                 .transition()
                 .duration(200)
-                .attr('r', 6);
+                .attr('r', 10);
         }
 
         // decrease radius on mouse out
@@ -111,6 +111,31 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
                 .transition()
                 .duration(200)
                 .attr('r', 3);
+        }
+
+        // show tooltip when a point is clicked
+        const handlePointClicked = (d, i) => {
+            svg.selectAll('#tooltip-box').remove();
+
+            // get x and y coordinates of selected point
+            const pointX = parseInt(d3.select(d.target).attr('cx'));
+            const pointY = parseInt(d3.select(d.target).attr('cy'));
+
+            const boxWidth = 100;
+            const boxHeight = 50;
+            const boxX = pointX - (boxWidth / 2);
+            const boxY = pointY >= height / 2 ? pointY - boxHeight - 10 : pointY + 10; // show tool tip above or below based on where the point is
+
+            // add a box
+            svg
+                .append('rect')
+                .attr('id', 'tooltip-box')
+                .attr('x', boxX)
+                .attr('y', boxY)
+                .attr('width', boxWidth)
+                .attr('height', boxHeight)
+                .attr('fill', 'white')
+                .attr('stroke', 'black');
         }
 
         svg
@@ -124,7 +149,8 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
                 .attr('fill', '#4e79a7')
                 .attr('opacity', 0.5)
                 .on('mouseover', handleMouseOver)
-                .on('mouseout', handleMouseOut);
+                .on('mouseout', handleMouseOut)
+                .on('click', handlePointClicked);
 
     }, [chartData, svgRef]);
 
