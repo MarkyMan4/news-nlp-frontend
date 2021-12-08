@@ -32,7 +32,8 @@ function Visuals() {
 
     const [selectedTimeFrameFilter, setSelectedTimeFrameFilter] = useState('all');
     const [selectedTopicFilter, setSelectedTopicFilter] = useState('all');
-    const [topics, setTopics] = useState([]);
+    const [topics, setTopics] = useState([]); // all available topics
+    const [topicsInData, setTopicsInData] = useState([]); // topics that appear in the data
     const [savedArticlesOnly, setSavedArticlesOnly] = useState(false);
 
     // retrieve list of topics
@@ -109,6 +110,7 @@ function Visuals() {
 
     const parseTopicCountsByDate = (counts) => {
         let countsByTopicAndDate = [];
+        setTopicsInData(Object.keys(counts)); // these are all the topics that appear in the data with filters applied
 
         Object.keys(counts).forEach(topic => {
             let countsForTopic = [];
@@ -223,7 +225,7 @@ function Visuals() {
                         chartTitle="Topic Counts By Date" 
                         xAxisTitle="Date"
                         yAxisTitle="Count"
-                        legendLabels={selectedTopicFilter === 'all' ? topics.map(topic => topic.topic_name) : [selectedTopicFilter]} // if filtered, still need to wrap it in an array
+                        legendLabels={topicsInData} // if filtered, still need to wrap it in an array
                     />
                 </div>
             </div>
