@@ -117,25 +117,47 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
         const handlePointClicked = (d, i) => {
             svg.selectAll('#tooltip-box').remove();
 
+            // data used for this data point
+            const sentiment = d.target.__data__.x;
+            const subjectivity = d.target.__data__.y;
+
             // get x and y coordinates of selected point
             const pointX = parseInt(d3.select(d.target).attr('cx'));
             const pointY = parseInt(d3.select(d.target).attr('cy'));
 
-            const boxWidth = 100;
-            const boxHeight = 50;
+            const boxWidth = 150;
+            const boxHeight = 75;
             const boxX = pointX - (boxWidth / 2);
             const boxY = pointY >= height / 2 ? pointY - boxHeight - 10 : pointY + 10; // show tool tip above or below based on where the point is
 
+            const tooltip = svg.append('g').attr('id', 'tooltip-box');
+
             // add a box
-            svg
+            tooltip
                 .append('rect')
-                .attr('id', 'tooltip-box')
                 .attr('x', boxX)
                 .attr('y', boxY)
                 .attr('width', boxWidth)
                 .attr('height', boxHeight)
+                .attr('rx', 5)
                 .attr('fill', 'white')
-                .attr('stroke', 'black');
+                .attr('stroke', '#4A4A4A');
+
+            // sentiment text
+            tooltip
+                .append('text')
+                .attr('text-anchor', 'middle')
+                .attr('x', boxX + (boxWidth / 2))
+                .attr('y', boxY + (boxHeight / 2) - 10)
+                .text(`Sentiment: ${sentiment}`);
+
+            // subjectivity text
+            tooltip
+                .append('text')
+                .attr('text-anchor', 'middle')
+                .attr('x', boxX + (boxWidth / 2))
+                .attr('y', boxY + (boxHeight / 2) + 10)
+                .text(`Subjectivity: ${subjectivity}`);
         }
 
         svg

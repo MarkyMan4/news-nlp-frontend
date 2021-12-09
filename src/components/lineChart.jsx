@@ -195,6 +195,7 @@ function LineChart({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, legen
                 .attr('y', 40)
                 .attr('width', 180)
                 .attr('height', 140)
+                .attr('rx', 5)
                 .attr('fill', 'white')
                 .attr('stroke', 'black')
                 .attr('id', 'legendBox');
