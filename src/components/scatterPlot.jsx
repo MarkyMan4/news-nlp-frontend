@@ -102,7 +102,7 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
             d3.select(d.target)
                 .transition()
                 .duration(200)
-                .attr('r', 6);
+                .attr('r', 10);
         }
 
         // decrease radius on mouse out
@@ -111,6 +111,53 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
                 .transition()
                 .duration(200)
                 .attr('r', 3);
+        }
+
+        // show tooltip when a point is clicked
+        const handlePointClicked = (d, i) => {
+            svg.selectAll('#tooltip-box').remove();
+
+            // data used for this data point
+            const sentiment = d.target.__data__.x;
+            const subjectivity = d.target.__data__.y;
+
+            // get x and y coordinates of selected point
+            const pointX = parseInt(d3.select(d.target).attr('cx'));
+            const pointY = parseInt(d3.select(d.target).attr('cy'));
+
+            const boxWidth = 150;
+            const boxHeight = 75;
+            const boxX = pointX - (boxWidth / 2);
+            const boxY = pointY >= height / 2 ? pointY - boxHeight - 10 : pointY + 10; // show tool tip above or below based on where the point is
+
+            const tooltip = svg.append('g').attr('id', 'tooltip-box');
+
+            // add a box
+            tooltip
+                .append('rect')
+                .attr('x', boxX)
+                .attr('y', boxY)
+                .attr('width', boxWidth)
+                .attr('height', boxHeight)
+                .attr('rx', 5)
+                .attr('fill', 'white')
+                .attr('stroke', '#4A4A4A');
+
+            // sentiment text
+            tooltip
+                .append('text')
+                .attr('text-anchor', 'middle')
+                .attr('x', boxX + (boxWidth / 2))
+                .attr('y', boxY + (boxHeight / 2) - 10)
+                .text(`Sentiment: ${sentiment}`);
+
+            // subjectivity text
+            tooltip
+                .append('text')
+                .attr('text-anchor', 'middle')
+                .attr('x', boxX + (boxWidth / 2))
+                .attr('y', boxY + (boxHeight / 2) + 10)
+                .text(`Subjectivity: ${subjectivity}`);
         }
 
         svg
@@ -124,7 +171,8 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
                 .attr('fill', '#4e79a7')
                 .attr('opacity', 0.5)
                 .on('mouseover', handleMouseOver)
-                .on('mouseout', handleMouseOut);
+                .on('mouseout', handleMouseOut)
+                .on('click', handlePointClicked);
 
     }, [chartData, svgRef]);
 
