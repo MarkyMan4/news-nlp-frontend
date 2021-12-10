@@ -120,6 +120,7 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
             // data used for this data point
             const sentiment = d.target.__data__.x;
             const subjectivity = d.target.__data__.y;
+            const articleId = d.target.__data__.id;
 
             // get x and y coordinates of selected point
             const pointX = parseInt(d3.select(d.target).attr('cx'));
@@ -148,7 +149,7 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
                 .append('text')
                 .attr('text-anchor', 'middle')
                 .attr('x', boxX + (boxWidth / 2))
-                .attr('y', boxY + (boxHeight / 2) - 10)
+                .attr('y', boxY + (boxHeight / 2) - 15)
                 .text(`Sentiment: ${sentiment}`);
 
             // subjectivity text
@@ -156,8 +157,20 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
                 .append('text')
                 .attr('text-anchor', 'middle')
                 .attr('x', boxX + (boxWidth / 2))
-                .attr('y', boxY + (boxHeight / 2) + 10)
+                .attr('y', boxY + (boxHeight / 2) + 5)
                 .text(`Subjectivity: ${subjectivity}`);
+
+            // add a link to the article
+            tooltip
+                .append('a')
+                .attr('href', `http://localhost:3000/#/article/${articleId}`)
+                .attr('target', '_blank') // open link in new tab
+                    .append('text')
+                    .attr('text-anchor', 'middle')
+                    .attr('x', boxX + (boxWidth / 2))
+                    .attr('y', boxY + (boxHeight / 2) + 30)
+                    .attr('fill', 'blue')
+                    .text('Link to article');
         }
 
         svg
