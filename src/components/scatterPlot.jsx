@@ -126,7 +126,7 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
             const pointX = parseInt(d3.select(d.target).attr('cx'));
             const pointY = parseInt(d3.select(d.target).attr('cy'));
 
-            const boxWidth = 150;
+            const boxWidth = 175;
             const boxHeight = 75;
             const boxX = pointX - (boxWidth / 2);
             const boxY = pointY >= height / 2 ? pointY - boxHeight - 10 : pointY + 10; // show tool tip above or below based on where the point is
@@ -171,6 +171,22 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
                     .attr('y', boxY + (boxHeight / 2) + 30)
                     .attr('fill', 'blue')
                     .text('Link to article');
+
+            // exit button
+            tooltip
+                .append('text')
+                .attr('text-anchor', 'middle')
+                .attr('x', boxX + (boxWidth - 10))
+                .attr('y', boxY + 15)
+                .attr('fill', 'red')
+                .attr('cursor', 'pointer')
+                .text('x')
+                .on('click', closeToolTipBox);
+
+        }
+
+        const closeToolTipBox = () => {
+            svg.selectAll('#tooltip-box').remove();
         }
 
         svg
