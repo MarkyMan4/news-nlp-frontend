@@ -120,14 +120,23 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
             // data used for this data point
             const sentiment = d.target.__data__.x;
             const subjectivity = d.target.__data__.y;
+            const articleId = d.target.__data__.id;
 
             // get x and y coordinates of selected point
             const pointX = parseInt(d3.select(d.target).attr('cx'));
             const pointY = parseInt(d3.select(d.target).attr('cy'));
 
-            const boxWidth = 150;
+            const boxWidth = 175;
             const boxHeight = 75;
-            const boxX = pointX - (boxWidth / 2);
+            let boxX = pointX - (boxWidth / 2); 
+            // if point is near edge of container, shift it over so it fits in the chart
+            if(pointX >= width - 50) {
+                boxX = pointX - boxWidth;
+            }
+            else if(pointX <= margin.left + 75) {
+                boxX = pointX;
+            }
+
             const boxY = pointY >= height / 2 ? pointY - boxHeight - 10 : pointY + 10; // show tool tip above or below based on where the point is
 
             const tooltip = svg.append('g').attr('id', 'tooltip-box');
@@ -148,7 +157,7 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
                 .append('text')
                 .attr('text-anchor', 'middle')
                 .attr('x', boxX + (boxWidth / 2))
-                .attr('y', boxY + (boxHeight / 2) - 10)
+                .attr('y', boxY + (boxHeight / 2) - 15)
                 .text(`Sentiment: ${sentiment}`);
 
             // subjectivity text
@@ -156,8 +165,36 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
                 .append('text')
                 .attr('text-anchor', 'middle')
                 .attr('x', boxX + (boxWidth / 2))
-                .attr('y', boxY + (boxHeight / 2) + 10)
+                .attr('y', boxY + (boxHeight / 2) + 5)
                 .text(`Subjectivity: ${subjectivity}`);
+
+            // add a link to the article
+            tooltip
+                .append('a')
+                .attr('href', `http://localhost:3000/#/article/${articleId}`)
+                .attr('target', '_blank') // open link in new tab
+                    .append('text')
+                    .attr('text-anchor', 'middle')
+                    .attr('x', boxX + (boxWidth / 2))
+                    .attr('y', boxY + (boxHeight / 2) + 30)
+                    .attr('fill', 'blue')
+                    .text('Link to article');
+
+            // exit button
+            tooltip
+                .append('text')
+                .attr('text-anchor', 'middle')
+                .attr('x', boxX + (boxWidth - 10))
+                .attr('y', boxY + 15)
+                .attr('fill', 'red')
+                .attr('cursor', 'pointer')
+                .text('x')
+                .on('click', closeToolTipBox);
+
+        }
+
+        const closeToolTipBox = () => {
+            svg.selectAll('#tooltip-box').remove();
         }
 
         svg
