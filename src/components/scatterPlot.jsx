@@ -128,7 +128,15 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
 
             const boxWidth = 175;
             const boxHeight = 75;
-            const boxX = pointX - (boxWidth / 2);
+            let boxX = pointX - (boxWidth / 2); 
+            // if point is near edge of container, shift it over so it fits in the chart
+            if(pointX >= width - 50) {
+                boxX = pointX - boxWidth;
+            }
+            else if(pointX <= margin.left + 75) {
+                boxX = pointX;
+            }
+
             const boxY = pointY >= height / 2 ? pointY - boxHeight - 10 : pointY + 10; // show tool tip above or below based on where the point is
 
             const tooltip = svg.append('g').attr('id', 'tooltip-box');
