@@ -34,6 +34,9 @@ function BarChart({chartData, svgRef, chartTitle}) {
                 maxY = chartData[i].y;
         }
 
+        // sort data by x values (label for bar chart)
+        chartData.sort((item1, item2) => item1.x > item2.x ? 1 : -1);
+
         // set the color scale
         const color = scaleOrdinal().domain(chartData.map(d => d.x)).range(d3.schemeTableau10);
 

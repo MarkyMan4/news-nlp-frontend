@@ -32,7 +32,7 @@ let margin = {
 function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, categories}) {
     useEffect(() => {
         // set the color scale
-        const color = scaleOrdinal().domain(categories.map(d => d.x)).range(d3.schemeTableau10);
+        const color = scaleOrdinal().domain(categories).range(d3.schemeTableau10);
 
         // find the min/max x & y values for the scales
         let maxY = Number.MIN_SAFE_INTEGER;

@@ -110,7 +110,7 @@ function Visuals() {
 
     const parseTopicCountsByDate = (counts) => {
         let countsByTopicAndDate = [];
-        setTopicsInData(Object.keys(counts)); // these are all the topics that appear in the data with filters applied
+        setTopicsInData(Object.keys(counts).sort()); // these are all the topics that appear in the data with filters applied
 
         Object.keys(counts).forEach(topic => {
             let countsForTopic = [];
