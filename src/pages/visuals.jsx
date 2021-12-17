@@ -215,6 +215,7 @@ function Visuals() {
                         chartTitle="Subjectivity By Sentiment" 
                         xAxisTitle="Sentiment"
                         yAxisTitle="Subjectivity"
+                        categories={topicsInData}
                     />
                 </div>
                 <div className="col-md-6">
@@ -225,7 +226,7 @@ function Visuals() {
                         chartTitle="Topic Counts By Date" 
                         xAxisTitle="Date"
                         yAxisTitle="Count"
-                        legendLabels={topicsInData} // if filtered, still need to wrap it in an array
+                        legendLabels={topicsInData}
                     />
                 </div>
             </div>

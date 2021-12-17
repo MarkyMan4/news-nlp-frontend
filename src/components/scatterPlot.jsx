@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import * as d3 from 'd3';
-import { scaleLinear } from 'd3-scale';
+import { scaleLinear, scaleOrdinal } from 'd3-scale';
 
 const width = 700;
 const height = 400;
@@ -12,8 +12,28 @@ let margin = {
     left: 45
 }
 
-function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
+/*
+ * chartData: data in the following format:
+ *  [
+ *      {
+ *          x: <x value>
+ *          y: <y value>
+ *          id: <unique identifier for data point>
+ *          category: <category name used for color coding>
+ *      }
+ *  ]
+ * svgRef: reference to svg
+ * chartTitle: title for the scatter plot
+ * xAxisTitle: title for x-axis
+ * yAxisTitle: title for y-axis
+ * categories: list of categories the data points can have, this is used for color coding.
+ *
+ */
+function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, categories}) {
     useEffect(() => {
+        // set the color scale
+        const color = scaleOrdinal().domain(categories.map(d => d.x)).range(d3.schemeTableau10);
+
         // find the min/max x & y values for the scales
         let maxY = Number.MIN_SAFE_INTEGER;
         let maxX = Number.MIN_SAFE_INTEGER;
@@ -197,6 +217,7 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
             svg.selectAll('#tooltip-box').remove();
         }
 
+        // plot the data
         svg
             .selectAll('dataPoints')
             .data(chartData)
@@ -205,7 +226,7 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle}) {
                 .attr('cx', d => xScale(d.x))
                 .attr('cy', d => yScale(d.y))
                 .attr('r', 3)
-                .attr('fill', '#4e79a7')
+                .attr('fill', data => color(data.category))
                 .attr('opacity', 0.5)
                 .on('mouseover', handleMouseOver)
                 .on('mouseout', handleMouseOut)
