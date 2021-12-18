@@ -16,8 +16,6 @@ import {
 } from '../api/newsRequests';
 import { isUserAuthenticated } from '../utils/storage';
 
-// const topics = ['Coronavirus', 'Social', 'Government/Politics', 'Science/Tech']; // TODO: need to get this from backend instead of hardcoding
-
 function Visuals() {
     const countByTopicBarChartRef = useRef(null);
     const countBySentimentBarChartRef = useRef(null);

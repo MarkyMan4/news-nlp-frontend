@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import * as d3 from 'd3';
 import { scaleLinear, scaleOrdinal } from 'd3-scale';
+import Legend from './shared/legend';
 
 const width = 700;
 const height = 400;
@@ -30,6 +31,9 @@ let margin = {
  *
  */
 function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, categories}) {
+    // store the colors so they can be accessed when adding the legend component
+    const [labels, setLabels] = useState([]);
+
     useEffect(() => {
         categories.sort();
         
@@ -234,9 +238,24 @@ function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, cat
                 .on('mouseout', handleMouseOut)
                 .on('click', handlePointClicked);
 
+        // create the list of labels/colors as needed for legend
+        setLabels(categories.map(cat => {
+            return {
+                label: cat,
+                color: color(cat)
+            }
+        }));
+
     }, [chartData, svgRef]);
 
-    return null;
+    // for using shared components, need to call them from the return statement
+    return <Legend
+                id="sent-and-subj-plot"
+                svgRef={svgRef}
+                labels={labels}
+                x={margin.left}
+                y={0}
+           />;
 }
 
 export default ScatterPlot;
