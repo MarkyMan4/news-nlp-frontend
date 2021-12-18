@@ -17,6 +17,7 @@ let legendHidden = true;
 /*
  * Line chart component
  * Accepts a 2d array of data points, this is so that data for multiple lines can be provided
+ * The user of this component is responsible for making sure the legend labels and chart data are in the same order.
  * e.g. 
  * [
  *      [{x: ..., y: ...}, {x: ..., y: ...}, ...],  // line 1

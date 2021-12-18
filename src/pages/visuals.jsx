@@ -112,7 +112,8 @@ function Visuals() {
         let countsByTopicAndDate = [];
         setTopicsInData(Object.keys(counts).sort()); // these are all the topics that appear in the data with filters applied
 
-        Object.keys(counts).forEach(topic => {
+        // sort so the data is in the same order as topicsInData
+        Object.keys(counts).sort().forEach(topic => {
             let countsForTopic = [];
 
             counts[topic].forEach(dataPoint => {

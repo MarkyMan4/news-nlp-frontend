@@ -31,6 +31,8 @@ let margin = {
  */
 function ScatterPlot({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, categories}) {
     useEffect(() => {
+        categories.sort();
+        
         // set the color scale
         const color = scaleOrdinal().domain(categories).range(d3.schemeTableau10);
 
