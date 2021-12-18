@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import BarChart from '../components/barChart';
-import DonutChart from '../components/donutChart';
-import ScatterPlot from '../components/scatterPlot';
-import LineChart from '../components/lineChart';
+import BarChart from '../components/charts/barChart';
+import DonutChart from '../components/charts/donutChart';
+import ScatterPlot from '../components/charts/scatterPlot';
+import LineChart from '../components/charts/lineChart';
 import { 
     getArticleCountsByTopic, 
     getArticleCountsBySentiment, 
