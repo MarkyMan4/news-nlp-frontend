@@ -27,7 +27,6 @@ function Legend({id, svgRef, labels, x, y}) {
 
     // initial useEffect to draw the button for toggling the legend
     useEffect(() => {
-        console.log('yea');
         const svg = d3.select(svgRef.current);
 
         // button to show/hide legend
@@ -73,6 +72,7 @@ function Legend({id, svgRef, labels, x, y}) {
 
         svg
             .append('rect')
+            .attr('id', 'legend-btn-' + id)
             .attr('x', x)
             .attr('y', y)
             .attr('width', 106)

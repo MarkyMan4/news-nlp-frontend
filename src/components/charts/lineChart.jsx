@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import * as d3 from 'd3';
 import { scaleLinear, scaleOrdinal, scaleTime } from 'd3-scale';
+import Legend from './shared/legend';
 
 const margin = {
     top: 75,
@@ -228,6 +229,15 @@ function LineChart({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, legen
 
     // no need to return anything since this only manipulates an svg in the parent component
     return null;
+
+    // for using shared components, need to call them from the return statement
+    // return <Legend
+    //             id="count-by-date"
+    //             svgRef={svgRef}
+    //             labels={[{label: 'test1', color: '#FF5733'}, {label: 'test2', color: '#3352FF'}]}
+    //             x={margin.left}
+    //             y={0}
+    //        />;
 }
 
 export default LineChart;
