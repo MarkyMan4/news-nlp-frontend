@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import * as d3 from 'd3';
 
-let legendHidden = true;
-
 /*
  * Legend that can be toggled via a button. This component includes the button to toggle
  * the legend and the legend itself. It is not visible by default.
@@ -23,8 +21,6 @@ let legendHidden = true;
  *   y: y position of legend button (legend will display relative to this button)
  */
 function Legend({id, svgRef, labels, x, y}) {
-    const [isLegendHidden, setIsLegendHidden] = useState(true);
-
     // initial useEffect to draw the button for toggling the legend
     useEffect(() => {
         const svg = d3.select(svgRef.current);
@@ -49,11 +45,55 @@ function Legend({id, svgRef, labels, x, y}) {
             .attr('id', 'toggle-legend-btn-text' + id)
             .text('Show Legend');
 
-
-        // some weird workaround of react state
+        // handle button click, if the legend is on the screen, remove it.
+        // otherwise draw it
         const toggleLegend = (d, i) => {
-            legendHidden = !legendHidden;
-            setIsLegendHidden(legendHidden);
+            if(svg.select('#legend-box-' + id).empty()) {
+                // update button text
+                svg.select('#toggle-legend-btn-text' + id).text('Hide Legend')
+
+                svg
+                    .append('rect')
+                    .attr('x', x + 35)
+                    .attr('y', y + 40)
+                    .attr('width', 180)
+                    .attr('height', 140)
+                    .attr('rx', 5)
+                    .attr('fill', 'white')
+                    .attr('stroke', 'black')
+                    .attr('id', 'legend-box-' + id);
+
+                // legend showing values for each piece of the chart
+                svg
+                    .selectAll('legendCircles')
+                    .data(labels)
+                    .enter()
+                    .append('circle')
+                        .attr('fill', data => data.color)
+                        .attr('cx', x + 50) // for x and y, need to remember that 0, 0 for this chart is the center
+                        .attr('cy', (data, i) => (i * 30) + (y + 60))
+                        .attr('r', 10)
+                        .attr('id', (data, i) => `legend-circle-${id}-${i}`);
+
+                svg
+                    .selectAll('legendText')
+                    .data(labels)
+                    .enter()
+                    .append('text')
+                        .attr('text-anchor', 'left')
+                        .attr('x', 105)
+                        .attr('y', (data, i) => (i * 30) + 65)
+                        .attr('id', (data, i) => `legend-text-${id}-${i}`)
+                        .text(data => data.label);
+            }
+            else {
+                // update button text
+                svg.select('#toggle-legend-btn-text' + id).text('Show Legend')
+
+                svg.select('#legend-box-' + id).remove();
+                svg.selectAll('circle[id^=legend]').remove();
+                svg.selectAll('text[id^=legend]').remove();
+            }
         }
 
         const handleMouseOver = (d, i) => {
@@ -84,54 +124,54 @@ function Legend({id, svgRef, labels, x, y}) {
             .on('mouseout', handleMouseOut);
     }, [svgRef, labels]);
 
-    // Runs whenever the legend is toggled. This handles showing/hiding the legend
-    useEffect(() => {
-        const svg = d3.select(svgRef.current);
+    // // Runs whenever the legend is toggled. This handles showing/hiding the legend
+    // useEffect(() => {
+    //     const svg = d3.select(svgRef.current);
 
-        // toggle show/hide button text
-        svg.select('#toggle-legend-btn-text' + id).text(`${legendHidden ? 'Show Legend' : 'Hide Legend'}`)
+    //     // toggle show/hide button text
+    //     svg.select('#toggle-legend-btn-text' + id).text(`${legendHidden ? 'Show Legend' : 'Hide Legend'}`)
 
-        if(legendHidden) {
-            svg.select('#legend-box-' + id).remove();
-            svg.selectAll('circle[id^=legend]').remove();
-            svg.selectAll('text[id^=legend]').remove();
-        }
-        else { // draw legend if it's toggled
-            svg
-                .append('rect')
-                .attr('x', x + 35)
-                .attr('y', y + 40)
-                .attr('width', 180)
-                .attr('height', 140)
-                .attr('rx', 5)
-                .attr('fill', 'white')
-                .attr('stroke', 'black')
-                .attr('id', 'legend-box-' + id);
+    //     if(legendHidden) {
+    //         svg.select('#legend-box-' + id).remove();
+    //         svg.selectAll('circle[id^=legend]').remove();
+    //         svg.selectAll('text[id^=legend]').remove();
+    //     }
+    //     else { // draw legend if it's toggled
+    //         svg
+    //             .append('rect')
+    //             .attr('x', x + 35)
+    //             .attr('y', y + 40)
+    //             .attr('width', 180)
+    //             .attr('height', 140)
+    //             .attr('rx', 5)
+    //             .attr('fill', 'white')
+    //             .attr('stroke', 'black')
+    //             .attr('id', 'legend-box-' + id);
 
-            // legend showing values for each piece of the chart
-            svg
-                .selectAll('legendCircles')
-                .data(labels)
-                .enter()
-                .append('circle')
-                    .attr('fill', data => data.color)
-                    .attr('cx', x + 50) // for x and y, need to remember that 0, 0 for this chart is the center
-                    .attr('cy', (data, i) => (i * 30) + (y + 60))
-                    .attr('r', 10)
-                    .attr('id', (data, i) => `legend-circle-${id}-${i}`);
+    //         // legend showing values for each piece of the chart
+    //         svg
+    //             .selectAll('legendCircles')
+    //             .data(labels)
+    //             .enter()
+    //             .append('circle')
+    //                 .attr('fill', data => data.color)
+    //                 .attr('cx', x + 50) // for x and y, need to remember that 0, 0 for this chart is the center
+    //                 .attr('cy', (data, i) => (i * 30) + (y + 60))
+    //                 .attr('r', 10)
+    //                 .attr('id', (data, i) => `legend-circle-${id}-${i}`);
 
-            svg
-                .selectAll('legendText')
-                .data(labels)
-                .enter()
-                .append('text')
-                    .attr('text-anchor', 'left')
-                    .attr('x', 105)
-                    .attr('y', (data, i) => (i * 30) + 65)
-                    .attr('id', (data, i) => `legend-text-${id}-${i}`)
-                    .text(data => data.label);
-        }
-    }, [legendHidden]);
+    //         svg
+    //             .selectAll('legendText')
+    //             .data(labels)
+    //             .enter()
+    //             .append('text')
+    //                 .attr('text-anchor', 'left')
+    //                 .attr('x', 105)
+    //                 .attr('y', (data, i) => (i * 30) + 65)
+    //                 .attr('id', (data, i) => `legend-text-${id}-${i}`)
+    //                 .text(data => data.label);
+    //     }
+    // }, [legendHidden]);
 
     return null;
 }

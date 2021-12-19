@@ -31,7 +31,7 @@ let legendHidden = true;
  * - accept labels for each line that can be displayed on the legend
  */
 function LineChart({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, legendLabels}) {
-    const [isLegendHidden, setIsLegendHidden] = useState(true);
+    const [labels, setLabels] = useState([]);
 
     useEffect(() => {
         const svg = d3.select(svgRef.current);
@@ -105,6 +105,14 @@ function LineChart({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, legen
         // set the color scale
         const color = scaleOrdinal().domain(chartData.map((d, i) => i)).range(d3.schemeTableau10);
 
+        // store colors in state so it can be passed to the legend component
+        setLabels(legendLabels.map((lbl, indx) => {
+            return {
+                label: lbl,
+                color: color(indx) // data and legendLabels should be in the same order, so we can still get the color based on index
+            }
+        }));
+
         // draw the lines
         chartData.forEach((data, indx) => {
             svg
@@ -124,120 +132,16 @@ function LineChart({chartData, svgRef, chartTitle, xAxisTitle, yAxisTitle, legen
             .attr('y', 25)
             .text(chartTitle);
 
-        // button to show/hide legend
-        svg
-            .append('rect')
-            .attr('x', margin.left)
-            .attr('y', 0)
-            .attr('width', 106)
-            .attr('height', 25)
-            .attr('fill', 'white')
-            .attr('stroke', 'black')
-            .attr('rx', 5)
-            .attr('id', 'btnBackground');
-
-        svg
-            .append('text')
-            .attr('x', margin.left + 5)
-            .attr('y', 17)
-            .attr('id', 'toggleLegendBtnText')
-            .text('Show Legend');
-
-
-        // some weird workaround of react state
-        const toggleLegend = (d, i) => {
-            legendHidden = !legendHidden;
-            setIsLegendHidden(legendHidden);
-        }
-
-        const handleMouseOver = (d, i) => {
-            d3.select('#btnBackground')
-                .transition()
-                .duration(200)
-                .attr('fill', '#D8E2FC');
-        }
-
-        const handleMouseOut = (d, i) => {
-            d3.select('#btnBackground')
-                .transition()
-                .duration(200)
-                .attr('fill', 'white');
-        }
-
-        svg
-            .append('rect')
-            .attr('x', margin.left)
-            .attr('y', 0)
-            .attr('width', 106)
-            .attr('height', 25)
-            .attr('opacity', 0)
-            .attr('rx', 5)
-            .on('click', toggleLegend)
-            .on('mouseover', handleMouseOver)
-            .on('mouseout', handleMouseOut);
-
     }, [chartData, svgRef]);
 
-    useEffect(() => {
-        const svg = d3.select(svgRef.current);
-        const color = scaleOrdinal().domain(chartData.map((d, i) => i)).range(d3.schemeTableau10);
-        
-        // toggle show/hide button text
-        svg.select('#toggleLegendBtnText').text(`${legendHidden ? 'Show Legend' : 'Hide Legend'}`)
-
-        if(legendHidden) {
-            svg.select('#legendBox').remove();
-            svg.selectAll('circle[id^=legend]').remove();
-            svg.selectAll('text[id^=legend]').remove();
-        }
-        else { // draw legend if it's toggled
-            svg
-                .append('rect')
-                .attr('x', 75)
-                .attr('y', 40)
-                .attr('width', 180)
-                .attr('height', 140)
-                .attr('rx', 5)
-                .attr('fill', 'white')
-                .attr('stroke', 'black')
-                .attr('id', 'legendBox');
-
-            // legend showing values for each piece of the chart
-            svg
-                .selectAll('legendCircles')
-                .data(chartData)
-                .enter()
-                .append('circle')
-                    .attr('fill', (d, i) => color(i))
-                    .attr('cx', 90) // for x and y, need to remember that 0, 0 for this chart is the center
-                    .attr('cy', (d, i) => (i * 30) + 60)
-                    .attr('r', 10)
-                    .attr('id', (d, i) => `legendCircle${i}`);
-
-            svg
-                .selectAll('legendText')
-                .data(legendLabels)
-                .enter()
-                .append('text')
-                    .attr('text-anchor', 'left')
-                    .attr('x', 105)
-                    .attr('y', (d, i) => (i * 30) + 65)
-                    .attr('id', (d, i) => `legendText${i}`)
-                    .text(d => d);
-        }
-    }, [legendHidden]);
-
-    // no need to return anything since this only manipulates an svg in the parent component
-    return null;
-
     // for using shared components, need to call them from the return statement
-    // return <Legend
-    //             id="count-by-date"
-    //             svgRef={svgRef}
-    //             labels={[{label: 'test1', color: '#FF5733'}, {label: 'test2', color: '#3352FF'}]}
-    //             x={margin.left}
-    //             y={0}
-    //        />;
+    return <Legend
+                id="count-by-date"
+                svgRef={svgRef}
+                labels={labels}
+                x={margin.left}
+                y={0}
+           />;
 }
 
 export default LineChart;
