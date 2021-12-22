@@ -15,6 +15,7 @@ import {
     getTopicList
 } from '../api/newsRequests';
 import { isUserAuthenticated } from '../utils/storage';
+import SyncLoader from 'react-spinners/SyncLoader';
 
 function Visuals() {
     const countByTopicBarChartRef = useRef(null);
@@ -187,46 +188,70 @@ function Visuals() {
                     : <div></div>}
             </div>
             <div className="row m-5">
-                <div className="col-md-6">
-                    <svg ref={countByTopicBarChartRef}></svg>
-                    <BarChart 
-                        chartData={articleCountsByTopic} 
-                        svgRef={countByTopicBarChartRef} 
-                        chartTitle="Article Counts by Topic" 
-                    />
+                <div className="col-md-6 text-center">
+                    {articleCountsByTopic.length === 0 ?
+                        <SyncLoader className="mb-5" color="#BFBFBF" loading="true" size={50} /> 
+                        :
+                        <div>
+                            <svg ref={countByTopicBarChartRef}></svg>
+                            <BarChart 
+                                chartData={articleCountsByTopic} 
+                                svgRef={countByTopicBarChartRef} 
+                                chartTitle="Article Counts by Topic" 
+                            />
+                        </div>
+                    }
                 </div>
-                <div className="col-md-6">
-                    <svg ref={countBySentimentBarChartRef}></svg>
-                    <DonutChart 
-                        chartData={articleCountsBySentiment} 
-                        svgRef={countBySentimentBarChartRef} 
-                        chartTitle="Count By Sentiment" 
-                    />
+                <div className="col-md-6 text-center">
+                    {articleCountsBySentiment.length === 0 ?
+                        <SyncLoader className="mb-5" color="#BFBFBF" loading="true" size={50} /> 
+                        :
+                        <div>
+                            <svg ref={countBySentimentBarChartRef}></svg>
+                            <DonutChart 
+                                chartData={articleCountsBySentiment} 
+                                svgRef={countBySentimentBarChartRef} 
+                                chartTitle="Count By Sentiment" 
+                            />
+                        </div>
+                    }
                 </div>
             </div>
             &nbsp;
             <div className="row m-5">
-                <div className="col-md-6">
-                    <svg ref={subjectivityBySentimentScatterRef}></svg>
-                    <ScatterPlot 
-                        chartData={subjectivityBySentiment} 
-                        svgRef={subjectivityBySentimentScatterRef} 
-                        chartTitle="Subjectivity By Sentiment" 
-                        xAxisTitle="Sentiment"
-                        yAxisTitle="Subjectivity"
-                        categories={topicsInData}
-                    />
+                <div className="col-md-6 text-center">
+                    {subjectivityBySentiment.length === 0 ?
+                        <SyncLoader className="mb-5" color="#BFBFBF" loading="true" size={50} /> 
+                        : 
+                        <div>
+                            <svg ref={subjectivityBySentimentScatterRef}></svg>
+                            <ScatterPlot 
+                                chartData={subjectivityBySentiment} 
+                                svgRef={subjectivityBySentimentScatterRef} 
+                                chartTitle="Subjectivity By Sentiment" 
+                                xAxisTitle="Sentiment"
+                                yAxisTitle="Subjectivity"
+                                categories={topicsInData}
+                            />
+                        </div>
+                    }
                 </div>
-                <div className="col-md-6">
-                    <svg ref={topicCountsOverTimeRef}></svg>
-                    <LineChart 
-                        chartData={topicCountsOverTime} 
-                        svgRef={topicCountsOverTimeRef} 
-                        chartTitle="Topic Counts By Date" 
-                        xAxisTitle="Date"
-                        yAxisTitle="Count"
-                        legendLabels={topicsInData}
-                    />
+                <div className="col-md-6 text-center">
+                    {topicCountsOverTime.length === 0 ?
+                        <SyncLoader className="mb-5" color="#BFBFBF" loading="true" size={50} /> 
+                        :
+                        <div>
+                            <svg ref={topicCountsOverTimeRef}></svg>
+                            <LineChart 
+                                chartData={topicCountsOverTime} 
+                                svgRef={topicCountsOverTimeRef} 
+                                chartTitle="Topic Counts By Date" 
+                                xAxisTitle="Date"
+                                yAxisTitle="Count"
+                                legendLabels={topicsInData}
+                            />
+                        </div>
+                    }
                 </div>
             </div>
         </div>
