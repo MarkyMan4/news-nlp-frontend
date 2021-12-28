@@ -64,10 +64,11 @@ select {
   border-color: rgb(214, 214, 214);
   border-width: 1px;
   border-radius: 10px;
-  width: 75%;
+  width: 80%;
   display: block;
   margin: 0 auto;
   padding-top: 20px;
+  overflow: auto;
 }
 
 .modal {

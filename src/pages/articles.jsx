@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation, Link } from 'react-router-dom';
-import { getArticlePage, getTopicList } from '../api/newsRequests';
+import { getArticlePage, getPublishers, getTopicList } from '../api/newsRequests';
 import ArticleCard from '../components/articleCard';
 import NotFound from '../components/notFound';
 
@@ -13,10 +13,12 @@ function Articles() {
     const [totalPages, setTotalPages] = useState(0);
     const [errorOccurred, setErrorOccurred] = useState(false); // used when the page number doesn't exist
     const [topics, setTopics] = useState([]);
+    const [publishers, setPublishers] = useState([]);
     const { pageNum } = useParams();
 
     // filter variables - these are used for keeping track of the value of UI components
     const [selectedTopicFilter, setSelectedTopicFilter] = useState('');
+    const [publisherFilter, setPublisherFilter] = useState('');
     const [startDateFilter, setStartDateFilter] = useState(''); // date represented as string
     const [endDateFilter, setEndDateFilter] = useState(''); // date represented as string
     const [searchText, setSearchText] = useState('');
@@ -104,10 +106,14 @@ function Articles() {
         return url;
     }
 
-    // fetch the topic list right away, only do this once
+    // fetch the topic list and publishers
     useEffect(() => {
         getTopicList()
             .then(res => setTopics(res))
+            .catch(err => console.log(err));
+        
+        getPublishers()
+            .then(res => setPublishers(res.publishers))
             .catch(err => console.log(err));
     }, []);
 
@@ -247,6 +253,10 @@ function Articles() {
         setSelectedTopicFilter(event.target.value);
     }
 
+    const handlePublisherSelect = (event) => {
+        setPublisherFilter(event.target.value);
+    }
+
     const handleStartDateSelect = (event) => {
         setStartDateFilter(event.target.value);
     }
@@ -313,6 +323,7 @@ function Articles() {
         else {
             html = (
                 <div>
+                    {/* page navigation buttons */}
                     <div className="text-center">
                         <h1 className="text-center animate__animated animate__flipInX">Browse Articles</h1>
                         <div className="d-flex justify-content-center animate__animated animate__fadeIn">
@@ -328,12 +339,13 @@ function Articles() {
                         <input value={searchText} onChange={handleSearchInput} className="mt-4 mr-3" placeholder="search by headline" />
                         <Link to={getUrlWithFiltersIncludingSearch()} onClick={handleSearchButtonClicked} className="btn btn-success">Search</Link>
                     </div>
+                    {/* filter controls */}
                     <div className="row w-100">
                         <div className="text-center mt-4 col-md-3 animate__animated animate__fadeIn">
                             <div className="filter-controls shadow">
                                 <h4>Select filters</h4>
                                 <hr />
-                                <div className="row">
+                                <div className="row w-100">
                                     <div className="col-md-4 col-sm-4">
                                         <span className="align-middle float-right">Topic:</span><br />
                                     </div>
@@ -344,7 +356,18 @@ function Articles() {
                                         </select>
                                     </div>
                                 </div>
-                                <div className="row mt-2">
+                                <div className="row mt-2 w-100">
+                                    <div className="col-md-4 col-sm-4">
+                                        <span className="align-middle float-right">Publisher:</span><br />
+                                    </div>
+                                    <div className="col-md-8 col-sm-8">
+                                        <select className="float-left" value={publisherFilter} onChange={handlePublisherSelect}>
+                                            <option value="">All</option> {/* value is blank so it won't be included in query params */}
+                                            {publishers.map((pub, indx) => <option key={indx} value={pub}>{pub}</option>)}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="row mt-2 w-100">
                                     <div className="col-md-4 col-sm-4">
                                         <span className="align-middle float-right">Start date:</span>
                                     </div>
@@ -352,7 +375,7 @@ function Articles() {
                                         <input className="float-left" type="date" value={startDateFilter} onChange={handleStartDateSelect} />
                                     </div>
                                 </div>
-                                <div className="row mt-2">
+                                <div className="row mt-2 w-100">
                                     <div className="col-md-4 col-sm-4">
                                         <span className="align-middle float-right">End date:</span>
                                     </div>

@@ -370,3 +370,11 @@ export const clearAllSavedArticles = async () => {
         .then(res => res.data)
         .catch(err => console.log(err));
 }
+
+export const getPublishers = async () => {
+    let url = `${baseUrl}/article/publishers`;
+
+    return axios.get(url)
+        .then(res => res.data)
+        .catch(err => console.log(err));
+}
