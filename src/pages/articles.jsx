@@ -31,6 +31,9 @@ function Articles() {
         if(selectedTopicFilter !== '')
             filters['topicName'] = selectedTopicFilter;
 
+        if(publisherFilter !== '')
+            filters['publisher'] = publisherFilter
+
         if(startDateFilter !== '')
             filters['startDate'] = startDateFilter;
 
@@ -60,6 +63,9 @@ function Articles() {
         if(selectedTopicFilter !== '')
             queryParams.push(`topic=${selectedTopicFilter}`);
 
+        if(publisherFilter !== '')
+            queryParams.push(`publisher=${publisherFilter}`);
+
         if(startDateFilter !== '')
             queryParams.push(`startDate=${startDateFilter}`);
 
@@ -85,10 +91,17 @@ function Articles() {
             const appliedTopicFilter = query.get('topic');
             queryParams.push(`topic=${appliedTopicFilter}`);
         }
+
+        if(query.get('publisher')) {
+            const appliedPublisherFilter = query.get('publisher');
+            queryParams.push(`publisher=${appliedPublisherFilter}`);
+        }
+
         if(query.get('startDate')) {
             const appliedStartDateFilter = query.get('topic');
             queryParams.push(`startDate=${appliedStartDateFilter}`);
         }
+
         if(query.get('endDate')) {
             const appliedEndDateFilter = query.get('topic');
             queryParams.push(`startDate=${appliedEndDateFilter}`);
@@ -130,6 +143,12 @@ function Articles() {
             setSelectedTopicFilter(query.get('topic'));
             filters['topicName'] = query.get('topic');
         }
+        
+        if(query.get('publisher')) {
+            setPublisherFilter(query.get('publisher'));
+            filters['publisher'] = query.get('publisher');
+        }
+
         if(query.get('startDate')) {
             setStartDateFilter(query.get('startDate'));
             filters['startDate'] = query.get('startDate');
@@ -293,6 +312,7 @@ function Articles() {
 
     const clearFilters = () => {
         setSelectedTopicFilter('');
+        setPublisherFilter('');
         setStartDateFilter('');
         setEndDateFilter('');
 
