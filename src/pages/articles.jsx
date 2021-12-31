@@ -227,12 +227,13 @@ function Articles() {
     }
 
     /*
-     * Page navigation menu shows 5 page links at a time.
+     * Page navigation menu shows 7 page links at a time.
      * The current page is highlighted
      */
     const getPageButtons = () => {
         const currentPage = parseInt(pageNum);
-        const numPageLinks = 7; // can adjust this to show more or less page links
+        const maxPageLinks = 7; // can adjust this to show more or less page links
+        const numPageLinks = maxPageLinks > totalPages ? totalPages : maxPageLinks;
         let pagesLeftOfCurrent = Math.floor(numPageLinks / 2);
         let pagesRightOfCurrent = Math.floor(numPageLinks / 2);
         let pageNums = [];
