@@ -404,6 +404,22 @@ function Articles() {
                                         <input className="float-left" type="date" value={endDateFilter} onChange={handleEndDateSelect} />
                                     </div>
                                 </div>
+                                <div className="row mt-2 w-100">
+                                    <div className="col-md-4 col-sm-4">
+                                        <span className="align-middle float-right">Sentiment:</span>
+                                    </div>
+                                    <div className="col-md-8 col-sm-8">
+                                        <input className="float-left" type="number" min="-1" max="1"/>
+                                    </div>
+                                </div>
+                                <div className="row mt-2 w-100">
+                                    <div className="col-md-4 col-sm-4">
+                                        <span className="align-middle float-right">Subjectivity:</span>
+                                    </div>
+                                    <div className="col-md-8 col-sm-8">
+                                        <input className="float-left" type="number" min="0" max="1"/>
+                                    </div>
+                                </div>
                                 <br />
                                 {getClearFiltersButtonOrEmpty()}
                                 <br />
