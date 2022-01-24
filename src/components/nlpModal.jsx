@@ -54,7 +54,8 @@ function NlpModal({buttonText, topicName, articles}) {
             // construct the data how it's needed for the TagCloud component
             let cloudData = [];
             Object.keys(counts).forEach(word => {
-                cloudData.push({value: word, count: counts[word]});
+                if(counts[word] > 1)
+                    cloudData.push({value: word, count: counts[word]});
             });
 
             setWordcloudData(cloudData);
@@ -108,7 +109,7 @@ function NlpModal({buttonText, topicName, articles}) {
                         </button>
                     </div>
                     <div style={keywordStyle}>
-                        <TagCloud tags={wordcloudData} minSize={12} maxSize={35} onClick={tag => alert(`'${tag.count}' articles have this keyword`)} />
+                        <TagCloud tags={wordcloudData} minSize={12} maxSize={35} />
                     </div>
                     <Link to={'/articles/1?topic=' + topicName} className="mt-4">Browse articles with this topic</Link>
                 </div>
