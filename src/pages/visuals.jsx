@@ -29,7 +29,7 @@ function Visuals() {
     const [subjectivityBySentiment, setSubjectivityBySentiment] = useState([]);
     const [topicCountsOverTime, setTopicCountsOverTime] = useState([]);
 
-    const [selectedTimeFrameFilter, setSelectedTimeFrameFilter] = useState('all');
+    const [selectedTimeFrameFilter, setSelectedTimeFrameFilter] = useState('year');
     const [selectedTopicFilter, setSelectedTopicFilter] = useState('all');
     const [topics, setTopics] = useState([]); // all available topics
     const [topicsInData, setTopicsInData] = useState([]); // topics that appear in the data
@@ -161,11 +161,10 @@ function Visuals() {
                 <hr />
                 <label className="ml-2 mr-2">Time frame</label>
                 <select onChange={handleSelectTimeFrame}>
-                    <option value="all">All</option>
-                    <option value="day">Past day</option>
-                    <option value="week">Past week</option>
-                    <option value="month">Past month</option>
                     <option value="year">Past year</option>
+                    <option value="month">Past month</option>
+                    <option value="week">Past week</option>
+                    <option value="day">Past day</option>
                 </select>
                 <br />
                 <label className="ml-2 mr-2">Topic</label>
