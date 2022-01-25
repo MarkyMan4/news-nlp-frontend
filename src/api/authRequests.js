@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const baseUrl = 'http://127.0.0.1:8000';
+const baseUrl = 'http://127.0.0.1:8000/api';
 
 export const getUser = async () => {
     return axios.get(
-        baseUrl + '/api/auth/user',
+        baseUrl + '/auth/user',
         {
             headers: {
                 'Authorization': 'Token ' + localStorage.getItem('token')
@@ -20,7 +20,7 @@ export const getUser = async () => {
  */
 export const authenticateUser = async (username, password) => {
     return axios.post(
-        baseUrl + '/api/auth/login',
+        baseUrl + '/auth/login',
         {
             username: username,
             password: password
@@ -45,7 +45,7 @@ export const registerUser = async (username, email, password) => {
     };
 
     return axios.post(
-        baseUrl + '/api/auth/register',
+        baseUrl + '/auth/register',
         {
             username: username,
             email: email,
@@ -86,7 +86,7 @@ export const registerUser = async (username, email, password) => {
  */
 export const logoutUser = async () => {
     return axios.post(
-        baseUrl + '/api/auth/logout',
+        baseUrl + '/auth/logout',
         {},
         {
             headers: {
