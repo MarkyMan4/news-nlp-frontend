@@ -367,10 +367,10 @@ function Articles() {
                                 <h4>Select filters</h4>
                                 <hr />
                                 <div className="row w-100">
-                                    <div className="col-md-4 col-sm-4">
+                                    <div className="col-md-5 col-sm-4">
                                         <span className="align-middle float-right">Topic:</span><br />
                                     </div>
-                                    <div className="col-md-8 col-sm-8">
+                                    <div className="col-md-7 col-sm-8">
                                         <select className="float-left" value={selectedTopicFilter} onChange={handleTopicSelect}>
                                             <option value="">All</option> {/* value is blank so it won't be included in query params */}
                                             {topics.map(topic => <option key={topic.topic_id} value={topic.topic_name}>{topic.topic_name}</option>)}
@@ -378,10 +378,10 @@ function Articles() {
                                     </div>
                                 </div>
                                 <div className="row mt-2 w-100">
-                                    <div className="col-md-4 col-sm-4">
+                                    <div className="col-md-5 col-sm-4">
                                         <span className="align-middle float-right">Publisher:</span><br />
                                     </div>
-                                    <div className="col-md-8 col-sm-8">
+                                    <div className="col-md-7 col-sm-8">
                                         <select className="float-left" value={publisherFilter} onChange={handlePublisherSelect}>
                                             <option value="">All</option> {/* value is blank so it won't be included in query params */}
                                             {publishers.map((pub, indx) => <option key={indx} value={pub}>{pub}</option>)}
@@ -389,34 +389,50 @@ function Articles() {
                                     </div>
                                 </div>
                                 <div className="row mt-2 w-100">
-                                    <div className="col-md-4 col-sm-4">
+                                    <div className="col-md-5 col-sm-4">
                                         <span className="align-middle float-right">Start date:</span>
                                     </div>
-                                    <div className="col-md-8 col-sm-8">
+                                    <div className="col-md-7 col-sm-8">
                                         <input className="float-left" type="date" value={startDateFilter} onChange={handleStartDateSelect} />
                                     </div>
                                 </div>
                                 <div className="row mt-2 w-100">
-                                    <div className="col-md-4 col-sm-4">
+                                    <div className="col-md-5 col-sm-4">
                                         <span className="align-middle float-right">End date:</span>
                                     </div>
-                                    <div className="col-md-8 col-sm-8">
+                                    <div className="col-md-7 col-sm-8">
                                         <input className="float-left" type="date" value={endDateFilter} onChange={handleEndDateSelect} />
                                     </div>
                                 </div>
                                 <div className="row mt-2 w-100">
-                                    <div className="col-md-4 col-sm-4">
-                                        <span className="align-middle float-right">Sentiment:</span>
+                                    <div className="col-md-5 col-sm-4">
+                                        <span className="align-middle float-right">Min Sentiment:</span>
                                     </div>
-                                    <div className="col-md-8 col-sm-8">
+                                    <div className="col-md-7 col-sm-8">
                                         <input className="float-left" type="number" min="-1" max="1"/>
                                     </div>
                                 </div>
                                 <div className="row mt-2 w-100">
-                                    <div className="col-md-4 col-sm-4">
-                                        <span className="align-middle float-right">Subjectivity:</span>
+                                    <div className="col-md-5 col-sm-4">
+                                        <span className="align-middle float-right">Max Sentiment:</span>
                                     </div>
-                                    <div className="col-md-8 col-sm-8">
+                                    <div className="col-md-7 col-sm-8">
+                                        <input className="float-left" type="number" min="-1" max="1"/>
+                                    </div>
+                                </div>
+                                <div className="row mt-2 w-100">
+                                    <div className="col-md-5 col-sm-4">
+                                        <span className="align-middle float-right">Min Subjectivity:</span>
+                                    </div>
+                                    <div className="col-md-7 col-sm-8">
+                                        <input className="float-left" type="number" min="0" max="1"/>
+                                    </div>
+                                </div>
+                                <div className="row mt-2 w-100">
+                                    <div className="col-md-5 col-sm-4">
+                                        <span className="align-middle float-right">Max Subjectivity:</span>
+                                    </div>
+                                    <div className="col-md-7 col-sm-8">
                                         <input className="float-left" type="number" min="0" max="1"/>
                                     </div>
                                 </div>
