@@ -21,6 +21,10 @@ function Articles() {
     const [publisherFilter, setPublisherFilter] = useState('');
     const [startDateFilter, setStartDateFilter] = useState(''); // date represented as string
     const [endDateFilter, setEndDateFilter] = useState(''); // date represented as string
+    const [minSentimentFilter, setMinSentimentFilter] = useState('');
+    const [maxSentimentFilter, setMaxSentimentFilter] = useState('');
+    const [minSubjectivityFilter, setMinSubjectivityFilter] = useState('');
+    const [maxSubjectivityFilter, setMaxSubjectivityFilter] = useState('');
     const [searchText, setSearchText] = useState('');
 
     let query = useQuery();
@@ -39,6 +43,18 @@ function Articles() {
 
         if(endDateFilter !== '')
             filters['endDate'] = endDateFilter;
+
+        if(minSentimentFilter !== '')
+            filters['minSentiment'] = minSentimentFilter;
+
+        if(maxSentimentFilter !== '')
+            filters['maxSentiment'] = maxSentimentFilter;
+
+        if(minSubjectivityFilter !== '')
+            filters['minSubjectivity'] = minSubjectivityFilter;
+
+        if(maxSubjectivityFilter !== '')
+            filters['maxSubjectivity'] = maxSubjectivityFilter;
 
         return filters;
     }
@@ -72,6 +88,18 @@ function Articles() {
         if(endDateFilter !== '')
             queryParams.push(`endDate=${endDateFilter}`);
 
+        if(minSentimentFilter !== '')
+            queryParams.push(`minSentiment=${minSentimentFilter}`);
+
+        if(maxSentimentFilter !== '')
+            queryParams.push(`maxSentiment=${maxSentimentFilter}`);
+
+        if(minSubjectivityFilter !== '')
+            queryParams.push(`minSubjectivity=${minSubjectivityFilter}`);
+
+        if(maxSubjectivityFilter !== '')
+            queryParams.push(`maxSubjectivity=${maxSubjectivityFilter}`);
+
         if(queryParams.length > 0) {
             url += '?' + queryParams.join('&');
         }
@@ -98,13 +126,33 @@ function Articles() {
         }
 
         if(query.get('startDate')) {
-            const appliedStartDateFilter = query.get('topic');
+            const appliedStartDateFilter = query.get('startDate');
             queryParams.push(`startDate=${appliedStartDateFilter}`);
         }
 
         if(query.get('endDate')) {
-            const appliedEndDateFilter = query.get('topic');
-            queryParams.push(`startDate=${appliedEndDateFilter}`);
+            const appliedEndDateFilter = query.get('endDate');
+            queryParams.push(`endDate=${appliedEndDateFilter}`);
+        }
+
+        if(query.get('minSentiment')) {
+            const appliedMinSentimentFilter = query.get('minSentiment');
+            queryParams.push(`minSentiment=${appliedMinSentimentFilter}`);
+        }
+
+        if(query.get('maxSentiment')) {
+            const appliedMaxSentimentFilter = query.get('maxSentiment');
+            queryParams.push(`maxSentiment=${appliedMaxSentimentFilter}`);
+        }
+
+        if(query.get('minSubjectivity')) {
+            const appliedMinSubjectivityFilter = query.get('minSubjectivity');
+            queryParams.push(`minSubjectivity=${appliedMinSubjectivityFilter}`);
+        }
+
+        if(query.get('maxSubjectivity')) {
+            const appliedMaxSubjectivityFilter = query.get('maxSubjectivity');
+            queryParams.push(`maxSubjectivity=${appliedMaxSubjectivityFilter}`);
         }
 
         // add search text to query params if it's not empty
@@ -153,9 +201,30 @@ function Articles() {
             setStartDateFilter(query.get('startDate'));
             filters['startDate'] = query.get('startDate');
         }
+
         if(query.get('endDate')) {
             setEndDateFilter(query.get('endDate'));
-            filters['startDate'] = query.get('startDate');
+            filters['endDate'] = query.get('endDate');
+        }
+
+        if(query.get('minSentiment')) {
+            setMinSentimentFilter(query.get('minSentiment'));
+            filters['minSentiment'] = query.get('minSentiment');
+        }
+
+        if(query.get('maxSentiment')) {
+            setMaxSentimentFilter(query.get('maxSentiment'));
+            filters['maxSentiment'] = query.get('maxSentiment');
+        }
+
+        if(query.get('minSubjectivity')) {
+            setMinSubjectivityFilter(query.get('minSubjectivity'));
+            filters['minSubjectivity'] = query.get('minSubjectivity');
+        }
+
+        if(query.get('maxSubjectivity')) {
+            setMaxSubjectivityFilter(query.get('maxSubjectivity'));
+            filters['maxSubjectivity'] = query.get('maxSubjectivity');
         }
 
         if(query.get('headlineLike')) {
@@ -289,6 +358,22 @@ function Articles() {
         setSearchText(event.target.value);
     }
 
+    const handleMinSentimentEntered = (event) => {
+        setMinSentimentFilter(event.target.value);
+    }
+
+    const handleMaxSentimentEntered = (event) => {
+        setMaxSentimentFilter(event.target.value);
+    }
+
+    const handleMinSubjectivityEntered = (event) => {
+        setMinSubjectivityFilter(event.target.value);
+    }
+
+    const handleMaxSubjectivityEntered = (event) => {
+        setMaxSubjectivityFilter(event.target.value);
+    }
+
     const goToFirstPageAndApplyFilters = (filters) => {
         getArticlePage(1, filters)
             .then(res => {
@@ -316,6 +401,10 @@ function Articles() {
         setPublisherFilter('');
         setStartDateFilter('');
         setEndDateFilter('');
+        setMinSentimentFilter('');
+        setMaxSentimentFilter('');
+        setMinSubjectivityFilter('');
+        setMaxSubjectivityFilter('');
 
         // passing in empty objects since setting state is asyncronous,
         // so the old values won't be cleared out by the time this method is called
@@ -409,7 +498,7 @@ function Articles() {
                                         <span className="align-middle float-right">Min Sentiment:</span>
                                     </div>
                                     <div className="col-md-7 col-sm-8">
-                                        <input className="float-left" type="number" min="-1" max="1"/>
+                                        <input className="float-left" type="number" min="-1" max="1" value={minSentimentFilter} onChange={handleMinSentimentEntered}/>
                                     </div>
                                 </div>
                                 <div className="row mt-2 w-100">
@@ -417,7 +506,7 @@ function Articles() {
                                         <span className="align-middle float-right">Max Sentiment:</span>
                                     </div>
                                     <div className="col-md-7 col-sm-8">
-                                        <input className="float-left" type="number" min="-1" max="1"/>
+                                        <input className="float-left" type="number" min="-1" max="1" value={maxSentimentFilter} onChange={handleMaxSentimentEntered}/>
                                     </div>
                                 </div>
                                 <div className="row mt-2 w-100">
@@ -425,7 +514,7 @@ function Articles() {
                                         <span className="align-middle float-right">Min Subjectivity:</span>
                                     </div>
                                     <div className="col-md-7 col-sm-8">
-                                        <input className="float-left" type="number" min="0" max="1"/>
+                                        <input className="float-left" type="number" min="0" max="1" value={minSubjectivityFilter} onChange={handleMinSubjectivityEntered}/>
                                     </div>
                                 </div>
                                 <div className="row mt-2 w-100">
@@ -433,7 +522,7 @@ function Articles() {
                                         <span className="align-middle float-right">Max Subjectivity:</span>
                                     </div>
                                     <div className="col-md-7 col-sm-8">
-                                        <input className="float-left" type="number" min="0" max="1"/>
+                                        <input className="float-left" type="number" min="0" max="1" value={maxSubjectivityFilter} onChange={handleMaxSubjectivityEntered}/>
                                     </div>
                                 </div>
                                 <br />

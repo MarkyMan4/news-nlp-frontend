@@ -27,7 +27,7 @@ function About() {
                 </p>
                 <p>
                     <b>Subjectivity</b> tells us how opinionated an author was when they were writing an article. Subjectivity scores are given as 
-                    a value between 0 and 1 inclusive, where 0 is no subjecitivity (no opinions, only facts) and 1 is very subjective (very opinionated).
+                    a value between 0 and 1 inclusive, where 0 is no subjectivity (no opinions, only facts) and 1 is very subjective (very opinionated).
                     For example, a sentence like "I think dogs are good pets." would be subjective because this is an opinion, so it would have score closer to 1. 
                     The sentence "The sky is blue." is not subjective since it is just stating a fact, so it would have a score closer to 0.
                 </p>
