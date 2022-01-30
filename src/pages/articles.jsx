@@ -303,9 +303,16 @@ function Articles() {
         const currentPage = parseInt(pageNum);
         const maxPageLinks = 7; // can adjust this to show more or less page links
         const numPageLinks = maxPageLinks > totalPages ? totalPages : maxPageLinks;
+        
         let pagesLeftOfCurrent = Math.floor(numPageLinks / 2);
         let pagesRightOfCurrent = Math.floor(numPageLinks / 2);
         let pageNums = [];
+
+        // if it's an even number of pages, we'll have one less link on the left
+        // since the current page won't be the middle
+        if(numPageLinks % 2 === 0) {
+            pagesLeftOfCurrent--;
+        }
 
         // We know the current page the user is on.
         // This calculates how many page links should be on the left and right hand side of 
