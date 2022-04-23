@@ -28,9 +28,11 @@ function About() {
                     sentiment is a score of zero. However, sentiment scores close to zero are often fairly neutral articles. The sentiment labels 
                     on this site are determined like this:
                 </p>
-                <div>neutral -1.0 &lte; sentiment</div>
-                <div></div>
-                <div></div>
+                <p>
+                    <div><b>negative</b> -1.0 &le; sentiment &#60; -0.05</div>
+                    <div><b>neutral</b> -0.05 &le; sentiment &le; 0.05</div>
+                    <div><b>positive</b> 0.05 &#60; sentiment &le; 1.0</div>
+                </p>
                 <p>
                     <b>Subjectivity</b> tells us how opinionated an author was when they were writing an article. Subjectivity scores are given as 
                     a value between 0 and 1 inclusive, where 0 is no subjectivity (no opinions, only facts) and 1 is very subjective (very opinionated).
