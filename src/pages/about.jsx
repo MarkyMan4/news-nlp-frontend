@@ -23,8 +23,14 @@ function About() {
                 <p>
                     <b>Sentiment</b> tells us whether words are used in a positive or negative manner. The sentiment scores on this site are 
                     given as a value between -1 and 1, where -1 is the most negative and 1 is the most positive. For example, "I liked the movie."
-                    could be considered positive, so it would have a positive sentiment. Whereas "I think the movie was bad." would be negative.
+                    could be considered positive, so it would have a positive sentiment. Whereas "I think the movie was bad." would be negative. 
+                    On this site, you will see labels of "negative", "neutral" and "positive" sentiment. The only clear definition of neutral 
+                    sentiment is a score of zero. However, sentiment scores close to zero are often fairly neutral articles. The sentiment labels 
+                    on this site are determined like this:
                 </p>
+                <div>neutral -1.0 &lte; sentiment</div>
+                <div></div>
+                <div></div>
                 <p>
                     <b>Subjectivity</b> tells us how opinionated an author was when they were writing an article. Subjectivity scores are given as 
                     a value between 0 and 1 inclusive, where 0 is no subjectivity (no opinions, only facts) and 1 is very subjective (very opinionated).
