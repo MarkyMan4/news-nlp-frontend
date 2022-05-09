@@ -133,7 +133,7 @@ function Home() {
                 <Link to={"/article/" + Math.ceil(Math.random() * totalArticles)} className="btn btn-outline-success mt-3">Random article</Link>
                 <hr className="ml-5 mr-5" />
                 <h2>Article counts</h2>
-                <BasicCard title="Total articles" content={totalArticles.toLocaleString('en-US')} />
+                <BasicCard title="Total articles" content={totalArticles?.toLocaleString('en-US')} />
                 <div className="row w-100" style={cardStyle}>
                     {Object.keys(topicArticleCounts).map((topic, indx) => {
                         return (
@@ -141,7 +141,7 @@ function Home() {
                                 key={indx} 
                                 title={topic}
                                 titleColor={topicColors[topic]}
-                                content={topicArticleCounts[topic].toLocaleString('en-US')}
+                                content={topicArticleCounts[topic]?.toLocaleString('en-US')}
                             />
                         )
                     })}

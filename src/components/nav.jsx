@@ -50,11 +50,11 @@ function NavMenu() {
                             <li>Saved Articles</li>
                         </Nav.Link> : <li></li>
                     }
-                    {isLoggedIn ? 
+                    {/* {isLoggedIn ? 
                         <Nav.Link className="nav-link" href="#/profile">
                             <li>Profile</li>
                         </Nav.Link> : <li></li>
-                    }
+                    } */}
                 </Nav>
             </Navbar.Collapse>
             <span className="navbar-text mr-5">
